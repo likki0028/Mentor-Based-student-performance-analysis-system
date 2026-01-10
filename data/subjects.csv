@@ -1,0 +1,6 @@
+subject_id,subject_name,subject_type
+SUB01,DBMS,Theory
+SUB02,Cloud,Theory
+SUB03,Operating Systems,Theory
+SUB04,DBMS Lab,Lab
+SUB05,Operating Systems Lab,Lab

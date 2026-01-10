@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+*.pkl
+*.sqlite
+*.db
+.DS_Store
+.vscode/

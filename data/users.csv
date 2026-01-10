@@ -1,0 +1,6 @@
+user_id,username,password,role,faculty_id,section_id
+U01,kumar,pass123,both,F01,SEC_A
+U02,anitha,pass123,both,F02,SEC_B
+U03,ramesh,pass123,both,F03,SEC_C
+U04,suresh,pass123,lecturer,F04,
+U05,priya,pass123,lecturer,F05,
