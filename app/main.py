@@ -1,13 +1,6 @@
-import sys
-import os
 import streamlit as st
 from utils.auth import authenticate
 
-# ---------------------------------
-# PATH FIX
-# ---------------------------------
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(0, PROJECT_ROOT)
 
 # ---------------------------------
 # PAGE CONFIG
