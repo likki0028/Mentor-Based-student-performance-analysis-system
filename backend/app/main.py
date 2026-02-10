@@ -2,8 +2,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
-from .routers import alerts, quizzes, students, faculty, attendance, assignments, analytics, admin_router
+from .routers import alerts, quizzes, students, faculty, attendance, assignments, analytics
 from .auth import auth_router
+from .admin import admin_router
 from .database import engine, Base
 
 # Create tables
