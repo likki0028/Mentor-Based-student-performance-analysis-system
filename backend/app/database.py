@@ -5,7 +5,12 @@ from sqlalchemy.orm import sessionmaker
 from .config import settings
 
 # TODO: For production, consider using PostgreSQL
+# TODO: For production, consider using PostgreSQL
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
+
+# Fix for Render's postgres:// usage which is deprecated in SQLAlchemy
+if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 # check_same_thread is needed for SQLite only
 connect_args = {"check_same_thread": False} if "sqlite" in SQLALCHEMY_DATABASE_URL else {}

@@ -31,6 +31,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 origins = [
     "http://localhost:5173",
     "http://localhost:3000",
+    "*", # Allow all for production (restrict later if needed)
 ]
 
 app.add_middleware(

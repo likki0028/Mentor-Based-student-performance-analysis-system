@@ -8,3 +8,6 @@ python-jose[cryptography]
 passlib[bcrypt]
 apscheduler
 python-multipart
+
+gunicorn
+psycopg2-binary
