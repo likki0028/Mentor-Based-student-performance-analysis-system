@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
-from .routers import auth, alerts, quizzes # Import other routers as needed
+from .routers import alerts, quizzes, students, faculty, attendance, assignments, analytics, admin_router
 from .auth import auth_router
 from .database import engine, Base
 
@@ -46,4 +46,11 @@ def read_root():
 
 # Include routers
 app.include_router(auth_router.router, prefix="/auth", tags=["auth"])
-# app.include_router(admin.router, prefix="/admin", tags=["admin"])
+app.include_router(alerts.router, prefix="/alerts", tags=["alerts"])
+app.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
+app.include_router(students.router, prefix="/students", tags=["students"])
+app.include_router(faculty.router, prefix="/faculty", tags=["faculty"])
+app.include_router(attendance.router, prefix="/attendance", tags=["attendance"])
+app.include_router(assignments.router, prefix="/assignments", tags=["assignments"])
+app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
+app.include_router(admin_router.router, prefix="/admin", tags=["admin"])
