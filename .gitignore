@@ -39,3 +39,7 @@ dist-ssr/
 # IDEs
 .vscode/
 .idea/
+
+# Database
+*.db
+

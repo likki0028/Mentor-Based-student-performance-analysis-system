@@ -1,5 +1,6 @@
 
 from sqlalchemy import Column, Integer, ForeignKey, Enum
+from sqlalchemy.orm import relationship
 from ..database import Base
 import enum
 
@@ -17,3 +18,5 @@ class Marks(Base):
     assessment_type = Column(Enum(AssessmentType))
     score = Column(Integer)
     total = Column(Integer)
+
+    subject = relationship("Subject")

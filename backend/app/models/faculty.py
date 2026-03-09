@@ -10,5 +10,5 @@ class Faculty(Base):
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     employee_id = Column(String, unique=True, index=True)
     
-    # user = relationship("User", back_populates="faculty_profile")
-    # mentees = relationship("Student", back_populates="mentor")
+    user = relationship("User", back_populates="faculty_profile")
+    mentees = relationship("Student", back_populates="mentor")

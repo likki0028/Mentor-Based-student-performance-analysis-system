@@ -48,7 +48,7 @@ function App() {
                         } />
 
                         <Route path="/student/detail" element={
-                            <RoleGuard allowedRoles={['student', 'mentor', 'both', 'admin']}>
+                            <RoleGuard allowedRoles={['student', 'mentor', 'both', 'admin', 'lecturer']}>
                                 <StudentDetail />
                             </RoleGuard>
                         } />

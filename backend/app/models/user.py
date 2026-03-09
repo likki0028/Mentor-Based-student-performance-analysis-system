@@ -22,5 +22,5 @@ class User(Base):
     role = Column(Enum(UserRole), default=UserRole.STUDENT)
     
     # Relationships
-    # student_profile = relationship("Student", back_populates="user", uselist=False)
-    # faculty_profile = relationship("Faculty", back_populates="user", uselist=False)
+    student_profile = relationship("Student", back_populates="user", uselist=False)
+    faculty_profile = relationship("Faculty", back_populates="user", uselist=False)

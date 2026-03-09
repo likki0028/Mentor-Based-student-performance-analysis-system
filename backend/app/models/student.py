@@ -9,9 +9,9 @@ class Student(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     enrollment_number = Column(String, unique=True, index=True)
+    current_semester = Column(Integer, default=1)
     
-    # Mentor relationship (Many students to one mentor)
-    # mentor_id = Column(Integer, ForeignKey("faculty.id"))
-    # mentor = relationship("Faculty", back_populates="mentees")
+    mentor_id = Column(Integer, ForeignKey("faculty.id"))
+    mentor = relationship("Faculty", back_populates="mentees")
 
-    # user = relationship("User", back_populates="student_profile")
+    user = relationship("User", back_populates="student_profile")

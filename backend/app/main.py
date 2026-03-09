@@ -2,10 +2,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
-from .routers import alerts, quizzes, students, faculty, attendance, assignments, analytics
-from .auth import auth_router
+from .routers import alerts, quizzes, students, faculty, attendance, assignments, analytics, auth, marks_router
 from .admin import admin_router
 from .database import engine, Base
+from .models import remark  # noqa: ensure table is created
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -47,7 +47,7 @@ def read_root():
     return {"message": "Welcome to Mentor-Based Student Performance System API"}
 
 # Include routers
-app.include_router(auth_router.router, prefix="/auth", tags=["auth"])
+app.include_router(auth.router)
 app.include_router(alerts.router, prefix="/alerts", tags=["alerts"])
 app.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
 app.include_router(students.router, prefix="/students", tags=["students"])
@@ -55,4 +55,5 @@ app.include_router(faculty.router, prefix="/faculty", tags=["faculty"])
 app.include_router(attendance.router, prefix="/attendance", tags=["attendance"])
 app.include_router(assignments.router, prefix="/assignments", tags=["assignments"])
 app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
+app.include_router(marks_router.router, prefix="/marks", tags=["marks"])
 app.include_router(admin_router.router, prefix="/admin", tags=["admin"])

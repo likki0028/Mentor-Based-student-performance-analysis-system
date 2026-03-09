@@ -1,5 +1,6 @@
 
 from sqlalchemy import Column, Integer, Date, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 from ..database import Base
 
 class Attendance(Base):
@@ -10,3 +11,5 @@ class Attendance(Base):
     subject_id = Column(Integer, ForeignKey("subjects.id"))
     date = Column(Date)
     status = Column(Boolean) # Present/Absent
+
+    subject = relationship("Subject")
