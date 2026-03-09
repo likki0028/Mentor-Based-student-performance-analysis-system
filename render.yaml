@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: vibe-backend
+    runtime: python
+    buildCommand: "cd backend && pip install -r requirements.txt && python init_db.py && python scripts/seed_data.py"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        value: "sqlite:///./sql_app.db"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.11.0"
