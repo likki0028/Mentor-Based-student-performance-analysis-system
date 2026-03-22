@@ -123,21 +123,24 @@ async def create_user(
     db.flush()
 
     # Create profile based on role
-    if data.role == "student":
-        db.add(student_model.Student(
-            user_id=new_user.id,
-            enrollment_number=f"NEW{new_user.id}",
-            current_semester=1
-        ))
-    elif data.role in ("mentor", "lecturer", "both"):
-        db.add(faculty_model.Faculty(
-            user_id=new_user.id,
-            employee_id=f"FAC{new_user.id}"
-        ))
+    try:
+        if data.role == "student":
+            db.add(student_model.Student(
+                user_id=new_user.id,
+                enrollment_number=f"NEW{new_user.id}",
+                current_semester=1
+            ))
+        elif data.role in ("mentor", "lecturer", "both"):
+            db.add(faculty_model.Faculty(
+                user_id=new_user.id,
+                employee_id=f"FAC{new_user.id}"
+            ))
 
-    db.commit()
-    db.refresh(new_user)
-    return {"id": new_user.id, "username": new_user.username, "role": new_user.role}
+        db.commit()
+        return {"id": new_user.id, "username": new_user.username, "role": new_user.role}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/users/{user_id}")
 async def delete_user(
@@ -154,22 +157,26 @@ async def delete_user(
         raise HTTPException(status_code=400, detail="Cannot delete yourself")
 
     # Delete associated profiles
-    if target.student_profile:
-        # Clean up student-related data
-        db.query(attendance_model.Attendance).filter(
-            attendance_model.Attendance.student_id == target.student_profile.id
-        ).delete()
-        db.query(marks_model.Marks).filter(
-            marks_model.Marks.student_id == target.student_profile.id
-        ).delete()
-        db.delete(target.student_profile)
+    try:
+        if target.student_profile:
+            # Clean up student-related data
+            db.query(attendance_model.Attendance).filter(
+                attendance_model.Attendance.student_id == target.student_profile.id
+            ).delete()
+            db.query(marks_model.Marks).filter(
+                marks_model.Marks.student_id == target.student_profile.id
+            ).delete()
+            db.delete(target.student_profile)
 
-    if target.faculty_profile:
-        db.delete(target.faculty_profile)
+        if target.faculty_profile:
+            db.delete(target.faculty_profile)
 
-    db.delete(target)
-    db.commit()
-    return {"message": f"User {target.username} deleted"}
+        db.delete(target)
+        db.commit()
+        return {"message": f"User {target.username} deleted"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/assign-mentor")
 async def assign_mentor(

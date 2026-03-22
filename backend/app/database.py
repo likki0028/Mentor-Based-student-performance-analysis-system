@@ -4,8 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from .config import settings
 
-# TODO: For production, consider using PostgreSQL
-# TODO: For production, consider using PostgreSQL
+# Production considerations: PostgreSQL is supported via DATABASE_URL in environment settings.
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 
 # Fix for Render's postgres:// usage which is deprecated in SQLAlchemy
@@ -22,7 +21,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# TODO: Dependency to get DB session
+# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:

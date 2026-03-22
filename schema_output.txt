@@ -1,0 +1,20 @@
+=== push_subscriptions ===
+  (0, 'id', 'INTEGER', 0, None, 1)
+  (1, 'user_id', 'INTEGER', 0, None, 0)
+  (2, 'endpoint', 'TEXT', 0, None, 0)
+  (3, 'p256dh', 'TEXT', 0, None, 0)
+  (4, 'auth', 'TEXT', 0, None, 0)
+Total columns: 5
+
+=== notifications ===
+  (0, 'id', 'INTEGER', 0, None, 1)
+  (1, 'user_id', 'INTEGER', 0, None, 0)
+  (2, 'title', 'TEXT', 0, None, 0)
+  (3, 'message', 'TEXT', 0, None, 0)
+  (4, 'type', 'TEXT', 0, None, 0)
+  (5, 'priority', 'TEXT', 0, None, 0)
+  (6, 'link', 'TEXT', 0, None, 0)
+  (7, 'is_read', 'BOOLEAN', 0, '0', 0)
+  (8, 'created_at', 'DATETIME', 0, 'CURRENT_TIMESTAMP', 0)
+Total columns: 9
+

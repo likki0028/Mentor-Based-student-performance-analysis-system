@@ -1,0 +1,11 @@
+Total lines: 109
+L11: sqlite3.OperationalError: table doubts has no column named title
+L105: sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) table doubts has no column named title
+L108: (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+--- LAST 5 LINES ---
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) table doubts has no column named title
+[SQL: INSERT INTO doubts (title, content, student_id, subject_id, is_resolved, is_pinned, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('Difference between L1 and L2 regularization?', 'I understand both are used to prevent overfitting, but when should I use Lasso vs Ridge?', 33, 44, 1, 0, '2026-03-18 10:00:00.000000')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)

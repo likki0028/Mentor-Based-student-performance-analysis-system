@@ -1,0 +1,254 @@
+Sem 1: [theory] Linear Algebra and Function Approximation          (GR22A1001   ) 3 cr
+Sem 1: [theory] Engineering Chemistry                              (GR22A1005   ) 3 cr
+Sem 1: [theory] Programming for Problem Solving                    (GR22A1007   ) 3 cr
+Sem 1: [theory] Fundamentals of Electrical Engineering             (GR22A1008   ) 2 cr
+Sem 1: [lab   ] Engineering Chemistry Lab                          (GR22A1015   ) 2 cr
+Sem 1: [lab   ] Programming for Problem Solving Lab                (GR22A1017   ) 2 cr
+Sem 1: [lab   ] Fundamentals of Electrical Engineering Lab         (GR22A1019   ) 2 cr
+Sem 1: [lab   ] Engineering Workshop                               (GR22A1021   ) 2 cr
+Sem 1: [theory] Design Thinking                                    (GR22A1022   ) 0 cr
+Sem 2: [theory] Differential Equations and Vector Calculus         (GR22A1002   ) 3 cr
+Sem 2: [theory] Applied Physics                                    (GR22A1003   ) 3 cr
+Sem 2: [theory] English                                            (GR22A1006   ) 2 cr
+Sem 2: [theory] Graphics for Engineers                             (GR22A1011   ) 1 cr
+Sem 2: [theory] Data Structures                                    (GR22A1012   ) 3 cr
+Sem 2: [lab   ] Applied Physics Lab                                (GR22A1013   ) 2 cr
+Sem 2: [lab   ] English Language and Communication Skills Lab      (GR22A1016   ) 2 cr
+Sem 2: [lab   ] Data Structures Lab                                (GR22A1020   ) 2 cr
+Sem 3: [theory] Value Ethics and Gender Culture                    (GR22A2002   ) 0 cr
+Sem 3: [theory] Digital Logic Design                               (GR22A2067   ) 3 cr
+Sem 3: [theory] Java Programming                                   (GR22A2068   ) 3 cr
+Sem 3: [theory] Database Management Systems                        (GR22A2069   ) 3 cr
+Sem 3: [lab   ] Java Programming Lab                               (GR22A2071   ) 2 cr
+Sem 3: [lab   ] Database Management Systems Lab                    (GR22A2072   ) 2 cr
+Sem 3: [theory] Discrete Mathematics                               (GR22A2075   ) 2 cr
+Sem 3: [theory] Design and Analysis of Algorithms                  (GR22A2077   ) 3 cr
+Sem 3: [lab   ] Scripting Languages Lab                            (GR22A2085   ) 2 cr
+Sem 4: [theory] Computer Organization                              (GR22A2073   ) 3 cr
+Sem 4: [theory] Operating Systems                                  (GR22A2074   ) 3 cr
+Sem 4: [theory] Data Science with R Programming                    (GR22A2086   ) 3 cr
+Sem 4: [theory] Full Stack Web Development                         (GR22A2076   ) 3 cr
+Sem 4: [theory] Applied Statistics for Engineers                   (GR22A2006   ) 3 cr
+Sem 4: [lab   ] Full Stack Web Development Lab                     (GR22A2078   ) 2 cr
+Sem 4: [lab   ] Operating Systems Lab                              (GR22A2079   ) 2 cr
+Sem 4: [lab   ] Data Science with R Programming Lab                (GR22A2087   ) 2 cr
+Sem 4: [theory] Environmental Science                              (GR22A2001   ) 0 cr
+Sem 4: [theory] Effective Technical Communication                  (GR22A2108   ) 0 cr
+Sem 4: [lab   ] Real-time Research Project                         (GR22A2109   ) 2 cr
+Sem 5: [theory] Artificial Intelligence                            (GR22A3070   ) 3 cr
+Sem 5: [theory] Data Warehousing and Data Mining                   (GR22A3069   ) 3 cr
+Sem 5: [theory] Data Visualization                                 (GR22A3076   ) 3 cr
+Sem 5: [theory] Professional Elective-I                            (GR22A3PE1   ) 3 cr
+Sem 5: [nptel ] Open Elective-I                                    (GR22A3OE1   ) 3 cr
+Sem 5: [lab   ] Data Warehousing and Data Mining Lab               (GR22A3073   ) 2 cr
+Sem 5: [lab   ] Artificial Intelligence Lab using Python           (GR22A3074   ) 2 cr
+Sem 5: [lab   ] Data Visualization Lab                             (GR22A3078   ) 2 cr
+Sem 6: [theory] Machine Learning                                   (GR22A3140   ) 3 cr
+Sem 6: [theory] Automata and Compiler Design                       (GR22A3115   ) 3 cr
+Sem 6: [theory] Big Data Analytics                                 (GR22A3143   ) 3 cr
+Sem 6: [theory] Professional Elective-II                           (GR22A3PE2   ) 3 cr
+Sem 6: [nptel ] Open Elective-II                                   (GR22A3OE2   ) 3 cr
+Sem 6: [lab   ] Machine Learning Lab                               (GR22A3142   ) 2 cr
+Sem 6: [lab   ] Big Data Analytics Lab                             (GR22A3148   ) 2 cr
+Sem 6: [lab   ] Mini Project with Seminar                          (GR22A3089   ) 2 cr
+Sem 6: [theory] Constitution of India                              (GR22A2003   ) 0 cr
+
+Total: 54 subjects
+
+Students (196):
+  ID=1, Enrollment=23241A6701, CurrentSem=6
+  ID=2, Enrollment=23241A6702, CurrentSem=6
+  ID=3, Enrollment=23241A6703, CurrentSem=6
+  ID=4, Enrollment=23241A6704, CurrentSem=6
+  ID=5, Enrollment=23241A6705, CurrentSem=6
+  ID=6, Enrollment=23241A6706, CurrentSem=6
+  ID=7, Enrollment=23241A6707, CurrentSem=6
+  ID=8, Enrollment=23241A6708, CurrentSem=6
+  ID=9, Enrollment=23241A6709, CurrentSem=6
+  ID=10, Enrollment=23241A6710, CurrentSem=6
+  ID=11, Enrollment=23241A6711, CurrentSem=6
+  ID=12, Enrollment=23241A6712, CurrentSem=6
+  ID=13, Enrollment=23241A6713, CurrentSem=6
+  ID=14, Enrollment=23241A6714, CurrentSem=6
+  ID=15, Enrollment=23241A6715, CurrentSem=6
+  ID=16, Enrollment=23241A6716, CurrentSem=6
+  ID=17, Enrollment=23241A6717, CurrentSem=6
+  ID=18, Enrollment=23241A6718, CurrentSem=6
+  ID=19, Enrollment=23241A6719, CurrentSem=6
+  ID=20, Enrollment=23241A6720, CurrentSem=6
+  ID=21, Enrollment=23241A6721, CurrentSem=6
+  ID=22, Enrollment=23241A6722, CurrentSem=6
+  ID=23, Enrollment=23241A6723, CurrentSem=6
+  ID=24, Enrollment=23241A6724, CurrentSem=6
+  ID=25, Enrollment=23241A6725, CurrentSem=6
+  ID=26, Enrollment=23241A6726, CurrentSem=6
+  ID=27, Enrollment=23241A6727, CurrentSem=6
+  ID=28, Enrollment=23241A6728, CurrentSem=6
+  ID=29, Enrollment=23241A6729, CurrentSem=6
+  ID=30, Enrollment=23241A6730, CurrentSem=6
+  ID=31, Enrollment=23241A6731, CurrentSem=6
+  ID=32, Enrollment=23241A6732, CurrentSem=6
+  ID=33, Enrollment=23241A6733, CurrentSem=6
+  ID=34, Enrollment=23241A6734, CurrentSem=6
+  ID=35, Enrollment=23241A6735, CurrentSem=6
+  ID=36, Enrollment=23241A6736, CurrentSem=6
+  ID=37, Enrollment=23241A6737, CurrentSem=6
+  ID=38, Enrollment=23241A6738, CurrentSem=6
+  ID=39, Enrollment=23241A6739, CurrentSem=6
+  ID=40, Enrollment=23241A6740, CurrentSem=6
+  ID=41, Enrollment=23241A6741, CurrentSem=6
+  ID=42, Enrollment=23241A6742, CurrentSem=6
+  ID=43, Enrollment=23241A6743, CurrentSem=6
+  ID=44, Enrollment=23241A6744, CurrentSem=6
+  ID=45, Enrollment=23241A6745, CurrentSem=6
+  ID=46, Enrollment=23241A6746, CurrentSem=6
+  ID=47, Enrollment=23241A6747, CurrentSem=6
+  ID=48, Enrollment=23241A6748, CurrentSem=6
+  ID=49, Enrollment=23241A6749, CurrentSem=6
+  ID=50, Enrollment=23241A6750, CurrentSem=6
+  ID=51, Enrollment=23241A6751, CurrentSem=6
+  ID=52, Enrollment=23241A6752, CurrentSem=6
+  ID=53, Enrollment=23241A6753, CurrentSem=6
+  ID=54, Enrollment=23241A6754, CurrentSem=6
+  ID=55, Enrollment=23241A6755, CurrentSem=6
+  ID=56, Enrollment=23241A6756, CurrentSem=6
+  ID=57, Enrollment=23241A6757, CurrentSem=6
+  ID=58, Enrollment=23241A6758, CurrentSem=6
+  ID=59, Enrollment=23241A6759, CurrentSem=6
+  ID=60, Enrollment=23241A6760, CurrentSem=6
+  ID=61, Enrollment=23241A6761, CurrentSem=6
+  ID=62, Enrollment=23241A6762, CurrentSem=6
+  ID=63, Enrollment=23241A6763, CurrentSem=6
+  ID=64, Enrollment=23241A6764, CurrentSem=6
+  ID=65, Enrollment=23241A6765, CurrentSem=6
+  ID=66, Enrollment=23241A6766, CurrentSem=6
+  ID=67, Enrollment=23241A6767, CurrentSem=6
+  ID=68, Enrollment=23241A6768, CurrentSem=6
+  ID=69, Enrollment=23241A6769, CurrentSem=6
+  ID=70, Enrollment=23241A6770, CurrentSem=6
+  ID=71, Enrollment=23241A6771, CurrentSem=6
+  ID=72, Enrollment=23241A6772, CurrentSem=6
+  ID=73, Enrollment=23241A6773, CurrentSem=6
+  ID=74, Enrollment=23241A6774, CurrentSem=6
+  ID=75, Enrollment=23241A6775, CurrentSem=6
+  ID=76, Enrollment=23241A6776, CurrentSem=6
+  ID=77, Enrollment=23241A6777, CurrentSem=6
+  ID=78, Enrollment=23241A6778, CurrentSem=6
+  ID=79, Enrollment=23241A6779, CurrentSem=6
+  ID=80, Enrollment=23241A6780, CurrentSem=6
+  ID=81, Enrollment=23241A6781, CurrentSem=6
+  ID=82, Enrollment=23241A6782, CurrentSem=6
+  ID=83, Enrollment=23241A6783, CurrentSem=6
+  ID=84, Enrollment=23241A6784, CurrentSem=6
+  ID=85, Enrollment=23241A6785, CurrentSem=6
+  ID=86, Enrollment=23241A6786, CurrentSem=6
+  ID=87, Enrollment=23241A6787, CurrentSem=6
+  ID=88, Enrollment=23241A6788, CurrentSem=6
+  ID=89, Enrollment=23241A6789, CurrentSem=6
+  ID=90, Enrollment=23241A6790, CurrentSem=6
+  ID=91, Enrollment=23241A6791, CurrentSem=6
+  ID=92, Enrollment=23241A6792, CurrentSem=6
+  ID=93, Enrollment=23241A6793, CurrentSem=6
+  ID=94, Enrollment=23241A6794, CurrentSem=6
+  ID=95, Enrollment=23241A6795, CurrentSem=6
+  ID=96, Enrollment=23241A6796, CurrentSem=6
+  ID=97, Enrollment=23241A6797, CurrentSem=6
+  ID=98, Enrollment=23241A6798, CurrentSem=6
+  ID=99, Enrollment=23241A6799, CurrentSem=6
+  ID=100, Enrollment=23241A67100, CurrentSem=6
+  ID=101, Enrollment=23241A67101, CurrentSem=6
+  ID=102, Enrollment=23241A67102, CurrentSem=6
+  ID=103, Enrollment=23241A67103, CurrentSem=6
+  ID=104, Enrollment=23241A67104, CurrentSem=6
+  ID=105, Enrollment=23241A67105, CurrentSem=6
+  ID=106, Enrollment=23241A67106, CurrentSem=6
+  ID=107, Enrollment=23241A67107, CurrentSem=6
+  ID=108, Enrollment=23241A67108, CurrentSem=6
+  ID=109, Enrollment=23241A67109, CurrentSem=6
+  ID=110, Enrollment=23241A67110, CurrentSem=6
+  ID=111, Enrollment=23241A67111, CurrentSem=6
+  ID=112, Enrollment=23241A67112, CurrentSem=6
+  ID=113, Enrollment=23241A67113, CurrentSem=6
+  ID=114, Enrollment=23241A67114, CurrentSem=6
+  ID=115, Enrollment=23241A67115, CurrentSem=6
+  ID=116, Enrollment=23241A67116, CurrentSem=6
+  ID=117, Enrollment=23241A67117, CurrentSem=6
+  ID=118, Enrollment=23241A67118, CurrentSem=6
+  ID=119, Enrollment=23241A67119, CurrentSem=6
+  ID=120, Enrollment=23241A67120, CurrentSem=6
+  ID=121, Enrollment=23241A67121, CurrentSem=6
+  ID=122, Enrollment=23241A67122, CurrentSem=6
+  ID=123, Enrollment=23241A67123, CurrentSem=6
+  ID=124, Enrollment=23241A67124, CurrentSem=6
+  ID=125, Enrollment=23241A67125, CurrentSem=6
+  ID=126, Enrollment=23241A67126, CurrentSem=6
+  ID=127, Enrollment=23241A67127, CurrentSem=6
+  ID=128, Enrollment=23241A67128, CurrentSem=6
+  ID=129, Enrollment=23241A67129, CurrentSem=6
+  ID=130, Enrollment=23241A67130, CurrentSem=6
+  ID=131, Enrollment=23241A67131, CurrentSem=6
+  ID=132, Enrollment=23241A67132, CurrentSem=6
+  ID=133, Enrollment=23241A67133, CurrentSem=6
+  ID=134, Enrollment=23241A67134, CurrentSem=6
+  ID=135, Enrollment=23241A67135, CurrentSem=6
+  ID=136, Enrollment=23241A67136, CurrentSem=6
+  ID=137, Enrollment=23241A67137, CurrentSem=6
+  ID=138, Enrollment=23241A67138, CurrentSem=6
+  ID=139, Enrollment=23241A67139, CurrentSem=6
+  ID=140, Enrollment=23241A67140, CurrentSem=6
+  ID=141, Enrollment=23241A67141, CurrentSem=6
+  ID=142, Enrollment=23241A67142, CurrentSem=6
+  ID=143, Enrollment=23241A67143, CurrentSem=6
+  ID=144, Enrollment=23241A67144, CurrentSem=6
+  ID=145, Enrollment=23241A67145, CurrentSem=6
+  ID=146, Enrollment=23241A67146, CurrentSem=6
+  ID=147, Enrollment=23241A67147, CurrentSem=6
+  ID=148, Enrollment=23241A67148, CurrentSem=6
+  ID=149, Enrollment=23241A67149, CurrentSem=6
+  ID=150, Enrollment=23241A67150, CurrentSem=6
+  ID=151, Enrollment=23241A67151, CurrentSem=6
+  ID=152, Enrollment=23241A67152, CurrentSem=6
+  ID=153, Enrollment=23241A67153, CurrentSem=6
+  ID=154, Enrollment=23241A67154, CurrentSem=6
+  ID=155, Enrollment=23241A67155, CurrentSem=6
+  ID=156, Enrollment=23241A67156, CurrentSem=6
+  ID=157, Enrollment=23241A67157, CurrentSem=6
+  ID=158, Enrollment=23241A67158, CurrentSem=6
+  ID=159, Enrollment=23241A67159, CurrentSem=6
+  ID=160, Enrollment=23241A67160, CurrentSem=6
+  ID=161, Enrollment=23241A67161, CurrentSem=6
+  ID=162, Enrollment=23241A67162, CurrentSem=6
+  ID=163, Enrollment=23241A67163, CurrentSem=6
+  ID=164, Enrollment=23241A67164, CurrentSem=6
+  ID=165, Enrollment=23241A67165, CurrentSem=6
+  ID=166, Enrollment=23241A67166, CurrentSem=6
+  ID=167, Enrollment=23241A67167, CurrentSem=6
+  ID=168, Enrollment=23241A67168, CurrentSem=6
+  ID=169, Enrollment=23241A67169, CurrentSem=6
+  ID=170, Enrollment=23241A67170, CurrentSem=6
+  ID=171, Enrollment=23241A67171, CurrentSem=6
+  ID=172, Enrollment=23241A67172, CurrentSem=6
+  ID=173, Enrollment=23241A67173, CurrentSem=6
+  ID=174, Enrollment=23241A67174, CurrentSem=6
+  ID=175, Enrollment=23241A67175, CurrentSem=6
+  ID=176, Enrollment=23241A67176, CurrentSem=6
+  ID=177, Enrollment=23241A67177, CurrentSem=6
+  ID=178, Enrollment=23241A67178, CurrentSem=6
+  ID=179, Enrollment=23241A67179, CurrentSem=6
+  ID=180, Enrollment=23241A67180, CurrentSem=6
+  ID=181, Enrollment=23241A67181, CurrentSem=6
+  ID=182, Enrollment=23241A67182, CurrentSem=6
+  ID=183, Enrollment=23241A67183, CurrentSem=6
+  ID=184, Enrollment=23241A67184, CurrentSem=6
+  ID=185, Enrollment=23241A67185, CurrentSem=6
+  ID=186, Enrollment=23241A67186, CurrentSem=6
+  ID=187, Enrollment=23241A67187, CurrentSem=6
+  ID=188, Enrollment=23241A67188, CurrentSem=6
+  ID=189, Enrollment=23241A67189, CurrentSem=6
+  ID=190, Enrollment=23241A67190, CurrentSem=6
+  ID=191, Enrollment=23241A67191, CurrentSem=6
+  ID=192, Enrollment=23241A67192, CurrentSem=6
+  ID=193, Enrollment=23241A67193, CurrentSem=6
+  ID=194, Enrollment=23241A67194, CurrentSem=6
+  ID=195, Enrollment=23241A67195, CurrentSem=6
+  ID=196, Enrollment=23241A6700, CurrentSem=6

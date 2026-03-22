@@ -1,0 +1,29 @@
+
+> frontend@0.0.0 build
+> vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 808 modules transformed.
+[31mx[39m Build failed in 2.29s
+[31merror during build:
+[31msrc/App.jsx (15:7): "default" is not exported by "src/pages/SubjectClassroom.jsx", imported by "src/App.jsx".[31m
+file: [36mH:/mini project/vibe/frontend/src/App.jsx:15:7[31m
+[33m
+13: import StudentDashboard from './pages/StudentDashboard';
+14: import StudentDetail from './pages/StudentDetail';
+15: import SubjectClassroom from './pages/SubjectClassroom';
+           ^
+16: import FacultyClassroom from './pages/FacultyClassroom';
+17: import ChangePassword from './pages/ChangePassword';
+[31m
+    at getRollupError (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at Module.error (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:17040:16)
+    at Module.traceVariable (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:17452:29)
+    at ModuleScope.findVariable (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:15070:39)
+    at FunctionScope.findVariable (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:5673:38)
+    at FunctionBodyScope.findVariable (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:5673:38)
+    at Identifier.bind (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:5447:40)
+    at CallExpression.bind (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2825:28)
+    at CallExpression.bind (file:///H:/mini%20project/vibe/frontend/node_modules/rollup/dist/es/shared/node-entry.js:12179:15)[39m

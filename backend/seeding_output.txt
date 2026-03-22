@@ -1,0 +1,420 @@
+﻿============================================================
+SEED ALL DATA v3 ù Comprehensive Population
+============================================================
+
+[1/12] Clearing existing data...
+  Done!
+
+[2/12] Creating Admin...
+  Admin created (admin / admin123)
+
+[3/12] Creating Sections...
+  Created 3 sections
+
+[4/12] Creating Subjects...
+  Created 52 subjects across 6 semesters
+
+[5/12] Creating Faculty...
+  Mentor for Section C: Ms. S. Srilatha (srilatha)
+  Mentor for Section A: Ms. Rashi Saxena (rashisaxena)
+  Mentor for Section B: Ms. D. S. Niharika (niharika)
+  Created 18 real faculty + 2 demo accounts
+
+[6/12] Creating Faculty Assignments...
+  Created 36 faculty-subject-section assignments
+
+[7/12] Creating 195 Students...
+  Created 195 students + 1 demo (student / student123)
+
+[8/12] Inserting Marks...
+    Marks progress: 20/195 students...
+    Marks progress: 40/195 students...
+    Marks progress: 60/195 students...
+    Marks progress: 80/195 students...
+    Marks progress: 100/195 students...
+    Marks progress: 120/195 students...
+    Marks progress: 140/195 students...
+    Marks progress: 160/195 students...
+    Marks progress: 180/195 students...
+  Done! 27690 marks records
+
+[9/12] Generating timetable-based attendance...
+  Working days: 77 (from 2025-12-12 to 2026-03-21)
+    Attendance progress: 20/195 students...
+    Attendance progress: 40/195 students...
+    Attendance progress: 60/195 students...
+    Attendance progress: 80/195 students...
+    Attendance progress: 100/195 students...
+    Attendance progress: 120/195 students...
+    Attendance progress: 140/195 students...
+    Attendance progress: 160/195 students...
+    Attendance progress: 180/195 students...
+  Done! 49985 attendance records
+
+[10/12] Creating Assignments, Materials, Syllabus Topics...
+  Assignments: 54, Submissions: 2978
+  Materials: 24, Syllabus Topics: 28
+
+[11/12] Creating Quizzes...
+  Quizzes: 15, Attempts: 875
+
+[12/12] Creating Doubts, Alerts, Remarks...
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python scripts/seed_a
+ll_data.py 2>&1 | 
+Out-File -FilePath 
+seeding_out ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1967, in 
+_exec_single_context
+    self.dialect.do_exe
+cute(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~^
+        cursor, 
+str_statement, 
+effective_parameters, 
+context
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 952, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalErro
+r: table doubts has no 
+column named title
+
+The above exception 
+was the direct cause 
+of the following 
+exception:
+
+Traceback (most recent 
+call last):
+  File "H:\mini project
+\vibe\backend\scripts\s
+eed_all_data.py", line 
+960, in seed_all
+    db.flush()
+    ~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\o
+rm\session.py", line 
+4331, in flush
+    
+self._flush(objects)
+    
+~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\o
+rm\session.py", line 
+4466, in _flush
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\u
+til\langhelpers.py", 
+line 224, in __exit__
+    raise exc_value.wit
+h_traceback(exc_tb)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\o
+rm\session.py", line 
+4427, in _flush
+    
+flush_context.execute()
+    
+~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\o
+rm\unitofwork.py", 
+line 466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\o
+rm\unitofwork.py", 
+line 642, in execute
+    util.preloaded.orm_
+persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for_
+mapper_hierarchy(self.m
+apper, False, False),
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\o
+rm\persistence.py", 
+line 93, in save_obj
+    _emit_insert_statem
+ents(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\o
+rm\persistence.py", 
+line 1233, in 
+_emit_insert_statements
+    result = 
+connection.execute(
+        statement,
+        params,
+        execution_optio
+ns=execution_options,
+    )
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1419, in execute
+    return meth(
+        self,
+        
+distilled_parameters,
+        
+execution_options or 
+NO_OPTIONS,
+    )
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\s
+ql\elements.py", line 
+527, in 
+_execute_on_connection
+    return connection._
+execute_clauseelement(
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~^
+        self, 
+distilled_params, 
+execution_options
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1641, in 
+_execute_clauseelement
+    ret = 
+self._execute_context(
+        dialect,
+    ...<8 lines>...
+        
+cache_hit=cache_hit,
+    )
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1846, in 
+_execute_context
+    return self._exec_s
+ingle_context(
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~^
+        dialect, 
+context, statement, 
+parameters
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1986, in 
+_exec_single_context
+    self._handle_dbapi_
+exception(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~^
+        e, 
+str_statement, 
+effective_parameters, 
+cursor, context
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2363, in 
+_handle_dbapi_exception
+    raise sqlalchemy_ex
+ception.with_traceback(
+exc_info[2]) from e
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1967, in 
+_exec_single_context
+    self.dialect.do_exe
+cute(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~^
+        cursor, 
+str_statement, 
+effective_parameters, 
+context
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 952, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.Operatio
+nalError: (sqlite3.Oper
+ationalError) table 
+doubts has no column 
+named title
+[SQL: INSERT INTO 
+doubts (title, 
+content, student_id, 
+subject_id, 
+is_resolved, 
+is_pinned, created_at) 
+VALUES (?, ?, ?, ?, ?, 
+?, ?)]
+[parameters: 
+('Difference between 
+L1 and L2 
+regularization?', 'I 
+understand both are 
+used to prevent 
+overfitting, but when 
+should I use Lasso vs 
+Ridge?', 33, 44, 1, 0, 
+'2026-03-18 
+10:00:00.000000')]
+(Background on this 
+error at: https://sqlal
+che.me/e/20/e3q8)
+
+During handling of the 
+above exception, 
+another exception 
+occurred:
+
+Traceback (most recent 
+call last):
+  File "H:\mini project
+\vibe\backend\scripts\s
+eed_all_data.py", line 
+1059, in <module>
+    seed_all()
+    ~~~~~~~~^^
+  File "H:\mini project
+\vibe\backend\scripts\s
+eed_all_data.py", line 
+1050, in seed_all
+    print(f"\n\u274c 
+Error seeding data: 
+{e}")
+    ~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\enc
+odings\cp1252.py", 
+line 19, in encode
+    return codecs.charm
+ap_encode(input,self.er
+rors,encoding_table)[0]
+           ~~~~~~~~~~~~
+~~~~~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\u274c' in position 
+2: character maps to 
+<undefined>

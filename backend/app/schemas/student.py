@@ -12,14 +12,14 @@ class AttendanceOut(AttendanceBase):
     class Config:
         from_attributes = True
 
-class MarkBase(BaseModel):
+class MarkOut(BaseModel):
+    id: int
+    subject_id: int
     subject_name: Optional[str] = None
+    semester: Optional[int] = None
     assessment_type: str
     score: int
     total: int
-
-class MarkOut(MarkBase):
-    id: int
     class Config:
         from_attributes = True
 
@@ -33,6 +33,7 @@ class StudentOut(StudentBase):
     user_id: int
     # mentor_name: Optional[str] = None # Add back if mentor relationship is restored
     attendance_percentage: Optional[float] = None
+    section_name: Optional[str] = None
     
     class Config:
         from_attributes = True

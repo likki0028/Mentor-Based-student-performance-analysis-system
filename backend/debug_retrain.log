@@ -1,0 +1,160 @@
+
+[Sat Mar 14 20:01:51 2026] Background retraining triggered.
+[Sat Mar 14 20:01:51 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+
+[Sat Mar 14 20:01:53 2026] Background retraining triggered.
+[Sat Mar 14 20:01:53 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+
+[Sat Mar 14 20:01:55 2026] Background retraining triggered.
+[Sat Mar 14 20:01:55 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:01:57 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+
+[Sat Mar 14 20:01:57 2026] Background retraining triggered.
+[Sat Mar 14 20:01:57 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:01:59 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+
+[Sat Mar 14 20:01:59 2026] Background retraining triggered.
+[Sat Mar 14 20:01:59 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:02:01 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+
+[Sat Mar 14 20:02:01 2026] Background retraining triggered.
+[Sat Mar 14 20:02:01 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:02:02 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+
+[Sat Mar 14 20:02:03 2026] Background retraining triggered.
+[Sat Mar 14 20:02:03 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:02:04 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+
+[Sat Mar 14 20:02:06 2026] Background retraining triggered.
+[Sat Mar 14 20:02:06 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:02:06 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+
+[Sat Mar 14 20:02:08 2026] Background retraining triggered.
+[Sat Mar 14 20:02:08 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:02:08 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+[Sat Mar 14 20:02:10 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+
+[Sat Mar 14 20:02:10 2026] Background retraining triggered.
+[Sat Mar 14 20:02:10 2026] Running: H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py
+[Sat Mar 14 20:02:12 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+
+[Sat Mar 14 20:02:13 2026] ERROR: Failed to retrain models. StatusCode: 1
+STDERR: Traceback (most recent call last):
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 213, in <module>
+    train_model()
+    ~~~~~~~~~~~^^
+  File "H:\mini project\vibe\backend\app\services\..\..\scripts\train_xgboost.py", line 155, in train_model
+    print(f"  {name:<25} {imp:.4f}  {bar}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 36-77: character maps to <undefined>
+

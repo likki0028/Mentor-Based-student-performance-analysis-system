@@ -1,6 +1,6 @@
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import api from '../services/api';
+import authService from '../services/auth.service';
 
 const AuthContext = createContext();
 
@@ -19,21 +19,14 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (username, password) => {
-        // Send as form data (OAuth2PasswordRequestForm expects this)
-        const formData = new URLSearchParams();
-        formData.append('username', username);
-        formData.append('password', password);
+        const data = await authService.login(username, password);
 
-        const response = await api.post('/auth/login', formData, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
-
-        const { access_token } = response.data;
+        const { access_token } = data;
         localStorage.setItem('token', access_token);
 
         // Decode JWT to extract role
         const payload = JSON.parse(atob(access_token.split('.')[1]));
-        const role = payload.role || 'student';
+        const role = (payload.role || 'student').toLowerCase();
 
         localStorage.setItem('role', role);
         localStorage.setItem('username', username);

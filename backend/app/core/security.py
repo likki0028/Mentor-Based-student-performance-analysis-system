@@ -5,18 +5,23 @@ from passlib.context import CryptContext
 from ..config import settings
 
 # Password hashing context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Using pbkdf2_sha256 as default to avoid bcrypt 72-byte limit issues on some platforms
+pwd_context = CryptContext(schemes=["pbkdf2_sha256", "bcrypt"], deprecated="auto")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     # Handle plain text passwords from seeding fallback or mismatch
     if hashed_password == plain_password:
         return True
+    
     try:
+        # Check against both pbkdf2 and bcrypt automatically
         return pwd_context.verify(plain_password, hashed_password)
     except Exception:
-        return plain_password == hashed_password
+        # Fallback for any weirdness during transition
+        return False
 
 def get_password_hash(password: str) -> str:
+    # Uses pbkdf2_sha256 by default (first in schemes list)
     return pwd_context.hash(password)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):

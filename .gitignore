@@ -43,3 +43,10 @@ dist-ssr/
 # Database
 *.db
 
+
+
+# ML Models and Data
+backend/app/ml_models/
+*.pkl
+synthetic_students*.json
+*.csv

@@ -1,12 +1,14 @@
 
+from typing import List, Optional
 from pydantic import BaseModel
-from datetime import date
 
 class AssignmentBase(BaseModel):
-    title: str
-    description: str
-    due_date: date
+    title: Optional[str] = None
+    description: Optional[str] = None
+    due_date: Optional[str] = None
+    file_url: Optional[str] = None
     subject_id: int
+    section_id: Optional[int] = None
 
 class AssignmentCreate(AssignmentBase):
     pass

@@ -64,10 +64,12 @@ async def register_new_user(
     if existing:
         raise HTTPException(status_code=400, detail="Username already taken")
     
+    from ..core.security import get_password_hash
+    
     new_user = user_model.User(
         username=user_data.username,
         email=user_data.email,
-        hashed_password=user_data.password,
+        hashed_password=get_password_hash(user_data.password),
         role=user_model.UserRole(user_data.role.value),
         is_active=True
     )

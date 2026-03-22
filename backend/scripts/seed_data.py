@@ -1,5 +1,16 @@
+"""
+Seed Data Script (v2) — 195 Synthetic Students
+================================================
+Reads the generated synthetic_students.json and inserts all 195 students
+(3 sections × 65) with their full curriculum subjects and academic marks
+into the SQLite database.
+
+Preserves the known login accounts: admin, mentor, lecturer, student.
+"""
+
 import sys
 import os
+import json
 import random
 from datetime import datetime, timedelta
 
@@ -11,17 +22,41 @@ sys.path.append(backend_dir)
 from sqlalchemy.orm import Session
 from app.database import SessionLocal, engine, Base
 from app.models import (
-    user, student, faculty, subject, section, 
-    attendance, marks, alert, assignment, quiz, quiz_attempt, submission, remark
+    user, student, faculty, subject, section,
+    attendance, marks, alert, assignment, quiz, quiz_attempt, submission, remark,
+    material
 )
+from app.core.security import get_password_hash
+
+
+# ============================================================================
+# CURRICULUM (must match generate_synthetic_data.py)
+# ============================================================================
+from scripts.generate_synthetic_data import CURRICULUM
+
+# Faculty assignments for Semester 6 (Home Teacher model)
+# Map lecturer username -> (Subject Code, Section Name)
+FACULTY_SUBJECT_ASSIGNMENTS = {
+    "mentor_a": [("GR22A3140", "Section A"), ("GR22A3115", "Section B")], # ML (A), ACD (B)
+    "mentor_b": [("GR22A3143", "Section B"), ("GR22A3140", "Section C")], # BDA (B), ML (C)
+    "mentor_c": [("GR22A3115", "Section C"), ("GR22A3143", "Section A")], # ACD (C), BDA (A)
+    "lecturer": [("GR22A3115", "Section A"), ("GR22A3140", "Section B"), ("GR22A3143", "Section C")] # Remaining
+}
 
 def seed_data():
     db = SessionLocal()
     try:
-        print("Starting data seeding...")
+        print("=" * 60)
+        print("SEED DATA v2 — 195 Synthetic Students")
+        print("=" * 60)
 
+        # Ensure tables are created
+        Base.metadata.create_all(bind=engine)
+
+        # -------------------------------------------------
         # 1. Clear existing data
-        print("Clearing existing data...")
+        # -------------------------------------------------
+        print("\n[1/8] Clearing existing data...")
         db.query(remark.Remark).delete()
         db.query(alert.Alert).delete()
         db.query(quiz_attempt.QuizAttempt).delete()
@@ -36,138 +71,142 @@ def seed_data():
         db.query(subject.Subject).delete()
         db.query(user.User).delete()
         db.commit()
+        print("  Done!")
 
+        # -------------------------------------------------
         # 2. Create Admin
-        print("Creating Admin...")
+        # -------------------------------------------------
+        print("\n[2/8] Creating Admin...")
         admin = user.User(
             username="admin",
             email="admin@vibe.com",
-            hashed_password="admin123",
+            hashed_password=get_password_hash("admin123"),
             role=user.UserRole.ADMIN,
             is_active=True
         )
         db.add(admin)
         db.commit()
+        print("  Admin created (admin / admin123)")
 
-        # 3. Create Subjects
-        print("Creating Subjects...")
-        subjects_list = [
-            ("Data Structures", "CS201"),
-            ("Algorithms", "CS202"),
-            ("Database Systems", "CS203"),
-            ("Operating Systems", "CS301"),
-            ("Computer Networks", "CS302"),
-            ("Machine Learning", "CS401"),
-        ]
-        db_subjects = []
-        for name, code in subjects_list:
-            sub = subject.Subject(name=name, code=code)
-            db.add(sub)
-            db_subjects.append(sub)
-        db.commit()
-
-        # 4. Create Known Faculty Users
-        print("Creating Faculty...")
+        # -------------------------------------------------
+        # 3. Create Faculty (Mentors & Lecturers)
+        # -------------------------------------------------
+        print("\n[3/8] Creating Faculty...")
         faculties = []
+        mentor_map = {} # Map section letter -> faculty.id
 
-        # Known mentor user
-        mentor_user = user.User(
-            username="mentor",
-            email="mentor@vibe.com",
-            hashed_password="mentor123",
-            role=user.UserRole.MENTOR,
-            is_active=True
-        )
-        db.add(mentor_user)
-        db.flush()
-        mentor_fac = faculty.Faculty(user_id=mentor_user.id, employee_id="FAC1001")
-        db.add(mentor_fac)
-        faculties.append(mentor_fac)
+        # Home Teachers (Mentors who also teach)
+        mentors_info = [
+            ("mentor_a", "mentor_a@vibe.com", "mentor123", "A"),
+            ("mentor_b", "mentor_b@vibe.com", "mentor123", "B"),
+            ("mentor_c", "mentor_c@vibe.com", "mentor123", "C"),
+        ]
 
-        # Known lecturer user
-        lecturer_user = user.User(
-            username="lecturer",
-            email="lecturer@vibe.com",
-            hashed_password="lecturer123",
-            role=user.UserRole.LECTURER,
-            is_active=True
-        )
-        db.add(lecturer_user)
-        db.flush()
-        lecturer_fac = faculty.Faculty(user_id=lecturer_user.id, employee_id="FAC1002")
-        db.add(lecturer_fac)
-        faculties.append(lecturer_fac)
-
-        # Additional faculty
-        extra_faculty_names = ["Dr. Sharma", "Prof. Patel", "Dr. Rao", "Prof. Gupta", "Dr. Kumar"]
-        for i, name in enumerate(extra_faculty_names):
-            f_user = user.User(
-                username=name.lower().replace(" ", "_").replace(".", ""),
-                email=f"faculty{i+3}@vibe.com",
-                hashed_password="faculty123",
+        for i, (uname, email, pwd, sec_letter) in enumerate(mentors_info):
+            m_user = user.User(
+                username=uname,
+                email=email,
+                hashed_password=get_password_hash(pwd),
                 role=user.UserRole.MENTOR,
                 is_active=True
             )
-            db.add(f_user)
+            db.add(m_user)
             db.flush()
-            fac = faculty.Faculty(
-                user_id=f_user.id,
-                employee_id=f"FAC{1003+i}"
-            )
+            fac = faculty.Faculty(user_id=m_user.id, employee_id=f"FAC100{i+1}")
             db.add(fac)
+            db.flush()
             faculties.append(fac)
-        db.commit()
+            mentor_map[sec_letter] = fac.id
+            print(f"  Created Mentor for Section {sec_letter} ({uname})")
 
-        # 5. Create Sections
-        print("Creating Sections...")
-        sections_list = ["Section A", "Section B", "Section C"]
-        db_sections = []
-        for name in sections_list:
-            sec = section.Section(name=name)
-            db.add(sec)
-            db_sections.append(sec)
-        db.commit()
-
-        # 6. Create Students (including a known 'student' user)
-        print("Creating Students...")
-        students = []
-
-        # Known student user (username: "student")
-        student_user = user.User(
-            username="student",
-            email="student@vibe.com",
-            hashed_password="student123",
-            role=user.UserRole.STUDENT,
-            is_active=True
+        # General lecturer
+        lecturer_user = user.User(
+            username="lecturer", email="lecturer@vibe.com",
+            hashed_password=get_password_hash("lecturer123"), role=user.UserRole.LECTURER, is_active=True
         )
-        db.add(student_user)
+        db.add(lecturer_user)
         db.flush()
-        stu_known = student.Student(
-            user_id=student_user.id,
-            enrollment_number="2024CS1000",
-            current_semester=3,
-            mentor_id=faculties[0].id  # Assign to first mentor
-        )
-        db.add(stu_known)
-        students.append(stu_known)
+        lecturer_fac = faculty.Faculty(user_id=lecturer_user.id, employee_id="FAC1004")
+        db.add(lecturer_fac)
+        faculties.append(lecturer_fac)
+        print("  Created general lecturer (lecturer / lecturer123)")
 
-        # 50 additional students
-        student_names = [
-            "Aarav", "Vivaan", "Aditya", "Sai", "Arjun", "Reyansh", "Ayaan",
-            "Krishna", "Ishaan", "Shaurya", "Atharva", "Advik", "Pranav",
-            "Advaith", "Kabir", "Dhruv", "Ritvik", "Aarush", "Vihaan", "Ananya",
-            "Diya", "Myra", "Sara", "Aarohi", "Anika", "Navya", "Kiara",
-            "Prisha", "Aadhya", "Kavya", "Meera", "Riya", "Zara", "Ishita",
-            "Sanya", "Tara", "Nisha", "Pooja", "Simran", "Neha", "Rohan",
-            "Raj", "Dev", "Vikram", "Aryan", "Karthik", "Manish", "Suresh",
-            "Amit", "Rahul"
-        ]
+        db.commit()
 
-        for i in range(50):
+
+        # -------------------------------------------------
+        # 4. Create Sections
+        # -------------------------------------------------
+        print("\n[4/8] Creating Sections...")
+        db_sections = {}
+        for sec_name in ["A", "B", "C"]:
+            sec = section.Section(name=f"Section {sec_name}")
+            db.add(sec)
+            db_sections[sec_name] = sec
+        db.commit()
+        print(f"  Created {len(db_sections)} sections")
+
+        # -------------------------------------------------
+        # 5. Create All Curriculum Subjects
+        # -------------------------------------------------
+        print("\n[5/8] Creating Subjects (full curriculum)...")
+        db_subjects = {}  # key: subject_code -> Subject obj
+        for sem_num, sem_info in CURRICULUM.items():
+            for subj in sem_info["subjects"]:
+                name = subj["name"]
+                code = subj["code"]
+                stype = subj["type"].lower()
+                credits_val = subj["credits"]
+                
+                # Normalize type if needed (e.g., Non-Credit -> non-credit)
+                if stype == "non-credit":
+                    final_type = marks.AssessmentType.INTERNAL # Wait, no, use SubjectType
+                
+                # Check models/subject.py for SubjectType enum
+                from app.models.subject import SubjectType
+                if stype == "non-credit":
+                    final_type = SubjectType.NON_CREDIT
+                elif stype == "theory":
+                    final_type = SubjectType.THEORY
+                elif stype == "lab":
+                    final_type = SubjectType.LAB
+                else:
+                    final_type = SubjectType.THEORY
+
+                sub = subject.Subject(
+                    name=name, 
+                    code=code, 
+                    semester=sem_num,
+                    subject_type=final_type,
+                    credits=credits_val
+                )
+                db.add(sub)
+                db_subjects[code] = sub
+        db.commit()
+        print(f"  Created {len(db_subjects)} subjects across 5 semesters")
+
+        # -------------------------------------------------
+        # 6. Load Synthetic Students & Create Users/Students
+        # -------------------------------------------------
+        print("\n[6/8] Creating 195 Students from synthetic data...")
+        json_path = os.path.join(current_dir, "synthetic_students.json")
+        with open(json_path, "r", encoding="utf-8") as f:
+            synthetic_students = json.load(f)
+
+        # Assign mentors round-robin
+        db_students = []
+        for idx, s_data in enumerate(synthetic_students):
+            student_name = s_data["name"]
+            student_id_str = s_data["student_id"]
+            sec_letter = s_data["section"]
+
+            # Create student user account
+            # Username: enrollment number (lowercase), Password: student123
+            username = student_id_str.lower()
             s_user = user.User(
-                username=f"student{i+1}",
-                email=f"student{i+1}@vibe.com",
-                hashed_password="student123",
+                username=username,
+                email=f"{username}@griet.ac.in",
+                hashed_password=get_password_hash("student123"),
                 role=user.UserRole.STUDENT,
                 is_active=True
             )
@@ -176,138 +215,263 @@ def seed_data():
 
             stu = student.Student(
                 user_id=s_user.id,
-                enrollment_number=f"2024CS{1001+i}",
-                current_semester=random.choice([1, 2, 3, 4, 5, 6]),
-                mentor_id=random.choice(faculties).id  # Random mentor assignment
+                enrollment_number=student_id_str,
+                current_semester=6,  # SEM 6 Active
+                mentor_id=mentor_map[sec_letter], # Exact home teacher
+                section_id=db_sections[sec_letter].id
             )
             db.add(stu)
-            students.append(stu)
+            db_students.append((stu, s_data))
+
+        # Also create the known "student" login that maps to the first student
+        student_user = user.User(
+            username="student", email="student@vibe.com",
+            hashed_password=get_password_hash("student123"), role=user.UserRole.STUDENT, is_active=True
+        )
+        db.add(student_user)
+        db.flush()
+        # Link known student to a copy of the first student's enrollment
+        stu_known = student.Student(
+            user_id=student_user.id,
+            enrollment_number="23241A6700",
+            current_semester=6,
+            mentor_id=mentor_map["A"],
+            section_id=db_sections["A"].id
+        )
+        db.add(stu_known)
         db.commit()
+        print(f"  Created {len(db_students)} students + 1 known login (student / student123)")
 
-        # 7. Create Academic Data
-        print("Creating Academic Data...")
-        start_date = datetime.now().date() - timedelta(days=90)
+        # -------------------------------------------------
+        # 6.5 Assign Faculty to Subjects (Lecturer/Section Link)
+        #     Also insert dummy material and assignment for Sem 6
+        # -------------------------------------------------
+        print("\n[6.5/8] Linking Lecturers to Subjects & Adding Classes/Materials...")
+        # Since we don't have a direct FacultySubject link table yet,
+        # we will generate initial Assignments and Materials to establish this link.
+        from app.models.assignment import Assignment
+        from app.models.material import Material
+        from datetime import datetime, timedelta
 
-        for stu in students:
-            # Attendance: varied patterns
-            is_low_attendance = random.random() < 0.15  # 15% chance of low attendance
-            
-            for day in range(30):
-                date = start_date + timedelta(days=day * 3)
-                if is_low_attendance:
-                    present_prob = random.choices([True, False], weights=[55, 45], k=1)[0]
-                else:
-                    present_prob = random.choices([True, False], weights=[85, 15], k=1)[0]
-
-                for sub in db_subjects:
-                    att = attendance.Attendance(
-                        student_id=stu.id,
-                        subject_id=sub.id,
-                        date=date,
-                        status=present_prob
-                    )
-                    db.add(att)
-
-            # Marks: varied performance per subject
-            is_weak = random.random() < 0.1  # 10% chance of weak student
-            for sub in db_subjects:
-                for assess_type in [marks.AssessmentType.MID_TERM, marks.AssessmentType.INTERNAL]:
-                    if is_weak:
-                        score = random.randint(15, 45)
-                    else:
-                        score = random.randint(40, 95)
+        for fac in faculties:
+            uname = fac.user.username
+            if uname in FACULTY_SUBJECT_ASSIGNMENTS:
+                for sub_code, sec_name in FACULTY_SUBJECT_ASSIGNMENTS[uname]:
+                    # Find subject id
+                    if sub_code not in db_subjects: continue
+                    sub_id = db_subjects[sub_code].id
                     
-                    mark_entry = marks.Marks(
-                        student_id=stu.id,
-                        subject_id=sub.id,
-                        assessment_type=assess_type,
-                        score=score,
-                        total=100
-                    )
-                    db.add(mark_entry)
+                    # Find section id
+                    sec_id = None
+                    for name, s_obj in db_sections.items():
+                        if s_obj.name == sec_name:
+                            sec_id = s_obj.id
+                            break
+                    
+                    if sec_id:
+                        # 1. Create a Material for this subject-section
+                        db.add(Material(
+                            title=f"Course Syllabus & Introduction",
+                            description=f"Welcome to {db_subjects[sub_code].name}. Please review the syllabus.",
+                            file_url="/uploads/materials/dummy_syllabus.pdf",
+                            subject_id=sub_id,
+                            section_id=sec_id,
+                            faculty_id=fac.id
+                        ))
+                        
+                        # 2. Create an Assignment for this subject-section
+                        db.add(Assignment(
+                            title=f"Assignment 1 - Basic Concepts",
+                            description="Complete the introductory questions.",
+                            due_date=datetime.utcnow() + timedelta(days=7),
+                            subject_id=sub_id,
+                            section_id=sec_id,
+                            faculty_id=fac.id
+                        ))
         db.commit()
 
-        # 8. Create Assignments
-        print("Creating Assignments...")
-        assignment_data = [
-            ("Binary Tree Implementation", "Implement AVL tree with insert and delete operations", 1),
-            ("Graph Algorithms", "Implement Dijkstra and BFS/DFS algorithms", 2),
-            ("SQL Queries Project", "Design a database and write complex queries", 3),
-            ("Process Scheduler", "Simulate Round Robin and FCFS scheduling", 4),
-            ("Network Protocol Analysis", "Analyze TCP/IP packet captures using Wireshark", 5),
-        ]
-        for title, desc, sub_idx in assignment_data:
-            a = assignment.Assignment(
-                title=title,
-                description=desc,
-                due_date=datetime.now().date() + timedelta(days=random.randint(5, 30)),
-                subject_id=sub_idx
-            )
-            db.add(a)
-        db.commit()
 
-        # 9. Create Quizzes
-        print("Creating Quizzes...")
-        quiz_data = [
-            ("DS Mid-term Quiz", 1, 50),
-            ("Algo Weekly Test", 2, 30),
-            ("DBMS Concepts Quiz", 3, 40),
-            ("OS Fundamentals", 4, 25),
-        ]
-        for title, sub_idx, total in quiz_data:
-            q = quiz.Quiz(title=title, subject_id=sub_idx, total_marks=total)
-            db.add(q)
-        db.commit()
+        # -------------------------------------------------
+        # 7. Insert Academic Data (Marks + Attendance)
+        # -------------------------------------------------
+        print("\n[7/8] Creating Academic Data (marks + attendance)...")
+        start_date = datetime(2024, 7, 1).date()  # Academic year start
+        marks_count = 0
+        attendance_count = 0
 
-        # 10. Generate alerts for at-risk students
-        print("Generating alerts...")
+        for stu_obj, s_data in db_students:
+            db.flush()  # Ensure stu_obj.id is available
+
+            for sem in s_data["semesters"]:
+                sem_num = sem["semester"]
+                sem_start = start_date + timedelta(days=(sem_num - 1) * 150)
+
+                for subj_data in sem["subjects"]:
+                    subj_code = subj_data["code"]
+                    if subj_code not in db_subjects:
+                        continue
+                    sub_obj = db_subjects[subj_code]
+                    db.flush()  # Ensure sub_obj.id is available
+                    m = subj_data["marks"]
+
+                    if subj_data["type"] == "Theory":
+                        # Mid 1 marks (mid_term)
+                        db.add(marks.Marks(
+                            student_id=stu_obj.id,
+                            subject_id=sub_obj.id,
+                            assessment_type=marks.AssessmentType.MID_TERM,
+                            score=m["mid1_total"],
+                            total=30
+                        ))
+                        # Mid 2 marks (also mid_term — we store both)
+                        db.add(marks.Marks(
+                            student_id=stu_obj.id,
+                            subject_id=sub_obj.id,
+                            assessment_type=marks.AssessmentType.MID_TERM,
+                            score=m["mid2_total"],
+                            total=30
+                        ))
+                        # Internal marks (assignments + attendance component)
+                        db.add(marks.Marks(
+                            student_id=stu_obj.id,
+                            subject_id=sub_obj.id,
+                            assessment_type=marks.AssessmentType.INTERNAL,
+                            score=m["internal_total"],
+                            total=40
+                        ))
+                        
+                        # Only add end-term if semester is completed
+                        if sem_num < 6:
+                            # External/End-term marks
+                            db.add(marks.Marks(
+                                student_id=stu_obj.id,
+                                subject_id=sub_obj.id,
+                                assessment_type=marks.AssessmentType.END_TERM,
+                                score=m["external"],
+                                total=60
+                            ))
+                            marks_count += 1
+                        marks_count += 3
+
+                    elif subj_data["type"] == "Lab":
+                        # Lab internal
+                        db.add(marks.Marks(
+                            student_id=stu_obj.id,
+                            subject_id=sub_obj.id,
+                            assessment_type=marks.AssessmentType.INTERNAL,
+                            score=m["internal_total"],
+                            total=40
+                        ))
+                        # Only add end-term if semester is completed
+                        if sem_num < 6:
+                            # Lab external
+                            db.add(marks.Marks(
+                                student_id=stu_obj.id,
+                                subject_id=sub_obj.id,
+                                assessment_type=marks.AssessmentType.END_TERM,
+                                score=m["external"],
+                                total=60
+                            ))
+                            marks_count += 1
+                        marks_count += 1
+
+                    else:  # Non-Credit
+                        # User wants mid marks for non-credit too
+                        db.add(marks.Marks(
+                            student_id=stu_obj.id,
+                            subject_id=sub_obj.id,
+                            assessment_type=marks.AssessmentType.MID_TERM,
+                            score=m["mid1"],
+                            total=40
+                        ))
+                        db.add(marks.Marks(
+                            student_id=stu_obj.id,
+                            subject_id=sub_obj.id,
+                            assessment_type=marks.AssessmentType.MID_TERM,
+                            score=m["mid2"],
+                            total=40
+                        ))
+                        marks_count += 2
+
+                    # Attendance: Generate ~60 attendance records per subject per semester (5-6 months)
+                    att_rate = s_data["overall_attendance_rate"]
+                    for day in range(60):
+                        date = sem_start + timedelta(days=int(day * 2.5) + random.randint(0, 2))
+                        present = random.random() < att_rate
+                        db.add(attendance.Attendance(
+                            student_id=stu_obj.id,
+                            subject_id=sub_obj.id,
+                            date=date,
+                            status=present
+                        ))
+                        attendance_count += 1
+
+            # Commit every 10 students to avoid memory issues
+            if (db_students.index((stu_obj, s_data)) + 1) % 10 == 0:
+                db.commit()
+                done = db_students.index((stu_obj, s_data)) + 1
+                print(f"    Progress: {done}/{len(db_students)} students...")
+
+        db.commit()
+        print(f"  Done! {marks_count} marks records, {attendance_count} attendance records")
+
+        # -------------------------------------------------
+        # 8. Generate Alerts
+        # -------------------------------------------------
+        print("\n[8/8] Generating alerts for at-risk students...")
         from sqlalchemy import func, Integer as SqlInt
-        for stu in students:
-            total = db.query(func.count(attendance.Attendance.id)).filter(
-                attendance.Attendance.student_id == stu.id
-            ).scalar() or 0
-            present = db.query(func.sum(
-                func.cast(attendance.Attendance.status, SqlInt)
-            )).filter(
-                attendance.Attendance.student_id == stu.id
-            ).scalar() or 0
-            att_pct = (present / total * 100) if total > 0 else 100
+        alert_count = 0
 
-            if att_pct < 75:
+        for stu_obj, s_data in db_students:
+            risk = s_data["risk_profile"]
+            att_rate = s_data["overall_attendance_rate"]
+            cgpa = s_data["cgpa"]
+
+            if risk == "High":
                 db.add(alert.Alert(
-                    student_id=stu.id,
-                    message=f"Attendance is {att_pct:.1f}% (below 75% threshold)",
+                    student_id=stu_obj.id,
+                    message=f"Student at HIGH risk. Attendance: {att_rate*100:.1f}%, CGPA: {cgpa:.2f}",
+                    type="High Risk"
+                ))
+                alert_count += 1
+            elif risk == "Medium" and att_rate < 0.78:
+                db.add(alert.Alert(
+                    student_id=stu_obj.id,
+                    message=f"Student at MEDIUM risk. Attendance: {att_rate*100:.1f}%",
                     type="Low Attendance"
                 ))
+                alert_count += 1
 
-            avg_score = db.query(func.avg(marks.Marks.score)).filter(
-                marks.Marks.student_id == stu.id
-            ).scalar()
-            if avg_score is not None and avg_score < 40:
-                db.add(alert.Alert(
-                    student_id=stu.id,
-                    message=f"Average score is {avg_score:.1f}% (below 40% threshold)",
-                    type="Low Marks"
-                ))
         db.commit()
+        print(f"  Generated {alert_count} alerts")
 
-        print("\n✅ Database seeded successfully!")
-        print(f"   - 1 Admin (admin / admin123)")
-        print(f"   - 1 Mentor (mentor / mentor123)")
-        print(f"   - 1 Lecturer (lecturer / lecturer123)")
-        print(f"   - {len(faculties)-2} Additional Faculty (faculty123)")
-        print(f"   - 1 Known Student (student / student123)")
-        print(f"   - 50 Students (student1..student50 / student123)")
-        print(f"   - {len(db_subjects)} Subjects")
-        print(f"   - Academic data generated for all students")
+        # -------------------------------------------------
+        # Summary
+        # -------------------------------------------------
+        print(f"\n{'=' * 60}")
+        print("✅ DATABASE SEEDED SUCCESSFULLY!")
+        print(f"{'=' * 60}")
+        print(f"  Admin:      admin / admin123")
+        print(f"  Mentor:     mentor / mentor123")
+        print(f"  Lecturer:   lecturer / lecturer123")
+        print(f"  Students:   195 students (student / student123 for demo login)")
+        print(f"              Usernames: 23241a6701 .. 23241a67{len(db_students):02d}")
+        print(f"  Faculty:    {len(faculties)} total")
+        print(f"  Sections:   {len(db_sections)}")
+        print(f"  Subjects:   {len(db_subjects)}")
+        print(f"  Marks:      {marks_count} records")
+        print(f"  Attendance: {attendance_count} records")
+        print(f"  Alerts:     {alert_count}")
+        print(f"{'=' * 60}")
 
     except Exception as e:
-        print(f"Error seeding data: {e}")
+        print(f"\n❌ Error seeding data: {e}")
         import traceback
         traceback.print_exc()
         db.rollback()
     finally:
         db.close()
+
 
 if __name__ == "__main__":
     seed_data()

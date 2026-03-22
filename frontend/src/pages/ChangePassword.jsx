@@ -46,7 +46,7 @@ const ChangePassword = () => {
     return (
         <>
             <Navbar />
-            <Toaster position="top-right" />
+            
             <div className="container page-enter" style={{ maxWidth: 500 }}>
                 <div className="card" style={{ marginTop: '2rem' }}>
                     <h2 style={{ textAlign: 'center', border: 'none', paddingBottom: 0, marginBottom: '0.5rem' }}>

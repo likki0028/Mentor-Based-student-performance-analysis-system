@@ -11,6 +11,9 @@ class Student(Base):
     enrollment_number = Column(String, unique=True, index=True)
     current_semester = Column(Integer, default=1)
     
+    section_id = Column(Integer, ForeignKey("sections.id"))
+    section = relationship("Section", backref="students")
+
     mentor_id = Column(Integer, ForeignKey("faculty.id"))
     mentor = relationship("Faculty", back_populates="mentees")
 

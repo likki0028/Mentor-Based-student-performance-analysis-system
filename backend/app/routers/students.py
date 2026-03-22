@@ -9,7 +9,7 @@ from ..models import attendance as attendance_model
 from ..models import marks as marks_model
 from ..models import subject as subject_model
 from ..schemas import student as student_schema
-from ..dependencies import get_current_active_user, get_current_user
+from ..dependencies import get_current_active_user
 
 router = APIRouter(
     responses={404: {"description": "Not found"}},
@@ -27,7 +27,7 @@ async def read_users_me(
     if not student:
         raise HTTPException(status_code=404, detail="Student profile not found")
         
-    # Calculate attendance percentage (Simple logic for now)
+    # Calculate attendance percentage
     total_days = db.query(attendance_model.Attendance).filter(attendance_model.Attendance.student_id == student.id).count()
     present_days = db.query(attendance_model.Attendance).filter(
         attendance_model.Attendance.student_id == student.id,
@@ -36,13 +36,24 @@ async def read_users_me(
     
     percentage = (present_days / total_days * 100) if total_days > 0 else 0.0
     
-    # Create response object and attach calculated field
-    # We use valid pydantic model creation
     response = student_schema.StudentOut.model_validate(student)
-    response.name = student.user.username # fallback if name is empty in student table
+    response.name = student.user.username
     response.attendance_percentage = round(percentage, 2)
+    response.section_name = student.section.name if student.section else "A"
     
     return response
+
+@router.get("/subjects/{subject_id}")
+async def get_subject_details(
+    subject_id: int,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_active_user)
+):
+    print(f"CLASSROOM REQUEST: Fetching Subject ID {subject_id}")
+    subject = db.query(subject_model.Subject).filter(subject_model.Subject.id == subject_id).first()
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    return subject
 
 @router.get("/{student_id}/attendance", response_model=List[student_schema.AttendanceOut])
 async def read_student_attendance(
@@ -50,16 +61,12 @@ async def read_student_attendance(
     current_user: user_model.User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
-    # Authorization checks (Self, Mentor, or Admin) can be added here
-    # For now, allow if user is authenticated
-    
     attendance_records = db.query(attendance_model.Attendance).options(
         joinedload(attendance_model.Attendance.subject)
     ).filter(attendance_model.Attendance.student_id == student_id).all()
     
     results = []
     for record in attendance_records:
-         # Build response manually to include subject name if joined
          res = student_schema.AttendanceOut.model_validate(record)
          if record.subject:
              res.subject_name = record.subject.name
@@ -79,9 +86,15 @@ async def read_student_marks(
     
     results = []
     for record in marks_records:
-         res = student_schema.MarkOut.model_validate(record)
-         if record.subject:
-             res.subject_name = record.subject.name
+         res = student_schema.MarkOut(
+             id=record.id,
+             subject_id=record.subject_id,
+             subject_name=record.subject.name if record.subject else None,
+             semester=record.subject.semester if record.subject else None,
+             assessment_type=record.assessment_type.value if hasattr(record.assessment_type, 'value') else record.assessment_type,
+             score=record.score,
+             total=record.total
+         )
          results.append(res)
          
     return results

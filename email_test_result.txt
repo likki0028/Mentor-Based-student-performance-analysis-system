@@ -1,0 +1,5 @@
+EHLO OK
+STARTTLS OK
+LOGIN OK
+EMAIL SENT to likhithbalaji90@gmail.com
+DONE - SUCCESS

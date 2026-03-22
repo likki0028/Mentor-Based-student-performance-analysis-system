@@ -1,6 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import authService from '../services/auth.service';
+import analyticsService from '../services/analytics.service';
+import academicService from '../services/academic.service';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
 import toast, { Toaster } from 'react-hot-toast';
@@ -94,7 +97,7 @@ const AdminDashboard = () => {
         return (
             <>
                 <Navbar />
-                <Toaster position="top-right" />
+                
                 <div className="container page-enter">
                     <div className="grid grid-4" style={{ marginTop: '2rem' }}>
                         {[1, 2, 3, 4].map(i => <div key={i} className="skeleton skeleton-card"></div>)}
@@ -107,7 +110,7 @@ const AdminDashboard = () => {
     return (
         <>
             <Navbar />
-            <Toaster position="top-right" />
+            
             <div className="container page-enter">
                 <div className="flex justify-between items-end" style={{ marginBottom: '2rem' }}>
                     <div>
@@ -144,8 +147,8 @@ const AdminDashboard = () => {
                     <button className="btn-accent" onClick={() => setShowModal('mentor')}>🔗 Assign Mentor</button>
                     <button className="btn-success" onClick={async () => {
                         try {
-                            const res = await api.post('/alerts/generate');
-                            toast.success(res.data.message);
+                            const data = await analyticsService.generateAlerts();
+                            toast.success(data.message);
                         } catch (e) { toast.error('Failed'); }
                     }}>⚡ Generate Alerts</button>
                 </div>
@@ -261,7 +264,7 @@ const AdminDashboard = () => {
                                 <option value="">Choose a student...</option>
                                 {students.map(s => (
                                     <option key={s.id} value={s.id}>
-                                        {s.username} ({s.enrollment_number || `ID: ${s.id}`})
+                                        {s.username} (Roll No: {s.enrollment_number || `ID: ${s.id}`})
                                     </option>
                                 ))}
                             </select>

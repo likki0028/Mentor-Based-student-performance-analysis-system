@@ -6,6 +6,8 @@ from ..models import alert as alert_model
 from ..models import student as student_model
 from ..models import attendance as attendance_model
 from ..models import marks as marks_model
+from ..models import user as user_model
+from .email_service import EmailService
 from ..database import SessionLocal
 
 
@@ -24,23 +26,29 @@ class AlertService:
             own_session = True
 
         try:
+            # Optimized approach: Get all student IDs to check
             students = db.query(student_model.Student).all()
-            alerts_created = 0
+            if not students: return 0
+            
+            # 1. Fetch all attendance stats in one query
+            att_stats = db.query(
+                attendance_model.Attendance.student_id,
+                func.count(attendance_model.Attendance.id).label("total"),
+                func.sum(func.cast(attendance_model.Attendance.status, Integer)).label("present")
+            ).group_by(attendance_model.Attendance.student_id).all()
+            att_map = {row.student_id: (row.present / row.total * 100) if row.total > 0 else 100 for row in att_stats}
 
+            # 2. Fetch all average marks in one query
+            marks_stats = db.query(
+                marks_model.Marks.student_id,
+                func.avg(marks_model.Marks.score).label("avg_score")
+            ).group_by(marks_model.Marks.student_id).all()
+            marks_map = {row.student_id: row.avg_score for row in marks_stats}
+
+            alerts_created = 0
             for stu in students:
                 # Check attendance
-                total = db.query(func.count(attendance_model.Attendance.id)).filter(
-                    attendance_model.Attendance.student_id == stu.id
-                ).scalar() or 0
-
-                present = db.query(func.sum(
-                    func.cast(attendance_model.Attendance.status, Integer)
-                )).filter(
-                    attendance_model.Attendance.student_id == stu.id
-                ).scalar() or 0
-
-                att_pct = (present / total * 100) if total > 0 else 100
-
+                att_pct = att_map.get(stu.id, 100)
                 if att_pct < 75:
                     existing = db.query(alert_model.Alert).filter(
                         alert_model.Alert.student_id == stu.id,
@@ -48,18 +56,18 @@ class AlertService:
                         alert_model.Alert.is_read == False
                     ).first()
                     if not existing:
-                        db.add(alert_model.Alert(
+                        new_alert = alert_model.Alert(
                             student_id=stu.id,
-                            message=f"Attendance is {att_pct:.1f}% (below 75% threshold)",
+                            message=f"{stu.user.username if stu.user else 'Student'} - Attendance: {att_pct:.1f}%",
                             type="Low Attendance"
-                        ))
+                        )
+                        db.add(new_alert)
+                        if stu.mentor and stu.mentor.user:
+                            EmailService.send_alert_email(stu.mentor.user.email, stu.user.username if stu.user else "Student", "Low Attendance", f"Attendance is {att_pct:.1f}%")
                         alerts_created += 1
 
                 # Check marks
-                avg_score = db.query(func.avg(marks_model.Marks.score)).filter(
-                    marks_model.Marks.student_id == stu.id
-                ).scalar()
-
+                avg_score = marks_map.get(stu.id)
                 if avg_score is not None and avg_score < 40:
                     existing = db.query(alert_model.Alert).filter(
                         alert_model.Alert.student_id == stu.id,
@@ -67,11 +75,14 @@ class AlertService:
                         alert_model.Alert.is_read == False
                     ).first()
                     if not existing:
-                        db.add(alert_model.Alert(
+                        new_alert = alert_model.Alert(
                             student_id=stu.id,
-                            message=f"Average score is {avg_score:.1f}% (below 40% threshold)",
+                            message=f"{stu.user.username if stu.user else 'Student'} - Avg Marks: {avg_score:.1f}%",
                             type="Low Marks"
-                        ))
+                        )
+                        db.add(new_alert)
+                        if stu.mentor and stu.mentor.user:
+                            EmailService.send_alert_email(stu.mentor.user.email, stu.user.username if stu.user else "Student", "Low Marks", f"Average score is {avg_score:.1f}%")
                         alerts_created += 1
 
             db.commit()

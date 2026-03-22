@@ -1,0 +1,126 @@
+2026-03-20 14:30:36,427 - INFO - MOCK EMAIL SENT TO: mentor_b@vibe.com
+2026-03-20 14:30:36,427 - INFO - Subject: ALERT: Student sectionb_stu_1 requires attention (Low Attendance)
+2026-03-20 14:30:36,427 - INFO - Body:
+2026-03-20 14:30:36,427 - INFO - 
+        Dear Mentor,
+        
+        This is an automated notification from the Student Performance System.
+        
+        A student assigned to you, sectionb_stu_1, has been flagged for the following issue:
+        Type: Low Attendance
+        Details: Attendance is 70.0% (below 75% threshold)
+        
+        Please log in to your dashboard to acknowledge this alert and leave a remark if necessary.
+        
+        Best regards,
+        AcademicVibe System
+        
+2026-03-20 14:30:36,428 - INFO - ----------------------------------------
+2026-03-20 14:30:36,429 - INFO - MOCK EMAIL SENT TO: mentor_b@vibe.com
+2026-03-20 14:30:36,429 - INFO - Subject: ALERT: Student sectionb_stu_1 requires attention (Low Marks)
+2026-03-20 14:30:36,429 - INFO - Body:
+2026-03-20 14:30:36,429 - INFO - 
+        Dear Mentor,
+        
+        This is an automated notification from the Student Performance System.
+        
+        A student assigned to you, sectionb_stu_1, has been flagged for the following issue:
+        Type: Low Marks
+        Details: Average score is 19.8% (below 40% threshold)
+        
+        Please log in to your dashboard to acknowledge this alert and leave a remark if necessary.
+        
+        Best regards,
+        AcademicVibe System
+        
+2026-03-20 14:30:36,429 - INFO - ----------------------------------------
+2026-03-20 14:35:31,826 - INFO - MOCK EMAIL SENT TO: mentor_b@vibe.com
+2026-03-20 14:35:31,827 - INFO - Subject: ALERT: Student sectionb_stu_1 requires attention (Low Attendance)
+2026-03-20 14:35:31,827 - INFO - Body:
+2026-03-20 14:35:31,827 - INFO - 
+        Dear Mentor,
+        
+        This is an automated notification from the Student Performance System.
+        
+        A student assigned to you, sectionb_stu_1, has been flagged for the following issue:
+        Type: Low Attendance
+        Details: Attendance is 70.0% (below 75% threshold)
+        
+        Please log in to your dashboard to acknowledge this alert and leave a remark if necessary.
+        
+        Best regards,
+        AcademicVibe System
+        
+2026-03-20 14:35:31,827 - INFO - ----------------------------------------
+2026-03-20 14:35:31,828 - INFO - MOCK EMAIL SENT TO: mentor_b@vibe.com
+2026-03-20 14:35:31,829 - INFO - Subject: ALERT: Student sectionb_stu_1 requires attention (Low Marks)
+2026-03-20 14:35:31,829 - INFO - Body:
+2026-03-20 14:35:31,829 - INFO - 
+        Dear Mentor,
+        
+        This is an automated notification from the Student Performance System.
+        
+        A student assigned to you, sectionb_stu_1, has been flagged for the following issue:
+        Type: Low Marks
+        Details: Average score is 18.7% (below 40% threshold)
+        
+        Please log in to your dashboard to acknowledge this alert and leave a remark if necessary.
+        
+        Best regards,
+        AcademicVibe System
+        
+2026-03-20 14:35:31,829 - INFO - ----------------------------------------
+2026-03-21 13:45:09,532 - INFO - MOCK EMAIL SENT TO: mentor_b@vibe.com
+2026-03-21 13:45:09,532 - INFO - Subject: ALERT: Student sectionb_stu_1 requires attention (Low Marks)
+2026-03-21 13:45:09,532 - INFO - Body:
+2026-03-21 13:45:09,532 - INFO - 
+        Dear Mentor,
+        
+        This is an automated notification from the Student Performance System.
+        
+        A student assigned to you, sectionb_stu_1, has been flagged for the following issue:
+        Type: Low Marks
+        Details: Average score is 32.2% (below 40% threshold)
+        
+        Please log in to your dashboard to acknowledge this alert and leave a remark if necessary.
+        
+        Best regards,
+        AcademicVibe System
+        
+2026-03-21 13:45:09,532 - INFO - ----------------------------------------
+2026-03-21 13:45:09,730 - INFO - MOCK EMAIL SENT TO: mentor_b@vibe.com
+2026-03-21 13:45:09,731 - INFO - Subject: ALERT: Student sectionb_stu_18 requires attention (Low Marks)
+2026-03-21 13:45:09,731 - INFO - Body:
+2026-03-21 13:45:09,731 - INFO - 
+        Dear Mentor,
+        
+        This is an automated notification from the Student Performance System.
+        
+        A student assigned to you, sectionb_stu_18, has been flagged for the following issue:
+        Type: Low Marks
+        Details: Average score is 33.7% (below 40% threshold)
+        
+        Please log in to your dashboard to acknowledge this alert and leave a remark if necessary.
+        
+        Best regards,
+        AcademicVibe System
+        
+2026-03-21 13:45:09,731 - INFO - ----------------------------------------
+2026-03-21 13:45:09,756 - INFO - MOCK EMAIL SENT TO: mentor_b@vibe.com
+2026-03-21 13:45:09,756 - INFO - Subject: ALERT: Student sectionb_stu_20 requires attention (Low Marks)
+2026-03-21 13:45:09,756 - INFO - Body:
+2026-03-21 13:45:09,756 - INFO - 
+        Dear Mentor,
+        
+        This is an automated notification from the Student Performance System.
+        
+        A student assigned to you, sectionb_stu_20, has been flagged for the following issue:
+        Type: Low Marks
+        Details: Average score is 32.7% (below 40% threshold)
+        
+        Please log in to your dashboard to acknowledge this alert and leave a remark if necessary.
+        
+        Best regards,
+        AcademicVibe System
+        
+2026-03-21 13:45:09,756 - INFO - ----------------------------------------

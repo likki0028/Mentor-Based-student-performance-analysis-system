@@ -11,6 +11,7 @@ class AlertCreate(AlertBase):
 
 class Alert(AlertBase):
     id: int
+    student_id: int
     is_read: bool
     created_at: datetime
     

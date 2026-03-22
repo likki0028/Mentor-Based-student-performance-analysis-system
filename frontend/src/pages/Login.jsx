@@ -8,6 +8,7 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showRoleChooser, setShowRoleChooser] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
@@ -22,8 +23,10 @@ const Login = () => {
             const role = await login(username, password);
             toast.success('Login successful!');
             setTimeout(() => {
-                if (role === 'admin') navigate('/admin');
-                else if (role === 'mentor' || role === 'both') navigate('/mentor');
+                if (role === 'both') {
+                    setShowRoleChooser(true);
+                } else if (role === 'admin') navigate('/admin');
+                else if (role === 'mentor') navigate('/mentor');
                 else if (role === 'lecturer') navigate('/lecturer');
                 else navigate('/student');
             }, 500);
@@ -34,6 +37,80 @@ const Login = () => {
         }
     };
 
+    // Role chooser for dual-role users
+    if (showRoleChooser) {
+        return (
+            <div style={{
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                padding: '1rem'
+            }}>
+                <div style={{ width: '100%', maxWidth: 500, animation: 'slideUp 0.5s ease' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        <div style={{
+                            width: 64, height: 64, borderRadius: 16,
+                            background: 'rgba(255,255,255,0.2)',
+                            backdropFilter: 'blur(10px)',
+                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                            marginBottom: '1rem', fontSize: '1.75rem'
+                        }}>
+                            🎓
+                        </div>
+                        <h1 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.25rem' }}>
+                            Welcome, {username}!
+                        </h1>
+                        <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem' }}>
+                            Choose which dashboard to open
+                        </p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div
+                            onClick={() => navigate('/mentor')}
+                            style={{
+                                flex: 1, padding: '2rem 1.5rem', borderRadius: 16,
+                                background: 'white', cursor: 'pointer',
+                                textAlign: 'center',
+                                boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+                                transition: 'transform 0.2s, box-shadow 0.2s',
+                                border: '2px solid transparent'
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = '#22c55e'; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'transparent'; }}
+                        >
+                            <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>👨‍🏫</div>
+                            <h3 style={{ color: '#22c55e', fontSize: '1.1rem', marginBottom: '0.4rem' }}>Mentor Dashboard</h3>
+                            <p style={{ color: '#64748b', fontSize: '0.8rem', margin: 0 }}>
+                                View mentees, track attendance, monitor student performance
+                            </p>
+                        </div>
+                        <div
+                            onClick={() => navigate('/lecturer')}
+                            style={{
+                                flex: 1, padding: '2rem 1.5rem', borderRadius: 16,
+                                background: 'white', cursor: 'pointer',
+                                textAlign: 'center',
+                                boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+                                transition: 'transform 0.2s, box-shadow 0.2s',
+                                border: '2px solid transparent'
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = '#6366f1'; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'transparent'; }}
+                        >
+                            <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📚</div>
+                            <h3 style={{ color: '#6366f1', fontSize: '1.1rem', marginBottom: '0.4rem' }}>Lecturer Dashboard</h3>
+                            <p style={{ color: '#64748b', fontSize: '0.8rem', margin: 0 }}>
+                                Manage classrooms, upload marks, assign & grade work
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div style={{
             minHeight: '100vh',
@@ -43,7 +120,7 @@ const Login = () => {
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             padding: '1rem'
         }}>
-            <Toaster position="top-right" />
+            
             <div style={{
                 width: '100%',
                 maxWidth: 420,
@@ -61,10 +138,10 @@ const Login = () => {
                         🎓
                     </div>
                     <h1 style={{ color: 'white', fontSize: '1.75rem', marginBottom: '0.25rem' }}>
-                        AcademicVibe
+                        MSPA System
                     </h1>
                     <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem' }}>
-                        Mentor-Based Student Performance System
+                        Mentor-Based Student Performance Analysis System
                     </p>
                 </div>
 
@@ -102,24 +179,7 @@ const Login = () => {
                         </button>
                     </form>
 
-                    <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
-                        <p className="text-sm text-muted" style={{ marginBottom: '0.5rem' }}>Demo Accounts:</p>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.5rem' }}>
-                            {[
-                                { user: 'admin', pass: 'admin123', color: '#ef4444' },
-                                { user: 'mentor', pass: 'mentor123', color: '#22c55e' },
-                                { user: 'lecturer', pass: 'lecturer123', color: '#f59e0b' },
-                                { user: 'student', pass: 'student123', color: '#6366f1' }
-                            ].map((demo, i) => (
-                                <button key={i} className="btn-secondary"
-                                    style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem' }}
-                                    onClick={() => { setUsername(demo.user); setPassword(demo.pass); }}
-                                    type="button">
-                                    <span style={{ color: demo.color, fontWeight: 700 }}>{demo.user}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
