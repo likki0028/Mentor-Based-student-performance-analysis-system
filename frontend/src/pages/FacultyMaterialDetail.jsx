@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import api from '../services/api';
+import api, { API_BASE_URL } from '../services/api';
 import toast from 'react-hot-toast';
 
 const FacultyMaterialDetail = () => {
@@ -256,14 +256,14 @@ const FacultyMaterialDetail = () => {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <a
-                                                href={`http://localhost:8000${f.file_url}`}
+                                                href={`${API_BASE_URL}${f.file_url}`}
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 className="btn-secondary"
                                                 style={{ textDecoration: 'none', fontSize: '0.75rem', padding: '0.3rem 0.7rem' }}
                                             >👁️ View</a>
                                             <a
-                                                href={`http://localhost:8000${f.file_url}`}
+                                                href={`${API_BASE_URL}${f.file_url}`}
                                                 download={f.filename}
                                                 className="btn-secondary"
                                                 style={{ textDecoration: 'none', fontSize: '0.75rem', padding: '0.3rem 0.7rem' }}

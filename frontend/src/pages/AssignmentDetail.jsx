@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import api from '../services/api';
+import api, { API_BASE_URL } from '../services/api';
 import toast from 'react-hot-toast';
 
 const AssignmentDetail = () => {
@@ -129,7 +129,7 @@ const AssignmentDetail = () => {
                         {assignment.file_url && (
                             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem', marginTop: '1.5rem' }}>
                                 <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Reference Material</h3>
-                                <a href={`http://localhost:8000${assignment.file_url}`} target="_blank" rel="noreferrer" className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', textDecoration: 'none', color: 'inherit', border: '1px solid var(--border)' }}>
+                                <a href={`${API_BASE_URL}${assignment.file_url}`} target="_blank" rel="noreferrer" className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', textDecoration: 'none', color: 'inherit', border: '1px solid var(--border)' }}>
                                     <div style={{ padding: '0.75rem', background: 'var(--primary-light)', color: 'var(--primary)', borderRadius: '8px', fontSize: '1.25rem' }}>
                                         📄
                                     </div>
@@ -158,7 +158,7 @@ const AssignmentDetail = () => {
                                         <span style={{ fontSize: '1.25rem' }}>📄</span>
                                         <div style={{ overflow: 'hidden' }}>
                                             <p className="text-xs font-semibold truncate">Submission.pdf</p>
-                                            <a href={`http://localhost:8000/${status.submission.file_url}`} target="_blank" rel="noreferrer" className="text-xs hover-link" style={{ color: 'var(--primary)' }}>View file</a>
+                                            <a href={`${API_BASE_URL}/${status.submission.file_url}`} target="_blank" rel="noreferrer" className="text-xs hover-link" style={{ color: 'var(--primary)' }}>View file</a>
                                         </div>
                                     </div>
                                     <p className="text-xs text-muted" style={{ textAlign: 'center' }}>

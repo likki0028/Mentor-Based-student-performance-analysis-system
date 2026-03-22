@@ -15,5 +15,7 @@ pandas
 xgboost
 scikit-learn
 
+pywebpush
+requests
 gunicorn
 psycopg2-binary

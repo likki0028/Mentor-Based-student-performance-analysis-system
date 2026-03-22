@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import api from '../services/api';
+import api, { API_BASE_URL } from '../services/api';
 import toast from 'react-hot-toast';
 
 const MaterialDetail = () => {
@@ -98,7 +98,7 @@ const MaterialDetail = () => {
                             </div>
                         </div>
                         <a 
-                            href={`http://localhost:8000${material.file_url}`} 
+                            href={`${API_BASE_URL}${material.file_url}`} 
                             target="_blank" 
                             rel="noreferrer"
                             className="btn-primary"
