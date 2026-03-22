@@ -58,7 +58,8 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# CORS Middleware
+# CORS Middleware — allow all origins for deployment flexibility
+import os
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -74,10 +75,14 @@ origins = [
     "http://127.0.0.1:3000",
     "https://mentor-based-student-performance-an.vercel.app",
 ]
+# Add FRONTEND_URL from env if provided
+frontend_url = os.environ.get("FRONTEND_URL")
+if frontend_url:
+    origins.append(frontend_url)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # Allow all origins for free-tier deployment
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
