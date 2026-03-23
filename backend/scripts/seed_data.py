@@ -50,27 +50,12 @@ def seed_data():
         print("SEED DATA v2 — 195 Synthetic Students")
         print("=" * 60)
 
-        # Ensure tables are created
+        # -------------------------------------------------
+        # 1. Clear existing data (Postgres safe)
+        # -------------------------------------------------
+        print("\n[1/8] Dropping and recreating tables...")
+        Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
-
-        # -------------------------------------------------
-        # 1. Clear existing data
-        # -------------------------------------------------
-        print("\n[1/8] Clearing existing data...")
-        db.query(remark.Remark).delete()
-        db.query(alert.Alert).delete()
-        db.query(quiz_attempt.QuizAttempt).delete()
-        db.query(quiz.Quiz).delete()
-        db.query(submission.Submission).delete()
-        db.query(assignment.Assignment).delete()
-        db.query(marks.Marks).delete()
-        db.query(attendance.Attendance).delete()
-        db.query(student.Student).delete()
-        db.query(faculty.Faculty).delete()
-        db.query(section.Section).delete()
-        db.query(subject.Subject).delete()
-        db.query(user.User).delete()
-        db.commit()
         print("  Done!")
 
         # -------------------------------------------------
@@ -195,7 +180,8 @@ def seed_data():
 
         # Assign mentors round-robin
         db_students = []
-        for idx, s_data in enumerate(synthetic_students):
+        # Limit to 30 students for fast remote deployment demo
+        for idx, s_data in enumerate(synthetic_students[:30]):
             student_name = s_data["name"]
             student_id_str = s_data["student_id"]
             sec_letter = s_data["section"]
@@ -294,10 +280,14 @@ def seed_data():
         # -------------------------------------------------
         # 7. Insert Academic Data (Marks + Attendance)
         # -------------------------------------------------
-        print("\n[7/8] Creating Academic Data (marks + attendance)...")
+        print(f"\n[7/8] Creating Academic Data (bulk inserting for speed)...")
         start_date = datetime(2024, 7, 1).date()  # Academic year start
         marks_count = 0
         attendance_count = 0
+
+        # Create arrays for bulk inserts to speed up remote DB insertion
+        marks_batch = []
+        att_batch = []
 
         for stu_obj, s_data in db_students:
             db.flush()  # Ensure stu_obj.id is available
@@ -316,7 +306,7 @@ def seed_data():
 
                     if subj_data["type"] == "Theory":
                         # Mid 1 marks (mid_term)
-                        db.add(marks.Marks(
+                        marks_batch.append(marks.Marks(
                             student_id=stu_obj.id,
                             subject_id=sub_obj.id,
                             assessment_type=marks.AssessmentType.MID_TERM,
@@ -324,7 +314,7 @@ def seed_data():
                             total=30
                         ))
                         # Mid 2 marks (also mid_term — we store both)
-                        db.add(marks.Marks(
+                        marks_batch.append(marks.Marks(
                             student_id=stu_obj.id,
                             subject_id=sub_obj.id,
                             assessment_type=marks.AssessmentType.MID_TERM,
@@ -332,7 +322,7 @@ def seed_data():
                             total=30
                         ))
                         # Internal marks (assignments + attendance component)
-                        db.add(marks.Marks(
+                        marks_batch.append(marks.Marks(
                             student_id=stu_obj.id,
                             subject_id=sub_obj.id,
                             assessment_type=marks.AssessmentType.INTERNAL,
@@ -343,7 +333,7 @@ def seed_data():
                         # Only add end-term if semester is completed
                         if sem_num < 6:
                             # External/End-term marks
-                            db.add(marks.Marks(
+                            marks_batch.append(marks.Marks(
                                 student_id=stu_obj.id,
                                 subject_id=sub_obj.id,
                                 assessment_type=marks.AssessmentType.END_TERM,
@@ -355,7 +345,7 @@ def seed_data():
 
                     elif subj_data["type"] == "Lab":
                         # Lab internal
-                        db.add(marks.Marks(
+                        marks_batch.append(marks.Marks(
                             student_id=stu_obj.id,
                             subject_id=sub_obj.id,
                             assessment_type=marks.AssessmentType.INTERNAL,
@@ -365,7 +355,7 @@ def seed_data():
                         # Only add end-term if semester is completed
                         if sem_num < 6:
                             # Lab external
-                            db.add(marks.Marks(
+                            marks_batch.append(marks.Marks(
                                 student_id=stu_obj.id,
                                 subject_id=sub_obj.id,
                                 assessment_type=marks.AssessmentType.END_TERM,
@@ -377,14 +367,14 @@ def seed_data():
 
                     else:  # Non-Credit
                         # User wants mid marks for non-credit too
-                        db.add(marks.Marks(
+                        marks_batch.append(marks.Marks(
                             student_id=stu_obj.id,
                             subject_id=sub_obj.id,
                             assessment_type=marks.AssessmentType.MID_TERM,
                             score=m["mid1"],
                             total=40
                         ))
-                        db.add(marks.Marks(
+                        marks_batch.append(marks.Marks(
                             student_id=stu_obj.id,
                             subject_id=sub_obj.id,
                             assessment_type=marks.AssessmentType.MID_TERM,
@@ -393,12 +383,12 @@ def seed_data():
                         ))
                         marks_count += 2
 
-                    # Attendance: Generate ~60 attendance records per subject per semester (5-6 months)
+                    # Attendance: Generate ~15 attendance records per subject per semester instead of 60 for speed
                     att_rate = s_data["overall_attendance_rate"]
-                    for day in range(60):
-                        date = sem_start + timedelta(days=int(day * 2.5) + random.randint(0, 2))
+                    for day in range(15):
+                        date = sem_start + timedelta(days=int(day * 10) + random.randint(0, 2))
                         present = random.random() < att_rate
-                        db.add(attendance.Attendance(
+                        att_batch.append(attendance.Attendance(
                             student_id=stu_obj.id,
                             subject_id=sub_obj.id,
                             date=date,
@@ -406,12 +396,23 @@ def seed_data():
                         ))
                         attendance_count += 1
 
-            # Commit every 10 students to avoid memory issues
-            if (db_students.index((stu_obj, s_data)) + 1) % 10 == 0:
+            # Commit every 20 students to avoid memory issues and speed up remote DB inserts
+            if (db_students.index((stu_obj, s_data)) + 1) % 20 == 0:
+                if marks_batch:
+                    db.add_all(marks_batch)
+                    marks_batch = []
+                if att_batch:
+                    db.add_all(att_batch)
+                    att_batch = []
                 db.commit()
                 done = db_students.index((stu_obj, s_data)) + 1
                 print(f"    Progress: {done}/{len(db_students)} students...")
 
+        # Final flush for any remaining marks/attendance in batch
+        if marks_batch:
+            db.add_all(marks_batch)
+        if att_batch:
+            db.add_all(att_batch)
         db.commit()
         print(f"  Done! {marks_count} marks records, {attendance_count} attendance records")
 

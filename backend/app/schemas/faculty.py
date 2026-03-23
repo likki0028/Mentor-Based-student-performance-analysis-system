@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -11,6 +11,8 @@ class StudentSummary(BaseModel):
     average_marks: Optional[float] = 0.0
     risk_status: str = "Safe"
     cgpa: Optional[float] = 0.0
+    backlogs: Optional[int] = 0
+    backlog_subjects: Optional[List[Any]] = []
     
     class Config:
         from_attributes = True

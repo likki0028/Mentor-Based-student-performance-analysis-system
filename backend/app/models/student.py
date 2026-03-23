@@ -10,6 +10,7 @@ class Student(Base):
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     enrollment_number = Column(String, unique=True, index=True)
     current_semester = Column(Integer, default=1)
+    backlogs = Column(Integer, default=0)
     
     section_id = Column(Integer, ForeignKey("sections.id"))
     section = relationship("Section", backref="students")

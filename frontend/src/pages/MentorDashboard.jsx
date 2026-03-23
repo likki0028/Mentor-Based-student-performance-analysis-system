@@ -262,12 +262,12 @@ const MentorDashboard = () => {
                     </div>
                 )}
 
-                {/* Requires Attention Panel */}
+                {/* Requires Attention */}
                 {attentionStudents.length > 0 && (
-                    <div className="card" style={{ marginBottom: '2rem', padding: '1.5rem' }}>
+                    <div className="card" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
                         <h2 style={{ border: 'none', paddingBottom: 0, marginBottom: '0.5rem' }}>⚠️ Requires Attention</h2>
-                        <p className="text-muted" style={{ fontSize: '0.8rem', marginBottom: '1rem' }}>Students with attendance below 75% or average marks below 40%</p>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
+                        <p className="text-muted" style={{ fontSize: '0.8rem', marginBottom: '1rem' }}>Students with attendance below 75% or avg marks below 40%</p>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             {attentionStudents.map(s => {
                                 const lowAtt = s.attendance_percentage < 75;
                                 const lowMarks = s.average_marks < 40;

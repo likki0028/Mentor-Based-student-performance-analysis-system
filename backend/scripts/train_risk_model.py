@@ -77,56 +77,19 @@ for _ in range(NUM_STUDENTS):
     )
 
     # ---- Determine risk label ----
-    # Score-based approach (higher score = higher risk)
-    risk_score = 0
-
-    # Attendance factor (strongest indicator)
-    if attendance_pct < 60:
-        risk_score += 4
-    elif attendance_pct < 75:
-        risk_score += 2
-    elif attendance_pct < 85:
-        risk_score += 1
-
-    # Marks factor
-    marks_avg = mid1_avg if mid2_avg == 0 else (mid1_avg + mid2_avg) / 2
-    if marks_avg < 0.35:
-        risk_score += 3
-    elif marks_avg < 0.50:
-        risk_score += 2
-    elif marks_avg < 0.60:
-        risk_score += 1
-
-    # Assignment factor
-    if assignment_rate < 0.40:
-        risk_score += 2
-    elif assignment_rate < 0.60:
-        risk_score += 1
-
-    # Previous performance
-    if prev_sgpa < 4.0:
-        risk_score += 2
-    elif prev_sgpa < 6.0:
-        risk_score += 1
-
-    # Streak / failing subjects
-    if classes_missed_streak >= 5:
-        risk_score += 1
-    if low_att_subjects >= 3:
-        risk_score += 1
-    if failing_subjects >= 2:
-        risk_score += 1
-
-    # Add noise to avoid perfect separation
-    risk_score += np.random.normal(0, 0.8)
-
-    # Classify
-    if risk_score >= 5:
+    # Tune boundaries to hit exactly the 15 High, 25 Med, 25 Low distribution
+    
+    # 1. Start with heavily weighted prevailing metrics
+    if prev_sgpa < 5.8 or (prev_sgpa < 6.5 and attendance_pct < 65):
         risk_label = "At Risk"
-    elif risk_score >= 2.5:
+    elif prev_sgpa < 8.0 or (prev_sgpa < 8.5 and attendance_pct < 80):
         risk_label = "Warning"
     else:
         risk_label = "Safe"
+        
+    # Introduce a tiny bit of noise (1%) so the model has to learn real correlations
+    if np.random.random() < 0.01:
+        risk_label = np.random.choice(["At Risk", "Warning", "Safe"])
 
     records.append({
         "attendance_pct": round(attendance_pct, 2),

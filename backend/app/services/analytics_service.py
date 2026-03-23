@@ -93,8 +93,13 @@ class AnalyticsService:
                 grade_point = 0
                 if total_max > 0:
                     percentage = (total_scored / total_max) * 100
-                    # 10 point scale mapping (Integers for grade points per user request)
-                    grade_point = int(round(min(10.0, percentage / 10)))
+                    if percentage >= 90: grade_point = 10
+                    elif percentage >= 80: grade_point = 9
+                    elif percentage >= 70: grade_point = 8
+                    elif percentage >= 60: grade_point = 7
+                    elif percentage >= 50: grade_point = 6
+                    elif percentage >= 40: grade_point = 5
+                    else: grade_point = 0
 
                 if sub_att_total > 0 or sub_marks:
                     if sem_num not in semester_stats:
@@ -266,6 +271,7 @@ class AnalyticsService:
             "name": student.user.username if student.user else "Unknown",
             "enrollment_number": student.enrollment_number,
             "current_semester": student.current_semester,
+            "backlogs": student.backlogs,
             "attendance_percentage": round(attendance_pct, 1),
             "historical_attendance_percentage": round(cum_att_present / cum_att_total * 100, 1) if cum_att_total > 0 else 0,
             "average_marks": round(avg_marks_overall, 1),

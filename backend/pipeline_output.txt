@@ -1,0 +1,67 @@
+﻿============================================================
+STEP 1: Generating 65 students with perfect CGPA distribution
+============================================================
+  Bucket 'low': 15/15 students (CGPA 4.0-5.49)
+  Bucket 'mid_low': 10/10 students (CGPA 5.5-6.99)
+  Bucket 'mid': 10/10 students (CGPA 7.0-7.99)
+  Bucket 'mid_high': 15/15 students (CGPA 8.0-8.99)
+  Bucket 'high': 15/15 students (CGPA 9.0-9.7)
+
+  Total students: 65
+  CGPA < 5.5:  15
+  CGPA >= 9.0: 15
+  Backlogs for CGPA >= 6.5: 0
+  At Risk: 11, Warning: 25, Safe: 29
+
+  Saved to H:\mini project\vibe\backend\scripts\synthetic_students.json
+
+============================================================
+STEP 2: Seeding students into local SQLite database
+============================================================
+  Section B ID: 1
+  Mentor ID: 1
+  Subjects in DB: 39
+  Cleared 65 old students and their data
+  Inserted 65 students
+  Created 1300 marks records
+  Created 8775 attendance records
+
+============================================================
+STEP 3: Generating ML training data (6000 records)
+============================================================
+  Generated 6000 training records
+  Distribution:
+    risk_label
+Warning    3469
+At Risk    1933
+Safe        598
+
+============================================================
+STEP 4: Training XGBoost Risk Classifier
+============================================================
+  Test Accuracy: 98.5%
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+     At Risk      0.987     0.979     0.983       387
+        Safe      0.982     0.933     0.957       119
+     Warning      0.984     0.997     0.991       694
+
+    accuracy                          0.985      1200
+   macro avg      0.985     0.970     0.977      1200
+weighted avg      0.985     0.985     0.985      1200
+
+  Model saved to H:\mini project\vibe\backend\app\ml_models
+
+============================================================
+STEP 5: Verifying risk predictions on actual DB students
+============================================================
+  At Risk:  11 students
+  Warning:  37 students
+  Safe:     17 students
+
+============================================================
+ALL DONE! Data pipeline complete.
+============================================================
+Restart the backend server to pick up the new ML model.

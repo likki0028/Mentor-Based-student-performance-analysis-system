@@ -5,6 +5,7 @@ __pycache__/
 *.so
 .Python
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -40,13 +41,7 @@ dist-ssr/
 .vscode/
 .idea/
 
-# Database
-*.db
-
-
-
-# ML Models and Data
-backend/app/ml_models/
-*.pkl
-synthetic_students*.json
-*.csv
+# Junk/duplicate databases (keep sql_app.db tracked!)
+backend/app.db
+backend/student_performance.db
+backend/vibe.db

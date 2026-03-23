@@ -27,6 +27,7 @@ class StudentBase(BaseModel):
     enrollment_number: str
     name: Optional[str] = None
     current_semester: Optional[int] = None
+    backlogs: Optional[int] = 0
 
 class StudentOut(StudentBase):
     id: int

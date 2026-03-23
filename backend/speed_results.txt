@@ -1,0 +1,8 @@
+Login (student): 1.19s (status 200)
+Student Dashboard: 0.54s (status 404)
+Student Attendance: 0.73s (status 422)
+Student Marks: 0.73s (status 422)
+Student Analytics: 0.54s (status 404)
+Student Alerts: 0.77s (status 200)
+Login (lecturer): 0.74s (status 401)
+Lecturer login failed: {"detail":"Incorrect username or password"}

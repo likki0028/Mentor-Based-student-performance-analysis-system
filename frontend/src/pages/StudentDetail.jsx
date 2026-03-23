@@ -264,7 +264,7 @@ const StudentDetail = () => {
                                         <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fill: '#475569' }} />
                                         <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fontSize: 10 }} />
                                         <Radar name="Attendance" dataKey="attendance" stroke="#22c55e" fill="#22c55e" fillOpacity={0.2} strokeWidth={2} />
-                                        <Radar name="Marks" dataKey="marks" stroke="#6366f1" fill="#6366f1" fillOpacity={0.15} strokeWidth={2} />
+                                        <Radar name="Marks" dataKey="marks" stroke="#6366f1" fill="#6366f1" fillOpacity={0.4} strokeWidth={3} />
                                         <Tooltip contentStyle={{ borderRadius: 10, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', fontSize: '0.85rem' }} />
                                     </RadarChart>
                                 </ResponsiveContainer>

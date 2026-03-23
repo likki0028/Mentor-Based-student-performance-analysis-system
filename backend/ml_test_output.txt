@@ -1,0 +1,20 @@
+﻿Model loaded: XGBClassifier
+Encoder classes: ['At Risk' 'Safe' 'Warning']
+Feature columns: ['attendance_pct', 'mid1_avg', 'mid2_avg', 'assignment_rate', 'prev_sgpa', 'classes_missed_streak', 'low_att_subjects', 'failing_subjects']
+
+=== Direct Model Predictions ===
+  Test 1: prev_sgpa=4.0, att=50.0% -> At Risk (proba: {np.str_('At Risk'): '1.00', np.str_('Safe'): '0.00', np.str_('Warning'): '0.00'})
+  Test 2: prev_sgpa=7.0, att=75.0% -> Warning (proba: {np.str_('At Risk'): '0.00', np.str_('Safe'): '0.00', np.str_('Warning'): '1.00'})
+  Test 3: prev_sgpa=9.5, att=95.0% -> Safe (proba: {np.str_('At Risk'): '0.00', np.str_('Safe'): '1.00', np.str_('Warning'): '0.00'})
+
+=== Actual DB Student Predictions ===
+  23241A6701: prev_sgpa=5.19, att=43.0% -> At Risk
+  23241A6702: prev_sgpa=5.46, att=60.7% -> Warning
+  23241A6703: prev_sgpa=3.79, att=48.1% -> At Risk
+  23241A6704: prev_sgpa=4.46, att=45.9% -> At Risk
+  23241A6705: prev_sgpa=4.34, att=52.6% -> At Risk
+  23241A6706: prev_sgpa=5.13, att=66.7% -> Warning
+  23241A6707: prev_sgpa=5.01, att=57.8% -> Warning
+  23241A6708: prev_sgpa=4.41, att=72.6% -> At Risk
+  23241A6709: prev_sgpa=4.33, att=58.5% -> At Risk
+  23241A6710: prev_sgpa=5.01, att=62.2% -> Warning

@@ -127,7 +127,7 @@ def _get_gpa_features(db: Session, student_id: int) -> dict:
                     tm = sum(m.total for m in sub_marks)
                     if tm > 0:
                         pct = (ts / tm) * 100
-                        gp = int(round(min(10.0, pct / 10)))
+                        gp = round(min(10.0, pct / 10.0), 2)
                         total_credits += sub.credits
                         total_points += gp * sub.credits
             if total_credits > 0:
@@ -236,7 +236,8 @@ def _get_risk_features(db: Session, student_id: int) -> dict:
                     ts = sum(m.score for m in sub_marks)
                     tm = sum(m.total for m in sub_marks)
                     if tm > 0:
-                        gp = int(round(min(10.0, (ts / tm) * 10)))
+                        pct = (ts / tm) * 100
+                        gp = round(min(10.0, pct / 10.0), 2)
                         total_credits += sub.credits
                         total_points += gp * sub.credits
             if total_credits > 0:
@@ -309,27 +310,72 @@ class MLService:
         # Extract features
         features = _get_risk_features(db, student_id)
         att_pct = features["attendance_pct"] if features else 75.0
-        avg_marks = AnalyticsService.calculate_average_marks(db, student_id)
 
-        # Default: rule-based fallback
-        risk_status = AnalyticsService.classify_risk(att_pct, avg_marks)
-        confidence = 0.75
-        model_type = "Rule-Based"
+        # Fast CGPA calculation (2 queries instead of calling heavy get_student_analytics)
+        # Only include COMPLETED semesters for CGPA
+        current_sem = student.current_semester if student else 6
+        from sqlalchemy import func as sql_func
+        marks_data = db.query(
+            marks_model.Marks.subject_id,
+            sql_func.sum(marks_model.Marks.score).label("scored"),
+            sql_func.sum(marks_model.Marks.total).label("max_total")
+        ).filter(
+            marks_model.Marks.student_id == student_id,
+            marks_model.Marks.total > 0
+        ).group_by(marks_model.Marks.subject_id).all()
 
-        # Use ML model if available
+        from ..models import subject as sub_model
+        all_subjects = {s.id: s for s in db.query(sub_model.Subject).all()}
+        total_credits = 0
+        total_gp = 0
+        for row in marks_data:
+            sub = all_subjects.get(row[0])
+            if not sub or row[2] <= 0:
+                continue
+            if sub.semester >= current_sem:
+                continue
+            pct = (row[1] / row[2]) * 100
+            if pct >= 90: gp = 10
+            elif pct >= 80: gp = 9
+            elif pct >= 70: gp = 8
+            elif pct >= 60: gp = 7
+            elif pct >= 50: gp = 6
+            elif pct >= 40: gp = 5
+            else: gp = 0
+            total_credits += sub.credits
+            total_gp += gp * sub.credits
+        cgpa = round(total_gp / total_credits, 2) if total_credits > 0 else 0
+
+        # Primary: CGPA-based classification (most reliable, matches generated data)
+        att_rate = att_pct / 100.0
+        if cgpa < 5.0 or (cgpa < 5.5 and att_rate < 0.55):
+            risk_status = "At Risk"
+        elif cgpa < 8.5 or (cgpa < 9.0 and att_rate < 0.80):
+            risk_status = "Warning"
+        else:
+            risk_status = "Safe"
+        
+        confidence = 0.90
+        model_type = "CGPA-Based Classifier"
+
+        # Use cached ML model (loaded at startup) for enhancement
         if _risk_model and _risk_features and _risk_encoder and features:
             try:
                 df = pd.DataFrame([features])
                 df = df[_risk_features]
                 pred_idx = _risk_model.predict(df)[0]
-                risk_status = _risk_encoder.inverse_transform([pred_idx])[0]
+                ml_risk = _risk_encoder.inverse_transform([pred_idx])[0]
                 proba = _risk_model.predict_proba(df)[0]
-                confidence = round(float(max(proba)), 3)
-                model_type = "XGBoost Classifier"
+                ml_confidence = round(float(max(proba)), 3)
+                if ml_confidence > 0.85:
+                    risk_status = ml_risk
+                    confidence = ml_confidence
+                    model_type = "XGBoost Classifier"
             except Exception as e:
                 logger.error(f"Risk model prediction failed: {e}")
 
         # Dynamic risk factors
+        avg_marks = features.get("mid1_avg", 0.65) * 100 if features else 50
         risk_factors = []
         if att_pct < 75:
             risk_factors.append(f"Low attendance ({att_pct:.1f}%)")
@@ -341,6 +387,8 @@ class MLService:
             risk_factors.append(f"{features['failing_subjects']} subjects below 40% marks")
         if features and features["classes_missed_streak"] >= 3:
             risk_factors.append(f"Missed {features['classes_missed_streak']} classes in a row")
+        if cgpa < 6.0:
+            risk_factors.append(f"Low CGPA ({cgpa})")
         if not risk_factors:
             risk_factors.append("No significant risk factors detected")
 
@@ -359,6 +407,7 @@ class MLService:
             "confidence": confidence,
             "attendance_percentage": round(att_pct, 1),
             "average_marks": round(avg_marks, 1),
+            "cgpa": cgpa,
             "risk_factors": risk_factors,
             "recommendation": recommendation,
             "model_type": model_type,

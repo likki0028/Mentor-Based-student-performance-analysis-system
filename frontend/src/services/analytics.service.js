@@ -3,7 +3,7 @@ import api from './api';
 
 const analyticsService = {
     getStudentAnalytics: async (id) => {
-        const response = await api.get(`/analytics/student/${id}`);
+        const response = await api.get(`/analytics/student/${id}?t=${Date.now()}`);
         return response.data;
     },
 

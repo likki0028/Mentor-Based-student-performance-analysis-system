@@ -59,17 +59,66 @@ async def get_dashboard_stats(
         students = db.query(student_model.Student).all()
 
     total_students = len(students)
+    student_ids = [s.id for s in students]
 
-    # Count actual at-risk students using ML predictions
+    # Batch attendance query - single query for ALL students
+    att_data = db.query(
+        attendance_model.Attendance.student_id,
+        func.count(attendance_model.Attendance.id),
+        func.sum(func.cast(attendance_model.Attendance.status, SqlInt))
+    ).filter(
+        attendance_model.Attendance.student_id.in_(student_ids)
+    ).group_by(attendance_model.Attendance.student_id).all()
+    att_map = {row[0]: round((row[2] / row[1]) * 100, 2) if row[1] > 0 else 0.0 for row in att_data}
+
+    # Batch marks query - single query for ALL students' CGPA
+    marks_data = db.query(
+        marks_model.Marks.student_id,
+        marks_model.Marks.subject_id,
+        func.sum(marks_model.Marks.score).label("total_scored"),
+        func.sum(marks_model.Marks.total).label("total_max")
+    ).filter(
+        marks_model.Marks.student_id.in_(student_ids)
+    ).group_by(marks_model.Marks.student_id, marks_model.Marks.subject_id).all()
+
+    # Get subjects once
+    all_subjects = {s.id: s for s in db.query(sub_model.Subject).all()}
+
+    # Compute CGPA per student (only completed semesters)
+    # Build a map of student_id -> current_semester
+    stu_sem_map = {s.id: (s.current_semester or 6) for s in students}
+    student_cgpa = {}
+    for sid in student_ids:
+        current_sem = stu_sem_map.get(sid, 6)
+        total_credits = 0
+        total_grade_points = 0
+        stu_marks = [m for m in marks_data if m[0] == sid]
+        for row in stu_marks:
+            sub = all_subjects.get(row[1])
+            if not sub or row[3] <= 0:
+                continue
+            # Only include completed semesters for CGPA
+            if sub.semester >= current_sem:
+                continue
+            pct = (row[2] / row[3]) * 100
+            if pct >= 90: gp = 10
+            elif pct >= 80: gp = 9
+            elif pct >= 70: gp = 8
+            elif pct >= 60: gp = 7
+            elif pct >= 50: gp = 6
+            elif pct >= 40: gp = 5
+            else: gp = 0
+            total_credits += sub.credits
+            total_grade_points += gp * sub.credits
+        student_cgpa[sid] = round(total_grade_points / total_credits, 2) if total_credits > 0 else 0.0
+
+    # Count at-risk using CGPA + attendance (fast, no ML calls)
     at_risk_count = 0
-    recent_alert_msgs = []
     for stu in students:
-        prediction = MLService.predict_risk(db, stu.id)
-        if prediction.get("risk_status") == "At Risk":
+        cgpa = student_cgpa.get(stu.id, 0)
+        att_rate = att_map.get(stu.id, 0) / 100.0
+        if cgpa < 5.0 or (cgpa < 5.5 and att_rate < 0.55):
             at_risk_count += 1
-            name = stu.user.username if stu.user else "Unknown"
-            att = prediction.get("attendance_percentage", 0)
-            recent_alert_msgs.append(f"{name} - Attendance: {att}%")
 
     # Get recent actual alerts (only for these students) - actual Alert objects
     student_ids = [s.id for s in students]
@@ -346,42 +395,98 @@ async def get_my_students(
 
     students = query.all()
 
+    if not students:
+        return []
+
+    student_ids = [s.id for s in students]
+
+    # Batch attendance - single query for ALL students
+    att_data = db.query(
+        attendance_model.Attendance.student_id,
+        func.count(attendance_model.Attendance.id),
+        func.sum(func.cast(attendance_model.Attendance.status, SqlInt))
+    ).filter(
+        attendance_model.Attendance.student_id.in_(student_ids)
+    ).group_by(attendance_model.Attendance.student_id).all()
+    att_map = {row[0]: round((row[2] / row[1]) * 100, 2) if row[1] > 0 else 0.0 for row in att_data}
+
+    # Batch marks - single query for ALL students, grouped by student+subject
+    marks_data = db.query(
+        marks_model.Marks.student_id,
+        marks_model.Marks.subject_id,
+        func.sum(marks_model.Marks.score).label("total_scored"),
+        func.sum(marks_model.Marks.total).label("total_max")
+    ).filter(
+        marks_model.Marks.student_id.in_(student_ids),
+        marks_model.Marks.total > 0
+    ).group_by(marks_model.Marks.student_id, marks_model.Marks.subject_id).all()
+
+    # Build per-student marks lookup
+    from collections import defaultdict
+    stu_marks_map = defaultdict(list)
+    for row in marks_data:
+        stu_marks_map[row[0]].append(row)
+
+    # Batch avg marks per student
+    avg_marks_data = db.query(
+        marks_model.Marks.student_id,
+        (func.sum(marks_model.Marks.score) * 100.0 / func.sum(marks_model.Marks.total)).label("avg")
+    ).filter(
+        marks_model.Marks.student_id.in_(student_ids),
+        marks_model.Marks.total > 0
+    ).group_by(marks_model.Marks.student_id).all()
+    avg_marks_map = {row[0]: round(float(row[1]), 2) for row in avg_marks_data}
+
+    # Get all subjects once
+    all_subjects = {s.id: s for s in db.query(sub_model.Subject).all()}
+
     results = []
     for stu in students:
-        # Real attendance from DB
-        att_pct = _calc_attendance_pct(db, stu.id)
+        att_pct = att_map.get(stu.id, 0.0)
+        avg_marks = avg_marks_map.get(stu.id, 0.0)
 
-        # Calculate average marks
-        avg_marks = AnalyticsService.calculate_average_marks(db, stu.id)
-
-        # Use ML-based risk classification (XGBoost)
-        ml_prediction = MLService.predict_risk(db, stu.id)
-        risk_status = ml_prediction.get("risk_status", AnalyticsService.classify_risk(att_pct, avg_marks))
-
-        # Calculate CGPA from completed semesters
+        # Compute CGPA from pre-fetched data + track backlog subjects
+        # Only consider COMPLETED semesters (< current_semester) for CGPA and backlogs
         current_sem = stu.current_semester or 6
-        completed_subjects = db.query(sub_model.Subject).filter(
-            sub_model.Subject.semester <= current_sem
-        ).all()
         total_credits = 0
         total_grade_points = 0
-        for subj in completed_subjects:
-            sub_marks = db.query(marks_model.Marks).filter(
-                marks_model.Marks.student_id == stu.id,
-                marks_model.Marks.subject_id == subj.id
-            ).all()
-            if sub_marks:
-                total_scored = sum(m.score for m in sub_marks)
-                total_max = sum(m.total for m in sub_marks)
-                if total_max > 0:
-                    percentage = (total_scored / total_max) * 100
-                    grade_point = int(round(min(10.0, percentage / 10)))
-                else:
-                    grade_point = 0
-                total_credits += subj.credits
-                total_grade_points += grade_point * subj.credits
-
+        backlog_subs = []
+        for row in stu_marks_map.get(stu.id, []):
+            sub = all_subjects.get(row[1])
+            if not sub or row[3] <= 0:
+                continue
+            # Skip current semester subjects for CGPA/backlog calculation
+            if sub.semester >= current_sem:
+                continue
+            pct = round((row[2] / row[3]) * 100, 1)
+            if pct >= 90: gp = 10
+            elif pct >= 80: gp = 9
+            elif pct >= 70: gp = 8
+            elif pct >= 60: gp = 7
+            elif pct >= 50: gp = 6
+            elif pct >= 40: gp = 5
+            else: gp = 0
+            total_credits += sub.credits
+            total_grade_points += gp * sub.credits
+            # Track backlog subjects (below 40%) - only from completed semesters
+            if gp == 0:
+                backlog_subs.append({
+                    "subject_name": sub.name,
+                    "subject_code": sub.code,
+                    "semester": sub.semester,
+                    "percentage": pct,
+                    "credits": sub.credits,
+                })
         cgpa = round(total_grade_points / total_credits, 2) if total_credits > 0 else 0.0
+
+        # Deterministic risk classification
+        att_rate = att_pct / 100.0
+        if cgpa < 5.0 or (cgpa < 5.5 and att_rate < 0.55):
+            risk_status = "At Risk"
+        elif cgpa < 8.5 or (cgpa < 9.0 and att_rate < 0.80):
+            risk_status = "Warning"
+        else:
+            risk_status = "Safe"
 
         summary = faculty_schema.StudentSummary(
             id=stu.id,
@@ -392,6 +497,8 @@ async def get_my_students(
             average_marks=avg_marks,
             risk_status=risk_status,
             cgpa=cgpa,
+            backlogs=stu.backlogs or 0,
+            backlog_subjects=backlog_subs,
         )
         results.append(summary)
 

@@ -133,7 +133,7 @@ def total_to_grade(total_pct):
 # ============================================================================
 # REALISTIC MARK GENERATORS
 # ============================================================================
-SECTIONS = ["A", "B", "C"]
+SECTIONS = ["B"]  # Only Section B for the demo
 STUDENTS_PER_SECTION = 65
 GENDERS = ["Male", "Female"]
 
@@ -384,13 +384,13 @@ def generate_noncredit_marks(ability):
 # ============================================================================
 def generate_one_student(student_id, name, section, gender, risk_profile, is_topper=False):
     if risk_profile == "High":
-        ability = random.uniform(0.28, 0.48)
-        attn_habit = random.uniform(0.40, 0.65)
+        ability = random.uniform(0.32, 0.50)
+        attn_habit = random.uniform(0.42, 0.62)
     elif risk_profile == "Medium":
-        ability = random.uniform(0.55, 0.72)
-        attn_habit = random.uniform(0.70, 0.85)
+        ability = random.uniform(0.55, 0.74)
+        attn_habit = random.uniform(0.70, 0.86)
     else:  # Low risk
-        ability = random.uniform(0.78, 0.96)
+        ability = random.uniform(0.76, 0.93)
         attn_habit = random.uniform(0.85, 0.98)
 
     student = {
@@ -654,15 +654,16 @@ def main():
     student_counter = 1
 
     for section in SECTIONS:
-        # 10 High, 15 Medium, 40 Low per section
-        # Mark 3-4 of the Low-risk students as "toppers" (can get full internal / 59 ext)
-        risk_list = ["High"] * 10 + ["Medium"] * 15 + ["Low"] * 40
+        # 5 High, 15 Medium, 45 Low per section — realistic bell curve
+        # Adjusts so that after CGPA post-processing we get:
+        #   ~5 below 5, ~5 at 5-6, ~10 at 6-7, ~18 at 7-8, ~15 at 8-9, ~12 at 9+
+        risk_list = ["High"] * 5 + ["Medium"] * 15 + ["Low"] * 45
         random.shuffle(risk_list)
 
         topper_indices = set()
         low_indices = [i for i, r in enumerate(risk_list) if r == "Low"]
-        if len(low_indices) >= 4:
-            topper_indices = set(random.sample(low_indices, 4))
+        if len(low_indices) >= 5:
+            topper_indices = set(random.sample(low_indices, 5))
 
         for i, risk in enumerate(risk_list):
             sid = f"23241A67{student_counter:02d}"
