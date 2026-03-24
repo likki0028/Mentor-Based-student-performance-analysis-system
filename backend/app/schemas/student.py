@@ -4,7 +4,9 @@ from datetime import date
 
 class AttendanceBase(BaseModel):
     date: date
-    status: bool 
+    status: bool
+    period: Optional[int] = None
+    subject_id: Optional[int] = None
     subject_name: Optional[str] = None
 
 class AttendanceOut(AttendanceBase):
