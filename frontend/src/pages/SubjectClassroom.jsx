@@ -10,7 +10,7 @@ const SubjectClassroom = () => {
     const [assignments, setAssignments] = useState([]);
     const [materials, setMaterials] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('stream');
+    const [activeTab, setActiveTab] = useState('materials');
     const [quizzes, setQuizzes] = useState([]);
     const [takingQuiz, setTakingQuiz] = useState(null); // quiz detail object when taking
     const [quizAnswers, setQuizAnswers] = useState({}); // { question_id: 'a'|'b'|'c'|'d' }
@@ -24,6 +24,7 @@ const SubjectClassroom = () => {
     const [doubtForm, setDoubtForm] = useState({ title: '', content: '' });
     const [newComment, setNewComment] = useState({});
     const [syllabusData, setSyllabusData] = useState({ topics: [], total: 0, completed: 0, percentage: 0 });
+    const [meetings, setMeetings] = useState([]);
 
     // Marks & Attendance
     const [myMarks, setMyMarks] = useState([]);
@@ -70,6 +71,12 @@ const SubjectClassroom = () => {
                     const sylRes = await api.get(`/syllabus/subject/${id}`);
                     setSyllabusData(sylRes.data);
                 } catch { setSyllabusData({ topics: [], total: 0, completed: 0, percentage: 0 }); }
+                
+                // Fetch meetings
+                try {
+                    const meetRes = await api.get(`/meetings/subject/${id}`);
+                    setMeetings(meetRes.data || []);
+                } catch { setMeetings([]); }
 
                 // Fetch student profile + marks + attendance
                 try {
@@ -184,7 +191,7 @@ const SubjectClassroom = () => {
 
                 {/* Tabs */}
                 <div className="flex gap-6" style={{ borderBottom: '1px solid var(--border)', marginBottom: '2rem', padding: '0 1rem' }}>
-                    {['stream', 'classwork', 'marks', 'attendance', 'quizzes', 'doubts', 'syllabus', 'people'].map(tab => (
+                    {['materials', 'assignments', 'marks', 'attendance', 'quizzes', 'meetings', 'doubts', 'syllabus', 'people'].map(tab => (
                         <button key={tab} 
                             onClick={() => setActiveTab(tab)}
                             style={{
@@ -206,57 +213,31 @@ const SubjectClassroom = () => {
 
                 {/* Tab Content */}
                 <div className="classroom-content">
-                    {activeTab === 'stream' && (
-                        <div className="grid" style={{ gridTemplateColumns: '200px 1fr', alignItems: 'start' }}>
-                            <div className="card" style={{ padding: '1rem' }}>
-                                <p style={{ fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>Upcoming</p>
-                                {assignments.length > 0 ? (
-                                    <p className="text-xs text-muted">Next due: {new Date(assignments[0].due_date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</p>
-                                ) : (
-                                    <p className="text-xs text-muted">Woohoo, no work due soon!</p>
-                                )}
-                                <Link to="#" onClick={() => setActiveTab('classwork')} 
-                                    style={{ display: 'block', marginTop: '1rem', fontSize: '0.75rem', fontWeight: 600 }}>
-                                    View all
-                                </Link>
-                            </div>
-                            
-                            <div className="flex flex-col gap-4">
-                                <div className="card flex items-center gap-4" style={{ cursor: 'text' }}>
-                                    <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>S</div>
-                                    <p className="text-muted text-sm">Announce something to your class</p>
-                                </div>
-                                <div className="space-y-4">
-                                    {assignments.map(asm => (
-                                        <Link to={`/student/assignment/${asm.id}`} key={asm.id} className="card flex items-center gap-4 hover-lift p-4 cursor-pointer">
-                                            <div className="bg-primary-soft p-2 rounded-full">📝</div>
-                                            <div className="flex-1">
-                                                <p className="font-semibold">{asm.title}</p>
-                                                <p className="text-xs text-muted">Due {new Date(asm.due_date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</p>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                    {materials.map(mat => (
-                                        <Link to={`/student/material/${mat.id}`} key={mat.id} className="card flex items-center gap-4 hover-lift p-4 cursor-pointer">
-                                            <div className="bg-success-soft p-2 rounded-full">📁</div>
-                                            <div className="flex-1">
-                                                <p className="font-semibold">{mat.title}</p>
-                                                <p className="text-xs text-muted">Posted {new Date().toLocaleDateString()}</p>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
+                    {activeTab === 'materials' && (
+                        <div className="flex flex-col gap-6">
+                            <h2 style={{ borderBottom: '2px solid var(--success)', paddingBottom: '0.5rem', color: 'var(--success)' }}>📚 Materials</h2>
+                            <div className="grid grid-2 gap-4" style={{ marginTop: '0.5rem' }}>
+                                {materials.map((m, i) => (
+                                    <a href={m.file_url} target="_blank" rel="noreferrer" key={i} className="card flex items-center gap-4" style={{ padding: '1rem', textDecoration: 'none' }}>
+                                        <div style={{ fontSize: '1.5rem' }}>🗂️</div>
+                                        <div>
+                                            <p style={{ fontWeight: 600, color: 'var(--text-main)', margin: '0 0 0.25rem' }}>{m.title}</p>
+                                            <p className="text-xs text-muted" style={{ margin: 0 }}>{m.description || 'Reference Material'}</p>
+                                        </div>
+                                    </a>
+                                ))}
+                                {materials.length === 0 && <p className="text-muted">No materials shared yet.</p>}
                             </div>
                         </div>
                     )}
 
-                    {activeTab === 'classwork' && (
+                    {activeTab === 'assignments' && (
                         <div className="flex flex-col gap-6">
                             <section>
                                 <h2 style={{ borderBottom: '2px solid var(--primary)', paddingBottom: '0.5rem', color: 'var(--primary)' }}>Assignments</h2>
                                 <div className="flex flex-col gap-2" style={{ marginTop: '1rem' }}>
-                                    {assignments.map((a, i) => (
-                                        <div key={i} className="card flex justify-between items-center" style={{ padding: '1rem', cursor: 'pointer' }}>
+                                    {assignments.map((a) => (
+                                        <Link to={`/student/assignment/${a.id}`} key={a.id} className="card flex justify-between items-center hover-lift" style={{ padding: '1rem', cursor: 'pointer', textDecoration: 'none', color: 'inherit' }}>
                                             <div className="flex items-center gap-4">
                                                 <div style={{ fontSize: '1.25rem' }}>📄</div>
                                                 <div>
@@ -264,26 +245,10 @@ const SubjectClassroom = () => {
                                                     <p className="text-xs text-muted">Due {new Date(a.due_date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</p>
                                                 </div>
                                             </div>
-                                            <button className="btn-secondary" style={{ fontSize: '0.75rem' }}>View Submission</button>
-                                        </div>
+                                            <span className="btn-secondary" style={{ fontSize: '0.75rem' }}>View Submission</span>
+                                        </Link>
                                     ))}
                                     {assignments.length === 0 && <p className="text-muted">No assignments listed.</p>}
-                                </div>
-                            </section>
-
-                            <section>
-                                <h2 style={{ borderBottom: '2px solid var(--success)', paddingBottom: '0.5rem', color: 'var(--success)' }}>Materials</h2>
-                                <div className="grid grid-2" style={{ marginTop: '1rem' }}>
-                                    {materials.map((m, i) => (
-                                        <a href={m.file_url} target="_blank" rel="noreferrer" key={i} className="card flex items-center gap-4" style={{ padding: '1rem', textDecoration: 'none' }}>
-                                            <div style={{ fontSize: '1.5rem' }}>🗂️</div>
-                                            <div>
-                                                <p style={{ fontWeight: 600, color: 'var(--text-main)' }}>{m.title}</p>
-                                                <p className="text-xs text-muted">{m.description || 'Reference Material'}</p>
-                                            </div>
-                                        </a>
-                                    ))}
-                                    {materials.length === 0 && <p className="text-muted">No materials shared yet.</p>}
                                 </div>
                             </section>
                         </div>
@@ -391,6 +356,45 @@ const SubjectClassroom = () => {
                                         })}
                                     </div>
                                 )
+                            )}
+                        </div>
+                    )}
+
+                    {/* Meetings Tab */}
+                    {activeTab === 'meetings' && (
+                        <div className="flex flex-col gap-6">
+                            <h2 style={{ marginBottom: 0 }}>📹 Online Meetings</h2>
+                            {meetings.length === 0 ? (
+                                <div className="card text-center" style={{ padding: '3rem' }}>
+                                    <div style={{ fontSize: '3rem', marginBottom: '0.5rem', opacity: 0.3 }}>📹</div>
+                                    <p className="text-muted">No meetings scheduled for this subject.</p>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-3">
+                                    {meetings.map((m) => {
+                                        const isEmergency = m.priority === 'emergency';
+                                        return (
+                                            <div key={m.id} className="card" style={{ padding: '1.25rem 1.5rem', borderLeft: isEmergency ? '4px solid #ef4444' : '4px solid var(--primary)' }}>
+                                                <div className="flex items-start" style={{ justifyContent: 'space-between' }}>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2" style={{ marginBottom: '0.25rem' }}>
+                                                            <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{m.title}</h3>
+                                                            {isEmergency && <span className="badge badge-danger" style={{ fontSize: '0.65rem' }}>🚨 Emergency</span>}
+                                                        </div>
+                                                        <p className="text-sm text-muted" style={{ margin: '0 0 0.5rem' }}>Scheduled for: {new Date(m.meeting_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</p>
+                                                        {m.description && <p className="text-sm" style={{ margin: 0 }}>{m.description}</p>}
+                                                    </div>
+                                                    <div className="flex flex-col gap-2 items-end">
+                                                        <a href={m.meeting_link} target="_blank" rel="noreferrer" className="btn-success" style={{ textDecoration: 'none', padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                                                            Join Meeting
+                                                        </a>
+                                                        <span className="text-xs text-muted">Created: {new Date(m.created_at).toLocaleDateString()}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             )}
                         </div>
                     )}

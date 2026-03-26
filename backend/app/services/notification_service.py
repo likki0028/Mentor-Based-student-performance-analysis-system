@@ -117,6 +117,7 @@ def notify_bulk(
     notif_type: NotificationType = NotificationType.SYSTEM,
     priority: NotificationPriority = NotificationPriority.LOW,
     link: str = None,
+    background_tasks = None,
 ):
     """Send the same notification to multiple users.
     Uses bulk email (single SMTP connection) for HIGH priority."""
@@ -148,10 +149,20 @@ def notify_bulk(
 
     # 3. Send ONE bulk email (single SMTP connection for all recipients)
     if priority == NotificationPriority.HIGH and email_recipients:
-        send_bulk_email(
-            recipients=email_recipients,
-            title=title,
-            message=message,
-            link=link,
-            priority="high"
-        )
+        if background_tasks:
+            background_tasks.add_task(
+                send_bulk_email,
+                recipients=email_recipients,
+                title=title,
+                message=message,
+                link=link,
+                priority="high"
+            )
+        else:
+            send_bulk_email(
+                recipients=email_recipients,
+                title=title,
+                message=message,
+                link=link,
+                priority="high"
+            )

@@ -14,7 +14,7 @@ const FacultyClassroom = () => {
     const [assignments, setAssignments] = useState([]);
     const [materials, setMaterials] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('stream');
+    const [activeTab, setActiveTab] = useState('materials');
 
     // --- Attendance state ---
     const [attDate, setAttDate] = useState(new Date().toISOString().slice(0, 10));
@@ -102,6 +102,52 @@ const FacultyClassroom = () => {
     const [expandedQuiz, setExpandedQuiz] = useState(null);
     const [quizResults, setQuizResults] = useState({});
     const [quizResultsLoading, setQuizResultsLoading] = useState(false);
+
+    // --- Meetings states ---
+    const [meetings, setMeetings] = useState([]);
+    const [meetingsLoading, setMeetingsLoading] = useState(false);
+    const [showMeetingModal, setShowMeetingModal] = useState(false);
+    const [meetingForm, setMeetingForm] = useState({ title: '', description: '', meeting_link: '', meeting_time: '', priority: 'normal' });
+    const [meetingSubmitting, setMeetingSubmitting] = useState(false);
+
+    const fetchMeetings = async () => {
+        setMeetingsLoading(true);
+        try {
+            const res = await api.get(`/meetings/subject/${subjectId}`, { params: { section_id: sectionId } });
+            setMeetings(res.data);
+        } catch { setMeetings([]); }
+        setMeetingsLoading(false);
+    };
+
+    const handleCreateMeeting = async (e) => {
+        e.preventDefault();
+        setMeetingSubmitting(true);
+        try {
+            await api.post('/meetings/', {
+                ...meetingForm,
+                subject_id: parseInt(subjectId),
+                section_id: sectionId !== 'null' && sectionId !== 'undefined' ? parseInt(sectionId) : null
+            });
+            toast.success('Meeting scheduled successfully!');
+            setShowMeetingModal(false);
+            setMeetingForm({ title: '', description: '', meeting_link: '', meeting_time: '', priority: 'normal' });
+            fetchMeetings();
+        } catch (err) {
+            toast.error(err.response?.data?.detail || 'Failed to schedule meeting');
+        }
+        setMeetingSubmitting(false);
+    };
+
+    const handleDeleteMeeting = async (meetingId) => {
+        if (!window.confirm('Are you sure you want to delete this meeting?')) return;
+        try {
+            await api.delete(`/meetings/${meetingId}`);
+            toast.success('Meeting deleted successfully!');
+            fetchMeetings();
+        } catch (err) {
+            toast.error(err?.response?.data?.detail || 'Failed to delete meeting');
+        }
+    };
 
     // --- Analytics, Doubts, Syllabus, Finalization states ---
     const [classAnalytics, setClassAnalytics] = useState(null);
@@ -472,6 +518,7 @@ const FacultyClassroom = () => {
         if (tab === 'analytics') { fetchAnalytics(); }
         if (tab === 'doubts') { fetchDoubts(); }
         if (tab === 'syllabus') { fetchSyllabus(); }
+        if (tab === 'meetings') { fetchMeetings(); }
     };
 
     const handleCreateAssignment = async (e) => {
@@ -613,7 +660,7 @@ const FacultyClassroom = () => {
 
                 {/* Tabs */}
                 <div className="flex" style={{ gap: '2rem', borderBottom: '1px solid var(--border)', marginBottom: '2rem', padding: '0 1rem' }}>
-                    {['stream', 'classwork', 'attendance', 'marks', 'quizzes', 'analytics', 'doubts', 'syllabus', 'people'].map(tab => (
+                    {['materials', 'assignments', 'attendance', 'marks', 'quizzes', 'analytics', 'meetings', 'doubts', 'syllabus', 'people'].map(tab => (
                         <button key={tab} 
                             onClick={() => handleTabChange(tab)}
                             style={{
@@ -634,66 +681,32 @@ const FacultyClassroom = () => {
 
                 {/* Content Area */}
                 <div className="classroom-content">
-                    {activeTab === 'stream' && (
-                        <div className="grid" style={{ gridTemplateColumns: '220px 1fr', gap: '1.5rem' }}>
-                            <div className="card" style={{ padding: '1.25rem' }}>
-                                <p style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.75rem' }}>Quick Stats</p>
-                                <div className="flex flex-col gap-2 text-sm">
-                                    <div className="flex justify-between">
-                                        <span className="text-muted">Students:</span>
-                                        <span className="font-bold">{students.length}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-muted">Assignments:</span>
-                                        <span className="font-bold">{assignments.length}</span>
-                                    </div>
-                                </div>
+                    {activeTab === 'materials' && (
+                        <div className="flex flex-col gap-6">
+                            <div className="flex items-center justify-between">
+                                <h2 style={{ margin: 0, color: 'var(--success)' }}>📚 Materials</h2>
+                                <button className="btn-success" style={{ borderRadius: '24px', padding: '0.6rem 1.5rem' }} onClick={() => setShowMatModal(true)}>
+                                    + Add Material
+                                </button>
                             </div>
-
-                            <div className="flex flex-col gap-4">
-                                <div className="card text-muted text-sm p-4 border-dashed" style={{ border: '2px dashed var(--border)', background: 'transparent' }}>
-                                    Announcements feature coming soon...
-                                </div>
-                                
-                                {assignments.map(asm => (
-                                    <div key={asm.id} className="card flex items-center gap-4 p-4 hover-lift cursor-pointer" onClick={() => navigate(`/lecturer/assignment/${asm.id}`)}>
-                                        <div style={{ padding: '0.75rem', background: 'var(--primary-light)', borderRadius: '50%', color: 'var(--primary)' }}>📝</div>
-                                        <div className="flex-1">
-                                            <p className="font-bold">{asm.title}</p>
-                                            <p className="text-xs text-muted">Due {new Date(asm.due_date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</p>
-                                        </div>
-                                        <span className="text-xs" style={{ color: 'var(--primary)', fontWeight: 600 }}>View →</span>
-                                    </div>
-                                ))}
-                                
-                                {materials.map(mat => (
-                                    <div key={mat.id} className="card flex items-center gap-4 p-4 hover-lift cursor-pointer" onClick={() => navigate(`/lecturer/material/${mat.id}`)}>
-                                        <div style={{ padding: '0.75rem', background: 'var(--success-light)', borderRadius: '50%', color: 'var(--success)' }}>📁</div>
-                                        <div className="flex-1">
-                                            <p className="font-bold">{mat.title}</p>
-                                            <p className="text-xs text-muted">{mat.description || 'Posted recently'}</p>
-                                        </div>
+                            <div className="grid grid-2 gap-4">
+                                {materials.map(m => (
+                                    <div key={m.id} className="card flex items-center gap-3 p-4 hover-lift cursor-pointer" onClick={() => navigate(`/lecturer/material/${m.id}`)}>
+                                        <span>📚</span>
+                                        <span className="font-semibold flex-1">{m.title}</span>
                                         <span className="text-xs" style={{ color: 'var(--success)', fontWeight: 600 }}>View →</span>
                                     </div>
                                 ))}
-
-                                {assignments.length === 0 && materials.length === 0 && (
-                                    <div className="text-center py-10 text-muted">
-                                        <p>No posts yet. Go to Classwork to share materials.</p>
-                                    </div>
-                                )}
+                                {materials.length === 0 && <p className="text-muted text-sm">No materials shared yet.</p>}
                             </div>
                         </div>
                     )}
 
-                    {activeTab === 'classwork' && (
+                    {activeTab === 'assignments' && (
                         <div className="flex flex-col gap-8">
                             <div className="flex gap-3">
                                 <button className="btn-primary" style={{ borderRadius: '24px', padding: '0.6rem 1.5rem' }} onClick={() => setShowAssignModal(true)}>
                                     + Create Assignment
-                                </button>
-                                <button className="btn-success" style={{ borderRadius: '24px', padding: '0.6rem 1.5rem' }} onClick={() => setShowMatModal(true)}>
-                                    + Add Material
                                 </button>
                             </div>
 
@@ -713,20 +726,6 @@ const FacultyClassroom = () => {
                                         </div>
                                     ))}
                                     {assignments.length === 0 && <p className="text-muted text-sm">No assignments yet.</p>}
-                                </div>
-                            </section>
-
-                            <section>
-                                <h3 style={{ borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem', marginBottom: '1rem' }}>Materials</h3>
-                                <div className="grid grid-2 gap-4">
-                                    {materials.map(m => (
-                                        <div key={m.id} className="card flex items-center gap-3 p-4 hover-lift cursor-pointer" onClick={() => navigate(`/lecturer/material/${m.id}`)}>
-                                            <span>📚</span>
-                                            <span className="font-semibold flex-1">{m.title}</span>
-                                            <span className="text-xs" style={{ color: 'var(--success)', fontWeight: 600 }}>View →</span>
-                                        </div>
-                                    ))}
-                                    {materials.length === 0 && <p className="text-muted text-sm">No materials shared yet.</p>}
                                 </div>
                             </section>
                         </div>
@@ -1575,6 +1574,52 @@ const FacultyClassroom = () => {
                             )}
                         </div>
                     )}
+                    {/* Meetings Tab */}
+                    {activeTab === 'meetings' && (
+                        <div className="flex flex-col gap-6">
+                            <div className="flex items-center" style={{ justifyContent: 'space-between' }}>
+                                <h2 style={{ margin: 0 }}>📹 Online Meetings</h2>
+                                <button className="btn-primary" style={{ fontSize: '0.85rem' }} onClick={() => setShowMeetingModal(true)}>
+                                    + Schedule Meeting
+                                </button>
+                            </div>
+                            
+                            {meetingsLoading ? (
+                                <p className="text-muted text-center py-4">Loading meetings...</p>
+                            ) : meetings.length === 0 ? (
+                                <div className="card text-center" style={{ padding: '3rem' }}>
+                                    <div style={{ fontSize: '3rem', marginBottom: '0.5rem', opacity: 0.3 }}>📹</div>
+                                    <p className="text-muted">No meetings scheduled yet.</p>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-4">
+                                    {meetings.map((m) => {
+                                        const isEmergency = m.priority === 'emergency';
+                                        return (
+                                            <div key={m.id} className="card flex items-center gap-4" style={{ padding: '1.25rem 1.5rem', borderLeft: isEmergency ? '4px solid #ef4444' : '4px solid var(--primary)' }}>
+                                                <div style={{ fontSize: '2rem' }}>📹</div>
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-2" style={{ marginBottom: '0.25rem' }}>
+                                                        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{m.title}</h3>
+                                                        {isEmergency && <span className="badge badge-danger" style={{ fontSize: '0.65rem' }}>🚨 Emergency</span>}
+                                                    </div>
+                                                    <p className="text-sm text-muted" style={{ margin: '0 0 0.5rem' }}>Scheduled for: {new Date(m.meeting_time).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</p>
+                                                    {m.description && <p className="text-sm" style={{ margin: 0 }}>{m.description}</p>}
+                                                </div>
+                                                <div className="flex flex-col gap-2 items-end">
+                                                    <a href={m.meeting_link} target="_blank" rel="noreferrer" className="btn-success" style={{ textDecoration: 'none', padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                                                        Join Meeting
+                                                    </a>
+                                                    <span className="text-xs text-muted">Created: {new Date(m.created_at).toLocaleDateString()}</span>
+                                                </div>
+                                                <button onClick={() => handleDeleteMeeting(m.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1rem', opacity: 0.5, marginLeft: '0.5rem' }} title="Delete Meeting">🗑️</button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -1731,6 +1776,46 @@ const FacultyClassroom = () => {
                                 <button type="button" className="btn-secondary" onClick={() => setShowQuizModal(false)}>Cancel</button>
                                 <button type="submit" className="btn-primary" disabled={quizSubmitting}>
                                     {quizSubmitting ? 'Creating...' : '🧠 Create Quiz'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Meeting Modal */}
+            {showMeetingModal && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+                    <div className="card" style={{ width: '100%', maxWidth: '500px', padding: '2rem' }}>
+                        <h2 style={{ marginTop: 0 }}>📹 Schedule Meeting</h2>
+                        <form onSubmit={handleCreateMeeting} className="flex flex-col gap-4">
+                            <div>
+                                <label className="block text-sm font-semibold mb-1">Title</label>
+                                <input className="w-full" type="text" required value={meetingForm.title} onChange={e => setMeetingForm({...meetingForm, title: e.target.value})} placeholder="e.g. Extra Class" />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold mb-1">Description (Optional)</label>
+                                <textarea className="w-full" rows="2" value={meetingForm.description} onChange={e => setMeetingForm({...meetingForm, description: e.target.value})}></textarea>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold mb-1">Meeting Link (Google Meet, Zoom, etc.)</label>
+                                <input className="w-full" type="url" required value={meetingForm.meeting_link} onChange={e => setMeetingForm({...meetingForm, meeting_link: e.target.value})} placeholder="https://meet.google.com/..." />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold mb-1">Meeting Date & Time</label>
+                                <input className="w-full" type="datetime-local" required value={meetingForm.meeting_time} onChange={e => setMeetingForm({...meetingForm, meeting_time: e.target.value})} />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold mb-1">Priority</label>
+                                <select className="w-full" value={meetingForm.priority} onChange={e => setMeetingForm({...meetingForm, priority: e.target.value})} style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                                    <option value="normal">Normal</option>
+                                    <option value="emergency">Emergency (Sends Email Alert)</option>
+                                </select>
+                            </div>
+                            <div className="flex justify-end gap-3 mt-4">
+                                <button type="button" className="btn-secondary" onClick={() => setShowMeetingModal(false)}>Cancel</button>
+                                <button type="submit" className="btn-primary" disabled={meetingSubmitting}>
+                                    {meetingSubmitting ? 'Scheduling...' : 'Schedule'}
                                 </button>
                             </div>
                         </form>

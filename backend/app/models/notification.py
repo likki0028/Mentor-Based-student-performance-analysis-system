@@ -14,6 +14,7 @@ class NotificationType(str, enum.Enum):
     QUIZ_ACTIVE = "quiz_active"
     DEADLINE_REMINDER = "deadline_reminder"
     SUBMISSION_UPDATE = "submission_update"
+    ONLINE_MEETING = "online_meeting"
     SYSTEM = "system"
 
 
