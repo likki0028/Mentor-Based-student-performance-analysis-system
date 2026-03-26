@@ -393,44 +393,20 @@ def seed_all():
         Base.metadata.create_all(bind=engine)
 
         # =========================================================
-        # STEP 1: Clear ALL existing data
+        # STEP 1: Clear ALL existing data (Postgres Safe)
         # =========================================================
         print("\n[1/12] Clearing existing data...")
-        tables_to_clear = [
-            quiz_response.QuizResponse,
-            quiz_attempt.QuizAttempt,
-            quiz_question.QuizQuestion,
-            quiz.Quiz,
-            doubt_comment.DoubtComment,
-            doubt.Doubt,
-            remark.Remark,
-            alert.Alert,
-            submission.Submission,
-            assignment.Assignment,
-            marks.Marks,
-            attendance.Attendance,
-            material.Material,
-            syllabus_topic.SyllabusTopic,
-            mark_finalization.MarkFinalization,
-            faculty.FacultyAssignment,
-            student.Student,
-            faculty.Faculty,
-            section.Section,
-            subject.Subject,
-            user.User,
-        ]
-        # Try to clear assignment_files if it exists
-        try:
-            db.query(assignment_file.AssignmentFile).delete()
-        except Exception:
-            pass
-
-        for tbl in tables_to_clear:
-            try:
-                db.query(tbl).delete()
-            except Exception:
-                pass
-        db.commit()
+        if "postgresql" in str(engine.url):
+             from sqlalchemy import text
+             with engine.connect() as conn:
+                 conn.execute(text("DROP SCHEMA public CASCADE; CREATE SCHEMA public;"))
+                 conn.commit()
+             print("  Postgres Schema cleared via CASCADE!")
+        else:
+            # Fallback for SQLite
+            Base.metadata.drop_all(bind=engine)
+            
+        Base.metadata.create_all(bind=engine)
         print("  Done!")
 
         # =========================================================
