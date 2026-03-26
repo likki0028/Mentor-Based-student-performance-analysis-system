@@ -54,7 +54,16 @@ def seed_data():
         # 1. Clear existing data (Postgres safe)
         # -------------------------------------------------
         print("\n[1/8] Dropping and recreating tables...")
-        Base.metadata.drop_all(bind=engine)
+        if "postgresql" in str(engine.url):
+             from sqlalchemy import text
+             with engine.connect() as conn:
+                 # Drop all tables with CASCADE for Postgres
+                 conn.execute(text("DROP SCHEMA public CASCADE; CREATE SCHEMA public;"))
+                 conn.commit()
+             print("  Postgres Schema cleared via CASCADE!")
+        else:
+            Base.metadata.drop_all(bind=engine)
+            
         Base.metadata.create_all(bind=engine)
         print("  Done!")
 

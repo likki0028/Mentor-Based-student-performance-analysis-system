@@ -88,7 +88,7 @@ const SubjectClassroom = () => {
                     ]);
                     // Filter marks for this subject only
                     setMyMarks((marksRes.data || []).filter(m => m.subject_id === parseInt(id)));
-                    setMyAttendance((attRes.data || []).filter(a => a.subject_name === subRes.data.name));
+                    setMyAttendance((attRes.data || []).filter(a => a.subject_id === parseInt(id)));
                 } catch { /* student profile may not exist */ }
             } catch (err) {
                 console.error('Core Classroom Error:', err);
@@ -611,7 +611,10 @@ const SubjectClassroom = () => {
                                     {[...myAttendance].sort((a, b) => new Date(b.date) - new Date(a.date)).map((a, i) => (
                                         <div key={i} className="card flex items-center" style={{ padding: '0.75rem 1rem', gap: '0.75rem' }}>
                                             <span style={{ fontSize: '1.2rem' }}>{a.status ? '✅' : '❌'}</span>
-                                            <span className="flex-1 text-sm font-semibold">{new Date(a.date).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                            <div className="flex-1">
+                                                <span className="text-sm font-semibold block">{new Date(a.date).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                                {a.period && <span className="text-xs text-muted block" style={{ marginTop: '0.1rem' }}>Period {a.period}</span>}
+                                            </div>
                                             <span className="badge" style={{ fontSize: '0.7rem', background: a.status ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)', color: a.status ? '#16a34a' : '#ef4444' }}>
                                                 {a.status ? 'Present' : 'Absent'}
                                             </span>
