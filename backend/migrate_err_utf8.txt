@@ -1,0 +1,435 @@
+﻿Connecting to source (SQLite) and destination (Neon)...
+Recreating clean tables on Remote DB...
+Extracting sections...
+  -> Migrating 1 rows into remote sections...
+  -> Success
+Extracting subjects...
+  -> Migrating 39 rows into remote subjects...
+  -> Success
+Extracting users...
+  -> Migrating 78 rows into remote users...
+  -> Success
+Extracting faculty...
+  -> Migrating 12 rows into remote faculty...
+  -> Success
+Extracting notifications...
+  -> Migrating 693 rows into remote notifications...
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python 
+migrate_to_neon.py > 
+migrate_err.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2125, in _exec_insertma
+ny_context
+    dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~^
+        cursor,
+        ^^^^^^^
+    ...<2 lines>...
+        context,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 952, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+psycopg2.errors.Foreign
+KeyViolation: insert 
+or update on table 
+"notifications" 
+violates foreign key 
+constraint "notificatio
+ns_user_id_fkey"
+DETAIL:  Key 
+(user_id)=(79) is not 
+present in table 
+"users".
+
+
+The above exception 
+was the direct cause 
+of the following 
+exception:
+
+Traceback (most recent 
+call last):
+  File "H:\mini project
+\vibe\backend\migrate_t
+o_neon.py", line 73, 
+in <module>
+    migrate()
+    ~~~~~~~^^
+  File "H:\mini project
+\vibe\backend\migrate_t
+o_neon.py", line 63, 
+in migrate
+    conn_dest.execute(t
+able.insert(), data)
+    ~~~~~~~~~~~~~~~~~^^
+^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1419, in execute
+    return meth(
+        self,
+        
+distilled_parameters,
+        
+execution_options or 
+NO_OPTIONS,
+    )
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\s
+ql\elements.py", line 
+527, in 
+_execute_on_connection
+    return connection._
+execute_clauseelement(
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~^
+        self, 
+distilled_params, 
+execution_options
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1641, in 
+_execute_clauseelement
+    ret = 
+self._execute_context(
+        dialect,
+    ...<8 lines>...
+        
+cache_hit=cache_hit,
+    )
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1844, in 
+_execute_context
+    return self._exec_i
+nsertmany_context(diale
+ct, context)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~^^^^^^
+^^^^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2133, in _exec_insertma
+ny_context
+    self._handle_dbapi_
+exception(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~^
+        e,
+        ^^
+    ...<4 lines>...
+        
+is_sub_exec=True,
+        
+^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2363, in 
+_handle_dbapi_exception
+    raise sqlalchemy_ex
+ception.with_traceback(
+exc_info[2]) from e
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2125, in _exec_insertma
+ny_context
+    dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~^
+        cursor,
+        ^^^^^^^
+    ...<2 lines>...
+        context,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 952, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.Integrit
+yError: (psycopg2.error
+s.ForeignKeyViolation) 
+insert or update on 
+table "notifications" 
+violates foreign key 
+constraint "notificatio
+ns_user_id_fkey"
+DETAIL:  Key 
+(user_id)=(79) is not 
+present in table 
+"users".
+
+[SQL: INSERT INTO 
+notifications (id, 
+user_id, title, 
+message, type, 
+priority, is_read, 
+link, created_at) 
+VALUES (%(id__0)s, 
+%(user_id__0)s, 
+%(title__0)s, 
+%(message__0)s, 
+%(type__0)s, 
+%(priority__0)s, 
+%(is_read__0)s, 
+%(link__0)s, 
+%(created_at__0)s), 
+(%(id__ ... 106179 
+characters truncated 
+... sage__692)s, 
+%(type__692)s, 
+%(priority__692)s, 
+%(is_read__692)s, 
+%(link__692)s, 
+%(created_at__692)s)]
+[parameters: 
+{'priority__0': 'LOW', 
+'is_read__0': True, 
+'message__0': 'This is 
+a low priority test 
+notification sent at 
+12:48:33.', 
+'created_at__0': dateti
+me.datetime(2026, 3, 
+22, 7, 18, 33, 
+133189), 'id__0': 1, 
+'link__0': 'http://loca
+lhost:5173/', 
+'type__0': 'SYSTEM', 
+'user_id__0': 10, 
+'title__0': 'Test LOW 
+Notification', 
+'priority__1': 'LOW', 
+'is_read__1': True, 
+'message__1': 'This is 
+a low priority test 
+notification sent at 
+12:50:02.', 
+'created_at__1': dateti
+me.datetime(2026, 3, 
+22, 7, 20, 2, 341987), 
+'id__1': 2, 'link__1': 
+'http://localhost:5173/
+', 'type__1': 
+'SYSTEM', 
+'user_id__1': 10, 
+'title__1': 'Test LOW 
+Notification', 
+'priority__2': 'LOW', 
+'is_read__2': True, 
+'message__2': 'This is 
+a low priority test 
+notification sent at 
+12:50:14.', 
+'created_at__2': dateti
+me.datetime(2026, 3, 
+22, 7, 20, 14, 
+396869), 'id__2': 3, 
+'link__2': 'http://loca
+lhost:5173/', 
+'type__2': 'SYSTEM', 
+'user_id__2': 10, 
+'title__2': 'Test LOW 
+Notification', 
+'priority__3': 'LOW', 
+'is_read__3': True, 
+'message__3': 'This is 
+a low priority test 
+notification sent at 
+12:52:06.', 
+'created_at__3': dateti
+me.datetime(2026, 3, 
+22, 7, 22, 6, 903076), 
+'id__3': 4, 'link__3': 
+'http://localhost:5173/
+', 'type__3': 
+'SYSTEM', 
+'user_id__3': 10, 
+'title__3': 'Test LOW 
+Notification', 
+'priority__4': 'LOW', 
+'is_read__4': True, 
+'message__4': 'This is 
+a low priority test 
+notification sent at 
+12:53:32.', 
+'created_at__4': dateti
+me.datetime(2026, 3, 
+22, 7, 23, 32, 83410), 
+'id__4': 5, 'link__4': 
+'http://localhost:5173/
+', 'type__4': 
+'SYSTEM', 
+'user_id__4': 10, 
+'title__4': 'Test LOW 
+Notification', 
+'priority__5': 'LOW', 
+'is_read__5': True, 
+'message__5': 'This is 
+a low priority test 
+notification sent at 
+12:55:07.', 
+'created_at__5': dateti
+me.datetime(2026, 3, 
+22, 7, 25, 7, 911186), 
+'id__5': 6 ... 6137 
+parameters truncated 
+... 'id__687': 688, 
+'link__687': '/student/
+assignments/10', 
+'type__687': 'SYSTEM', 
+'user_id__687': 73, 
+'title__687': 'New 
+Assignment Posted', 
+'priority__688': 
+'HIGH', 
+'is_read__688': False, 
+'message__688': "A new 
+assignment 'demo' has 
+been posted. Due date: 
+2026-03-25", 
+'created_at__688': date
+time.datetime(2026, 3, 
+24, 6, 42, 23, 
+378404), 'id__688': 
+689, 'link__688': '/stu
+dent/assignments/10', 
+'type__688': 'SYSTEM', 
+'user_id__688': 74, 
+'title__688': 'New 
+Assignment Posted', 
+'priority__689': 
+'HIGH', 
+'is_read__689': False, 
+'message__689': "A new 
+assignment 'demo' has 
+been posted. Due date: 
+2026-03-25", 
+'created_at__689': date
+time.datetime(2026, 3, 
+24, 6, 42, 23, 
+378781), 'id__689': 
+690, 'link__689': '/stu
+dent/assignments/10', 
+'type__689': 'SYSTEM', 
+'user_id__689': 75, 
+'title__689': 'New 
+Assignment Posted', 
+'priority__690': 
+'HIGH', 
+'is_read__690': False, 
+'message__690': "A new 
+assignment 'demo' has 
+been posted. Due date: 
+2026-03-25", 
+'created_at__690': date
+time.datetime(2026, 3, 
+24, 6, 42, 23, 
+379148), 'id__690': 
+691, 'link__690': '/stu
+dent/assignments/10', 
+'type__690': 'SYSTEM', 
+'user_id__690': 76, 
+'title__690': 'New 
+Assignment Posted', 
+'priority__691': 
+'HIGH', 
+'is_read__691': False, 
+'message__691': "A new 
+assignment 'demo' has 
+been posted. Due date: 
+2026-03-25", 
+'created_at__691': date
+time.datetime(2026, 3, 
+24, 6, 42, 23, 
+379726), 'id__691': 
+692, 'link__691': '/stu
+dent/assignments/10', 
+'type__691': 'SYSTEM', 
+'user_id__691': 77, 
+'title__691': 'New 
+Assignment Posted', 
+'priority__692': 
+'HIGH', 
+'is_read__692': False, 
+'message__692': "A new 
+assignment 'demo' has 
+been posted. Due date: 
+2026-03-25", 
+'created_at__692': date
+time.datetime(2026, 3, 
+24, 6, 42, 23, 
+380155), 'id__692': 
+693, 'link__692': '/stu
+dent/assignments/10', 
+'type__692': 'SYSTEM', 
+'user_id__692': 78, 
+'title__692': 'New 
+Assignment Posted'}]
+(Background on this 
+error at: https://sqlal
+che.me/e/20/gkpj)

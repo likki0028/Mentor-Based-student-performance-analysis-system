@@ -1,0 +1,211 @@
+﻿python : Traceback (most 
+recent call last):
+At line:1 char:24
++ ... pts\activate; python 
+seed_neon.py > 
+seed_neon_output.txt 2>&1; 
+type s ...
++                   ~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (Tra  
+  ceback (most recent ca   
+ ll last)::String) [],     
+RemoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\clsreg
+istry.py", line 516, in 
+_resolve_name
+    rval = d[token]
+           ~^^^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\util\_coll
+ections.py", line 345, in 
+__missing__
+    self[key] = val = 
+self.creator(key)
+                      
+~~~~~~~~~~~~^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\clsreg
+istry.py", line 484, in 
+_access_cls
+    return 
+self.fallback[key]
+           
+~~~~~~~~~~~~~^^^^^
+KeyError: 'QuizQuestion'
+
+The above exception was 
+the direct cause of the 
+following exception:
+
+Traceback (most recent 
+call last):
+  File "H:\mini project\vib
+e\backend\scripts\seed_data
+.py", line 60, in seed_data
+    db.query(remark.Remark)
+.delete()
+    ~~~~~~~~^^^^^^^^^^^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\sessio
+n.py", line 2941, in query
+    return 
+self._query_cls(entities, 
+self, **kwargs)
+           ~~~~~~~~~~~~~~~^
+^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\query.
+py", line 276, in __init__
+    self._set_entities(enti
+ties)
+    ~~~~~~~~~~~~~~~~~~^^^^^
+^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\query.
+py", line 289, in 
+_set_entities
+    coercions.expect(
+    ~~~~~~~~~~~~~~~~^
+        
+roles.ColumnsClauseRole,
+        
+^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        post_inspect=True,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\sql\coerci
+ons.py", line 389, in 
+expect
+    insp._post_inspect
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\util\langh
+elpers.py", line 1338, in 
+__get__
+    obj.__dict__[self.__nam
+e__] = result = 
+self.fget(obj)
+                           
+                
+~~~~~~~~~^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\mapper
+.py", line 2733, in 
+_post_inspect
+    self._check_configure()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\mapper
+.py", line 2410, in 
+_check_configure
+    _configure_registries({
+self.registry}, 
+cascade=True)
+    ~~~~~~~~~~~~~~~~~~~~~^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\mapper
+.py", line 4227, in 
+_configure_registries
+    _do_configure_registrie
+s(registries, cascade)
+    ~~~~~~~~~~~~~~~~~~~~~~~
+~^^^^^^^^^^^^^^^^^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\mapper
+.py", line 4268, in 
+_do_configure_registries
+    mapper._post_configure_
+properties()
+    ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\mapper
+.py", line 2427, in 
+_post_configure_properties
+    prop.init()
+    ~~~~~~~~~^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\interf
+aces.py", line 595, in init
+    self.do_init()
+    ~~~~~~~~~~~~^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\relati
+onships.py", line 1655, in 
+do_init
+    self._setup_entity()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\relati
+onships.py", line 1865, in 
+_setup_entity
+    self._clsregistry_resol
+ve_name(argument)(),
+    ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\clsreg
+istry.py", line 520, in 
+_resolve_name
+    
+self._raise_for_name(name, 
+err)
+    ~~~~~~~~~~~~~~~~~~~~^^^
+^^^^^^^^
+  File "H:\mini project\vib
+e\backend\venv\Lib\site-pac
+kages\sqlalchemy\orm\clsreg
+istry.py", line 501, in 
+_raise_for_name
+    raise 
+exc.InvalidRequestError(
+    ...<5 lines>...
+    ) from err
+sqlalchemy.exc.InvalidReque
+stError: When initializing 
+mapper 
+Mapper[Quiz(quizzes)], 
+expression 'QuizQuestion' 
+failed to locate a name 
+('QuizQuestion'). If this 
+is a class name, consider 
+adding this relationship() 
+to the <class 
+'app.models.quiz.Quiz'> 
+class after both dependent 
+classes have been defined.
+============================================================
+SEED DATA v2 ÔÇö 195 Synthetic Students
+============================================================
+
+[1/8] Clearing existing data...
+
+ÔØî Error seeding data: When initializing mapper Mapper[Quiz(quizzes)], expression 'QuizQuestion' failed to locate a name ('QuizQuestion'). If this is a class name, consider adding this relationship() to the <class 'app.models.quiz.Quiz'> class after both dependent classes have been defined.

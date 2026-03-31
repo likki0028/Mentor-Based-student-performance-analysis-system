@@ -133,7 +133,7 @@ def total_to_grade(total_pct):
 # ============================================================================
 # REALISTIC MARK GENERATORS
 # ============================================================================
-SECTIONS = ["B"]  # Only Section B for the demo
+SECTIONS = ["A", "B", "C"]  # Generate all sections for full production sync
 STUDENTS_PER_SECTION = 65
 GENDERS = ["Male", "Female"]
 

@@ -190,7 +190,7 @@ def seed_data():
         # Assign mentors round-robin
         db_students = []
         # Limit to 30 students for fast remote deployment demo
-        for idx, s_data in enumerate(synthetic_students[:30]):
+        for idx, s_data in enumerate(synthetic_students):
             student_name = s_data["name"]
             student_id_str = s_data["student_id"]
             sec_letter = s_data["section"]
@@ -394,7 +394,7 @@ def seed_data():
 
                     # Attendance: Generate ~15 attendance records per subject per semester instead of 60 for speed
                     att_rate = s_data["overall_attendance_rate"]
-                    for day in range(15):
+                    for day in range(60):
                         date = sem_start + timedelta(days=int(day * 10) + random.randint(0, 2))
                         present = random.random() < att_rate
                         att_batch.append(attendance.Attendance(

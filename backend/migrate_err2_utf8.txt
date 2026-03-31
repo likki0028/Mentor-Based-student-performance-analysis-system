@@ -1,0 +1,430 @@
+﻿Connecting to source (SQLite) and destination (Neon)...
+Recreating clean tables on Remote DB...
+Extracting sections...
+  -> Migrating 1 rows into remote sections...
+  -> Success
+Extracting subjects...
+  -> Migrating 39 rows into remote subjects...
+  -> Success
+Extracting users...
+  -> Migrating 78 rows into remote users...
+  -> Success
+Extracting faculty...
+  -> Migrating 12 rows into remote faculty...
+  -> Success
+Extracting notifications...
+  -> Migrating 686 rows into remote notifications...
+  -> Success
+Extracting push_subscriptions...
+  -> Migrating 4 rows into remote push_subscriptions...
+  -> Success
+Extracting quizzes...
+  -> Migrating 2 rows into remote quizzes...
+  -> Success
+Extracting assignments...
+  -> Migrating 9 rows into remote assignments...
+  -> Success
+Extracting faculty_assignments...
+  -> Migrating 13 rows into remote faculty_assignments...
+  -> Success
+Extracting materials...
+  -> Migrating 11 rows into remote materials...
+  -> Success
+Extracting students...
+  -> Migrating 65 rows into remote students...
+  -> Success
+Extracting alerts...
+  -> Table alerts is empty, skipping.
+Extracting attendance...
+  -> Migrating 68933 rows into remote attendance...
+  -> Success
+Extracting doubts...
+  -> Migrating 4 rows into remote doubts...
+  -> Success
+Extracting marks...
+  -> Migrating 7540 rows into remote marks...
+  -> Success
+Extracting remarks...
+  -> Migrating 10 rows into remote remarks...
+  -> Success
+Extracting submissions...
+  -> Migrating 505 rows into remote submissions...
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python 
+migrate_to_neon.py > 
+migrate_err2.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2125, in _exec_insertma
+ny_context
+    dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~^
+        cursor,
+        ^^^^^^^
+    ...<2 lines>...
+        context,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 952, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+psycopg2.errors.Foreign
+KeyViolation: insert 
+or update on table 
+"submissions" violates 
+foreign key constraint 
+"submissions_student_id
+_fkey"
+DETAIL:  Key 
+(student_id)=(66) is 
+not present in table 
+"students".
+
+
+The above exception 
+was the direct cause 
+of the following 
+exception:
+
+Traceback (most recent 
+call last):
+  File "H:\mini project
+\vibe\backend\migrate_t
+o_neon.py", line 73, 
+in <module>
+    migrate()
+    ~~~~~~~^^
+  File "H:\mini project
+\vibe\backend\migrate_t
+o_neon.py", line 63, 
+in migrate
+    conn_dest.execute(t
+able.insert(), data)
+    ~~~~~~~~~~~~~~~~~^^
+^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1419, in execute
+    return meth(
+        self,
+        
+distilled_parameters,
+        
+execution_options or 
+NO_OPTIONS,
+    )
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\s
+ql\elements.py", line 
+527, in 
+_execute_on_connection
+    return connection._
+execute_clauseelement(
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~^
+        self, 
+distilled_params, 
+execution_options
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1641, in 
+_execute_clauseelement
+    ret = 
+self._execute_context(
+        dialect,
+    ...<8 lines>...
+        
+cache_hit=cache_hit,
+    )
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+1844, in 
+_execute_context
+    return self._exec_i
+nsertmany_context(diale
+ct, context)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~^^^^^^
+^^^^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2133, in _exec_insertma
+ny_context
+    self._handle_dbapi_
+exception(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~^
+        e,
+        ^^
+    ...<4 lines>...
+        
+is_sub_exec=True,
+        
+^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2363, in 
+_handle_dbapi_exception
+    raise sqlalchemy_ex
+ception.with_traceback(
+exc_info[2]) from e
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2125, in _exec_insertma
+ny_context
+    dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~^
+        cursor,
+        ^^^^^^^
+    ...<2 lines>...
+        context,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 952, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.Integrit
+yError: (psycopg2.error
+s.ForeignKeyViolation) 
+insert or update on 
+table "submissions" 
+violates foreign key 
+constraint "submissions
+_student_id_fkey"
+DETAIL:  Key 
+(student_id)=(66) is 
+not present in table 
+"students".
+
+[SQL: INSERT INTO 
+submissions (id, 
+assignment_id, 
+student_id, 
+submission_date, 
+file_url, grade) 
+VALUES (%(id__0)s, 
+%(assignment_id__0)s, 
+%(student_id__0)s, %(su
+bmission_date__0)s, 
+%(file_url__0)s, 
+%(grade__0)s), 
+(%(id__1)s, 
+%(assignment_id__1)s, 
+%(student_ ... 60190 
+characters truncated 
+... ignment_id__504)s, 
+%(student_id__504)s, %(
+submission_date__504)s,
+ %(file_url__504)s, 
+%(grade__504)s)]
+[parameters: 
+{'submission_date__0': 
+datetime.date(2026, 1, 
+23), 'id__0': 1, 
+'grade__0': None, 
+'assignment_id__0': 1, 
+'file_url__0': '/upload
+s/23241A6701_1.pdf', 
+'student_id__0': 1, 
+'submission_date__1': 
+datetime.date(2026, 1, 
+25), 'id__1': 2, 
+'grade__1': 6, 
+'assignment_id__1': 1, 
+'file_url__1': '/upload
+s/23241A6703_1.pdf', 
+'student_id__1': 3, 
+'submission_date__2': 
+datetime.date(2026, 1, 
+24), 'id__2': 3, 
+'grade__2': 5, 
+'assignment_id__2': 1, 
+'file_url__2': '/upload
+s/23241A6704_1.pdf', 
+'student_id__2': 4, 
+'submission_date__3': 
+datetime.date(2026, 1, 
+25), 'id__3': 4, 
+'grade__3': 10, 
+'assignment_id__3': 1, 
+'file_url__3': '/upload
+s/23241A6705_1.pdf', 
+'student_id__3': 5, 
+'submission_date__4': 
+datetime.date(2026, 1, 
+24), 'id__4': 5, 
+'grade__4': None, 
+'assignment_id__4': 1, 
+'file_url__4': '/upload
+s/23241A6706_1.pdf', 
+'student_id__4': 6, 
+'submission_date__5': 
+datetime.date(2026, 1, 
+25), 'id__5': 6, 
+'grade__5': 10, 
+'assignment_id__5': 1, 
+'file_url__5': '/upload
+s/23241A6707_1.pdf', 
+'student_id__5': 7, 
+'submission_date__6': 
+datetime.date(2026, 1, 
+23), 'id__6': 7, 
+'grade__6': 6, 
+'assignment_id__6': 1, 
+'file_url__6': '/upload
+s/23241A6708_1.pdf', 
+'student_id__6': 8, 
+'submission_date__7': 
+datetime.date(2026, 1, 
+25), 'id__7': 8, 
+'grade__7': 9, 
+'assignment_id__7': 1, 
+'file_url__7': '/upload
+s/23241A6712_1.pdf', 
+'student_id__7': 12, 
+'submission_date__8': 
+datetime.date(2026, 1, 
+23), 'id__8': 9 ... 
+2930 parameters 
+truncated ... 
+'file_url__496': '/uplo
+ads/23241A6757_9.pdf', 
+'student_id__496': 57, 
+'submission_date__497':
+ datetime.date(2026, 
+1, 28), 'id__497': 
+498, 'grade__497': 
+None, 
+'assignment_id__497': 
+9, 'file_url__497': '/u
+ploads/23241A6758_9.pdf
+', 'student_id__497': 
+58, 'submission_date__4
+98': 
+datetime.date(2026, 1, 
+28), 'id__498': 499, 
+'grade__498': 6, 
+'assignment_id__498': 
+9, 'file_url__498': '/u
+ploads/23241A6759_9.pdf
+', 'student_id__498': 
+59, 'submission_date__4
+99': 
+datetime.date(2026, 1, 
+29), 'id__499': 500, 
+'grade__499': 7, 
+'assignment_id__499': 
+9, 'file_url__499': '/u
+ploads/23241A6760_9.pdf
+', 'student_id__499': 
+60, 'submission_date__5
+00': 
+datetime.date(2026, 1, 
+28), 'id__500': 501, 
+'grade__500': 10, 
+'assignment_id__500': 
+9, 'file_url__500': '/u
+ploads/23241A6762_9.pdf
+', 'student_id__500': 
+62, 'submission_date__5
+01': 
+datetime.date(2026, 1, 
+30), 'id__501': 502, 
+'grade__501': 8, 
+'assignment_id__501': 
+9, 'file_url__501': '/u
+ploads/23241A6763_9.pdf
+', 'student_id__501': 
+63, 'submission_date__5
+02': 
+datetime.date(2026, 1, 
+29), 'id__502': 503, 
+'grade__502': 8, 
+'assignment_id__502': 
+9, 'file_url__502': '/u
+ploads/23241A6764_9.pdf
+', 'student_id__502': 
+64, 'submission_date__5
+03': 
+datetime.date(2026, 1, 
+29), 'id__503': 504, 
+'grade__503': None, 
+'assignment_id__503': 
+9, 'file_url__503': '/u
+ploads/23241A6765_9.pdf
+', 'student_id__503': 
+65, 'submission_date__5
+04': 
+datetime.date(2026, 1, 
+30), 'id__504': 505, 
+'grade__504': 6, 
+'assignment_id__504': 
+9, 'file_url__504': '/u
+ploads/23241A6700_9.pdf
+', 'student_id__504': 
+66}]
+(Background on this 
+error at: https://sqlal
+che.me/e/20/gkpj)

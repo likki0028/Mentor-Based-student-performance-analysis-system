@@ -5,7 +5,7 @@ import codecs
 sys.stdout = codecs.getwriter('utf8')(sys.stdout.detach())
 
 # Set env to Neon for model initialization
-PG_URL = "postgresql://neondb_owner:npg_vbN1zXRAJ9pr@ep-frosty-bread-a4i9jfpq-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
+PG_URL = "postgresql://neondb_owner:npg_5BixMZNfKFO6@ep-muddy-base-a15u2npb-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 os.environ["DATABASE_URL"] = PG_URL
 
 from sqlalchemy import create_engine, MetaData

@@ -1,0 +1,429 @@
+﻿============================================================
+SEED DATA v2 ÔÇö 195 Synthetic Students
+============================================================
+
+[1/8] Dropping and recreating tables...
+
+ÔØî Error seeding data: (psycopg2.OperationalError) connection to server at "ep-frosty-bread-a4i9jfpq-pooler.us-east-1.aws.neon.tech" (34.196.24.162), port 5432 failed: ERROR:  password authentication failed for user 'neondb_owner'
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python 
+backend/seed_neon.py > 
+output_neon.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+143, in __init__
+    
+self._dbapi_connection 
+= 
+engine.raw_connection()
+                       
+      
+~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+3309, in raw_connection
+    return 
+self.pool.connect()
+           
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+447, in connect
+    return _ConnectionF
+airy._checkout(self)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+1264, in _checkout
+    fairy = _Connection
+Record.checkout(pool)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+711, in checkout
+    rec = 
+pool._do_get()
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\impl.py", line 
+177, in _do_get
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\u
+til\langhelpers.py", 
+line 224, in __exit__
+    raise exc_value.wit
+h_traceback(exc_tb)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\impl.py", line 
+175, in _do_get
+    return self._create
+_connection()
+           ~~~~~~~~~~~~
+~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+388, in 
+_create_connection
+    return 
+_ConnectionRecord(self)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+899, in __connect
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\u
+til\langhelpers.py", 
+line 224, in __exit__
+    raise exc_value.wit
+h_traceback(exc_tb)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+895, in __connect
+    
+self.dbapi_connection 
+= connection = pool._in
+voke_creator(self)
+                       
+                  ~~~~~
+~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\create.py", line 
+661, in connect
+    return dialect.conn
+ect(*cargs, **cparams)
+           ~~~~~~~~~~~~
+~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 630, in connect
+    return self.loaded_
+dbapi.connect(*cargs, 
+**cparams)  # type: 
+ignore[no-any-return]  
+# NOQA: E501
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~^^^^^^^^^^
+^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\psycopg2\__i
+nit__.py", line 135, 
+in connect
+    conn = 
+_connect(dsn, connectio
+n_factory=connection_fa
+ctory, **kwasync)
+psycopg2.OperationalErr
+or: connection to 
+server at "ep-frosty-br
+ead-a4i9jfpq-pooler.us-
+east-1.aws.neon.tech" 
+(34.196.24.162), port 
+5432 failed: ERROR:  
+password 
+authentication failed 
+for user 'neondb_owner'
+
+
+The above exception 
+was the direct cause 
+of the following 
+exception:
+
+Traceback (most recent 
+call last):
+  File "H:\mini project
+\vibe\backend\scripts\s
+eed_data.py", line 59, 
+in seed_data
+    with 
+engine.connect() as 
+conn:
+         
+~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+3285, in connect
+    return self._connec
+tion_cls(self)
+           ~~~~~~~~~~~~
+~~~~~~~~^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+145, in __init__
+    Connection._handle_
+dbapi_exception_noconne
+ction(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~^
+        err, dialect, 
+engine
+        
+^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+2448, in _handle_dbapi_
+exception_noconnection
+    raise sqlalchemy_ex
+ception.with_traceback(
+exc_info[2]) from e
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+143, in __init__
+    
+self._dbapi_connection 
+= 
+engine.raw_connection()
+                       
+      
+~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\base.py", line 
+3309, in raw_connection
+    return 
+self.pool.connect()
+           
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+447, in connect
+    return _ConnectionF
+airy._checkout(self)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+1264, in _checkout
+    fairy = _Connection
+Record.checkout(pool)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+711, in checkout
+    rec = 
+pool._do_get()
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\impl.py", line 
+177, in _do_get
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\u
+til\langhelpers.py", 
+line 224, in __exit__
+    raise exc_value.wit
+h_traceback(exc_tb)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\impl.py", line 
+175, in _do_get
+    return self._create
+_connection()
+           ~~~~~~~~~~~~
+~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+388, in 
+_create_connection
+    return 
+_ConnectionRecord(self)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+899, in __connect
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\u
+til\langhelpers.py", 
+line 224, in __exit__
+    raise exc_value.wit
+h_traceback(exc_tb)
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\p
+ool\base.py", line 
+895, in __connect
+    
+self.dbapi_connection 
+= connection = pool._in
+voke_creator(self)
+                       
+                  ~~~~~
+~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\create.py", line 
+661, in connect
+    return dialect.conn
+ect(*cargs, **cparams)
+           ~~~~~~~~~~~~
+~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\sqlalchemy\e
+ngine\default.py", 
+line 630, in connect
+    return self.loaded_
+dbapi.connect(*cargs, 
+**cparams)  # type: 
+ignore[no-any-return]  
+# NOQA: E501
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~^^^^^^^^^^
+^^^^^^^^^
+  File "C:\Users\USER\A
+ppData\Local\Programs\P
+ython\Python313\Lib\sit
+e-packages\psycopg2\__i
+nit__.py", line 135, 
+in connect
+    conn = 
+_connect(dsn, connectio
+n_factory=connection_fa
+ctory, **kwasync)
+sqlalchemy.exc.Operatio
+nalError: (psycopg2.Ope
+rationalError) 
+connection to server 
+at "ep-frosty-bread-a4i
+9jfpq-pooler.us-east-1.
+aws.neon.tech" 
+(34.196.24.162), port 
+5432 failed: ERROR:  
+password 
+authentication failed 
+for user 'neondb_owner'
+
+(Background on this 
+error at: https://sqlal
+che.me/e/20/e3q8)

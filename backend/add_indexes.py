@@ -1,6 +1,6 @@
 """Add database indexes to speed up queries on Neon + check row counts."""
 import os
-os.environ["DATABASE_URL"] = "postgresql://neondb_owner:npg_vbN1zXRAJ9pr@ep-frosty-bread-a4i9jfpq-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
+os.environ["DATABASE_URL"] = "postgresql://neondb_owner:npg_5BixMZNfKFO6@ep-muddy-base-a15u2npb-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 from sqlalchemy import create_engine, text
 

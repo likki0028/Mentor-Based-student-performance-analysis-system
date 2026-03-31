@@ -1,6 +1,9 @@
-"""Seed the remote Neon database - import ALL models first to avoid mapper errors."""
 import os
-os.environ["DATABASE_URL"] = "postgresql://neondb_owner:npg_vbN1zXRAJ9pr@ep-frosty-bread-a4i9jfpq-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
+import sys
+import codecs
+sys.stdout = codecs.getwriter('utf8')(sys.stdout.detach())
+sys.stderr = codecs.getwriter('utf8')(sys.stderr.detach())
+os.environ["DATABASE_URL"] = "postgresql://neondb_owner:npg_5BixMZNfKFO6@ep-muddy-base-a15u2npb-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 # Import ALL models FIRST to ensure configure_mappers works
 from app.models import user, student, faculty, subject, section  # noqa
