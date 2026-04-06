@@ -2,13 +2,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
-from .routers import alerts, quizzes, students, faculty, attendance, assignments, analytics, auth, marks_router, materials, doubts, syllabus, exports, notifications, meetings
+from .routers import alerts, quizzes, students, faculty, attendance, assignments, analytics, auth, marks_router, materials, doubts, syllabus, exports, notifications, meetings, extracurricular as extracurricular_router, chatbot
 from .admin import admin_router
 from .database import engine, Base
 # Ensure all models are registered with the mapper before create_all
 from .models import user, student, faculty as faculty_model, subject, section  # noqa
 from .models import remark, material, marks, attendance as att_model  # noqa
-from .models import assignment, submission, alert, quiz, quiz_attempt, quiz_question, quiz_response, assignment_file, material_file  # noqa
+from .models import assignment, submission, alert, quiz, quiz_attempt, quiz_question, quiz_response, assignment_file, material_file, extracurricular  # noqa
 from .models import doubt, doubt_comment, syllabus_topic, mark_finalization  # noqa
 from .models import notification, online_meeting  # noqa
 from .scheduler.scheduler import start_scheduler
@@ -117,6 +117,8 @@ app.include_router(syllabus.router, prefix="/syllabus", tags=["syllabus"])
 app.include_router(exports.router, prefix="/exports", tags=["exports"])
 app.include_router(notifications.router, prefix="/notifications", tags=["notifications"])
 app.include_router(meetings.router, prefix="/meetings", tags=["meetings"])
+app.include_router(extracurricular_router.router, prefix="/extracurricular", tags=["extracurricular"])
+app.include_router(chatbot.router, prefix="/chatbot", tags=["chatbot"])
 
 # Serve uploaded files (assignments, submissions) as static files
 from fastapi.staticfiles import StaticFiles

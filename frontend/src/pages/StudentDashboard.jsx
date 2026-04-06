@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import analyticsService from '../services/analytics.service';
+import extracurricularService from '../services/extracurricular.service';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import Chatbot from '../components/Chatbot';
 import toast, { Toaster } from 'react-hot-toast';
 
 const StudentDashboard = () => {
@@ -21,6 +23,13 @@ const StudentDashboard = () => {
     const [attMode, setAttMode] = useState('till_now');
     const [attFrom, setAttFrom] = useState('');
     const [attTo, setAttTo] = useState('');
+    const [certificates, setCertificates] = useState([]);
+    const [certLoading, setCertLoading] = useState(false);
+    const [certTitle, setCertTitle] = useState('');
+    const [certDesc, setCertDesc] = useState('');
+    const [certDate, setCertDate] = useState('');
+    const [certFile, setCertFile] = useState(null);
+    const [activeTab, setActiveTab] = useState('performance'); // 'performance' or 'certificates'
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,6 +69,11 @@ const StudentDashboard = () => {
                         .slice(0, 5);
                     setUpcomingAssignments(upcoming);
                 } catch { setUpcomingAssignments([]); }
+                // Fetch certificates
+                try {
+                    const certRes = await extracurricularService.getMyCertificates();
+                    setCertificates(certRes.data || []);
+                } catch { setCertificates([]); }
             } catch (err) {
                 console.error('Failed to fetch student data:', err);
                 setError(err.response?.data?.detail || 'Failed to load data');
@@ -155,6 +169,46 @@ const StudentDashboard = () => {
     };
     const riskStyle = riskColors[riskPrediction?.risk_status] || riskColors['Safe'];
 
+    const handleCertUpload = async (e) => {
+        e.preventDefault();
+        if (!certTitle || !certDate || !certFile) {
+            toast.error('Title, Date and File are required');
+            return;
+        }
+        setCertLoading(true);
+        const formData = new FormData();
+        formData.append('title', certTitle);
+        formData.append('description', certDesc);
+        formData.append('issue_date', certDate);
+        formData.append('file', certFile);
+
+        try {
+            await extracurricularService.uploadCertificate(formData);
+            toast.success('Certificate uploaded successfully!');
+            // Reset form
+            setCertTitle('');
+            setCertDesc('');
+            setCertDate('');
+            setCertFile(null);
+            // Re-fetch
+            const res = await extracurricularService.getMyCertificates();
+            setCertificates(res.data || []);
+        } catch (err) {
+            toast.error(err.response?.data?.detail || 'Upload failed');
+        } finally {
+            setCertLoading(false);
+        }
+    };
+
+    const handleDeleteCert = async (id) => {
+        if (!window.confirm('Delete this certificate?')) return;
+        try {
+            await extracurricularService.deleteCertificate(id);
+            toast.success('Deleted');
+            setCertificates(certificates.filter(c => c.id !== id));
+        } catch { toast.error('Delete failed'); }
+    };
+
     return (
         <>
             <Navbar />
@@ -175,6 +229,30 @@ const StudentDashboard = () => {
                     </Link>
                 </div>
 
+                {/* Tabs Navigation */}
+                <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border)', marginBottom: '2rem' }}>
+                    <button 
+                        onClick={() => setActiveTab('performance')}
+                        style={{ 
+                            padding: '0.75rem 1.5rem', border: 'none', borderBottom: activeTab === 'performance' ? '3px solid var(--primary)' : '3px solid transparent',
+                            background: 'none', fontWeight: 700, fontSize: '0.95rem', color: activeTab === 'performance' ? 'var(--primary)' : '#64748b', cursor: 'pointer'
+                        }}
+                    >
+                        📊 Performance Overview
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('certificates')}
+                        style={{ 
+                            padding: '0.75rem 1.5rem', border: 'none', borderBottom: activeTab === 'certificates' ? '3px solid var(--primary)' : '3px solid transparent',
+                            background: 'none', fontWeight: 700, fontSize: '0.95rem', color: activeTab === 'certificates' ? 'var(--primary)' : '#64748b', cursor: 'pointer'
+                        }}
+                    >
+                        📂 Extracurricular Certificates
+                    </button>
+                </div>
+
+                {activeTab === 'performance' ? (
+                    <>
                 {/* Stats Cards */}
                 <div className="grid grid-3" style={{ marginBottom: '2rem' }}>
                     <div className="stat-card" style={{ padding: '1rem' }}>
@@ -481,6 +559,104 @@ const StudentDashboard = () => {
                         })()}
                     </div>
                 </div>
+                </>
+                ) : (
+                    <div className="page-enter">
+                        <div className="grid grid-2" style={{ gap: '2rem' }}>
+                            {/* Upload Form */}
+                            <div className="card" style={{ padding: '2rem' }}>
+                                <h2 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', border: 'none', padding: 0 }}>📜 Upload New Certificate</h2>
+                                <form onSubmit={handleCertUpload} className="form-group">
+                                    <div className="form-group">
+                                        <label>Certificate Title *</label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="e.g. Winner - Hackathon 2024" 
+                                            value={certTitle}
+                                            onChange={e => setCertTitle(e.target.value)} 
+                                            required 
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Description (Optional)</label>
+                                        <textarea 
+                                            placeholder="Details about the activity..." 
+                                            value={certDesc}
+                                            onChange={e => setCertDesc(e.target.value)} 
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Issue Date *</label>
+                                        <input 
+                                            type="date" 
+                                            value={certDate}
+                                            onChange={e => setCertDate(e.target.value)} 
+                                            required 
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Certificate File (PDF, JPG, PNG) *</label>
+                                        <input 
+                                            type="file" 
+                                            accept=".pdf,.jpg,.jpeg,.png"
+                                            onChange={e => setCertFile(e.target.files[0])} 
+                                            style={{ padding: '0.5rem 0' }}
+                                            required 
+                                        />
+                                    </div>
+                                    <button type="submit" disabled={certLoading} style={{ width: '100%', marginTop: '1rem' }}>
+                                        {certLoading ? 'Uploading...' : '🚀 Submit Certificate'}
+                                    </button>
+                                </form>
+                            </div>
+
+                            {/* Certificates List */}
+                            <div className="card" style={{ padding: '2rem' }}>
+                                <h2 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', border: 'none', padding: 0 }}>📚 My Certificates ({certificates.length})</h2>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    {certificates.map(cert => (
+                                        <div key={cert.id} style={{ 
+                                            padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px',
+                                            display: 'flex', alignItems: 'center', gap: '1rem', background: '#f8fafc'
+                                        }}>
+                                            <div style={{ 
+                                                width: 48, height: 48, borderRadius: '10px', background: '#e0e7ff', color: '#4338ca',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0
+                                            }}>🎓</div>
+                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{cert.title}</h3>
+                                                <p className="text-xs text-muted" style={{ margin: '2px 0 0' }}>{cert.issue_date}</p>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                <a 
+                                                    href={`${api.defaults.baseURL}${cert.file_url}`} 
+                                                    target="_blank" 
+                                                    rel="noreferrer"
+                                                    style={{ 
+                                                        padding: '0.4rem 0.8rem', borderRadius: '8px', background: '#fff', 
+                                                        border: '1px solid var(--border)', fontSize: '0.75rem', fontWeight: 700, color: '#6366f1' 
+                                                    }}
+                                                >View</a>
+                                                <button 
+                                                    onClick={() => handleDeleteCert(cert.id)}
+                                                    className="btn-danger"
+                                                    style={{ padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.75rem' }}
+                                                >Delete</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {certificates.length === 0 && (
+                                        <div style={{ textAlign: 'center', padding: '2rem 0', color: '#94a3b8' }}>
+                                            <p style={{ fontSize: '1.5rem', margin: '0 0 0.5rem' }}>📭</p>
+                                            <p>No certificates uploaded yet.</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <Chatbot />
             </div>
         </>
     );

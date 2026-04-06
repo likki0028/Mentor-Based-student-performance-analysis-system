@@ -4,8 +4,111 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import Chatbot from '../components/Chatbot';
 import toast, { Toaster } from 'react-hot-toast';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
+
+const StudentCard = ({ student }) => {
+    const navigate = useNavigate();
+    const risk = (student.risk_status || '').toLowerCase();
+    
+    // Status-based colors
+    let bgColor = '#f0fdf4'; // Default Green (Safe/Excellent)
+    let borderColor = '#22c55e';
+    let textColor = '#166534';
+    let tagColor = '#dcfce7';
+
+    if (risk === 'at risk') {
+        bgColor = '#fef2f2'; // Red
+        borderColor = '#ef4444';
+        textColor = '#991b1b';
+        tagColor = '#fee2e2';
+    } else if (risk === 'warning') {
+        bgColor = '#fffbeb'; // Yellow (Average)
+        borderColor = '#f59e0b';
+        textColor = '#92400e';
+        tagColor = '#fef3c7';
+    }
+
+    return (
+        <div 
+            className="card" 
+            style={{ 
+                padding: '0.75rem 1.25rem', 
+                background: bgColor, 
+                border: `1.5px solid ${borderColor}`,
+                borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1.5rem',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer',
+                marginBottom: '0.75rem'
+            }}
+            onClick={() => navigate(`/student/detail?id=${student.id}`)}
+            onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateX(4px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+            }}
+            onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateX(0)';
+                e.currentTarget.style.boxShadow = 'none';
+            }}
+        >
+            {/* Status Indicator Dot */}
+            <div style={{ width: 12, height: 12, borderRadius: '50%', background: borderColor, flexShrink: 0 }}></div>
+
+            {/* Name & Roll No */}
+            <div style={{ flex: 2, minWidth: 0 }}>
+                <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{student.name}</h3>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>{student.enrollment_number}</p>
+            </div>
+
+            {/* Attendance */}
+            <div style={{ flex: 1, textAlign: 'center' }}>
+                <p style={{ margin: 0, fontSize: '0.65rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.025em' }}>Attendance</p>
+                <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: student.attendance_percentage < 75 ? '#ef4444' : textColor }}>
+                    {student.attendance_percentage?.toFixed(1)}%
+                </p>
+            </div>
+
+            {/* Avg Marks */}
+            <div style={{ flex: 1, textAlign: 'center' }}>
+                <p style={{ margin: 0, fontSize: '0.65rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.025em' }}>Avg Marks</p>
+                <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: textColor }}>
+                    {student.average_marks?.toFixed(1)}%
+                </p>
+            </div>
+
+            {/* CGPA */}
+            <div style={{ flex: 1, textAlign: 'center' }}>
+                <p style={{ margin: 0, fontSize: '0.65rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.025em' }}>CGPA</p>
+                <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: student.cgpa >= 8 ? '#16a34a' : student.cgpa >= 6 ? '#ca8a04' : '#dc2626' }}>
+                    {student.cgpa > 0 ? student.cgpa.toFixed(2) : '—'}
+                </p>
+            </div>
+
+            {/* Status Tag */}
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                <span style={{ 
+                    padding: '0.2rem 0.6rem', 
+                    borderRadius: '5px', 
+                    fontSize: '0.65rem', 
+                    fontWeight: 800, 
+                    background: tagColor, 
+                    color: textColor,
+                    textTransform: 'uppercase'
+                }}>
+                    {student.risk_status}
+                </span>
+            </div>
+            
+            <div style={{ color: '#94a3b8' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+        </div>
+    );
+};
 
 const MentorDashboard = () => {
     const { user } = useAuth();
@@ -131,6 +234,45 @@ const MentorDashboard = () => {
                             {stats.current_semester && <span>📖 Semester {stats.current_semester}</span>}
                         </p>
                     )}
+                </div>
+
+                {/* Detailed Student Report Section: Scrollable Horizontal Cards sorted by Roll Number */}
+                <div style={{ marginBottom: '2.5rem' }}>
+                    <h2 style={{ border: 'none', paddingBottom: 0, marginBottom: '0.5rem' }}>📋 Mentee Performance Report</h2>
+                    <p className="text-muted" style={{ fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+                        All assigned students sorted by Roll Number. 
+                        <span style={{ marginLeft: '1rem', color: '#ef4444' }}>● At Risk</span>
+                        <span style={{ marginLeft: '0.75rem', color: '#f59e0b' }}>● Average</span>
+                        <span style={{ marginLeft: '0.75rem', color: '#22c55e' }}>● Excellent</span>
+                    </p>
+                    
+                    {/* Scrollable Container */}
+                    <div style={{ 
+                        maxHeight: '450px', 
+                        overflowY: 'auto', 
+                        paddingRight: '0.5rem',
+                        paddingBottom: '0.5rem',
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: '#cbd5e1 #f8fafc'
+                    }}>
+                        <style>{`
+                            div::-webkit-scrollbar { width: 6px; }
+                            div::-webkit-scrollbar-track { background: #f8fafc; border-radius: 10px; }
+                            div::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+                            div::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+                        `}</style>
+                        {[...students]
+                            .sort((a, b) => (a.enrollment_number || '').localeCompare(b.enrollment_number || '', undefined, { numeric: true }))
+                            .map(student => (
+                                <StudentCard key={student.id} student={student} />
+                            ))
+                        }
+                        {students.length === 0 && (
+                            <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
+                                <p className="text-muted">No mentees assigned or no data available.</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Stats Row */}
@@ -491,18 +633,6 @@ const MentorDashboard = () => {
                     );
                 })()}
 
-                {/* Detailed Student Report CTA */}
-                <div className="card accent" style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem 2rem', borderLeft: '4px solid var(--accent)', marginBottom: '2rem' }} onClick={() => navigate('/mentor/detailed-reports')}>
-                    <div>
-                        <h2 style={{ border: 'none', padding: 0, margin: 0, fontSize: '1.25rem' }}>📊 Detailed Student Report</h2>
-                        <p className="text-muted" style={{ margin: '0.5rem 0 0', fontSize: '0.9rem' }}>Access in-depth academic analysis, attendance trends, and behavioral risk factors for your mentees.</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <span style={{ fontWeight: 600, color: 'var(--accent)' }}>Open Analysis</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent)' }}><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                    </div>
-                </div>
-
                 {/* Quick Actions */}
                 <div className="flex gap-3" style={{ marginBottom: '1.5rem' }}>
                     <button className="btn-success" onClick={async () => {
@@ -512,6 +642,7 @@ const MentorDashboard = () => {
                         } catch (e) { toast.error('Failed to generate alerts'); }
                     }}>⚡ Generate Alerts</button>
                 </div>
+                <Chatbot />
             </div>
 
             {/* Add Remark Modal */}

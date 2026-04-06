@@ -1,19 +1,12 @@
-import sys
 import os
+import google.generativeai as genai
+from app.config import settings
 
-# Add the parent directory of 'backend' to sys.path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# backend_dir = os.path.dirname(current_dir)
-# sys.path.append(backend_dir)
-
-from sqlalchemy import create_engine
-from app.database import Base, engine
-from app.models import user, student, faculty, subject, section, attendance, marks
+genai.configure(api_key=settings.GOOGLE_API_KEY)
 
 try:
-    print("Creating tables...")
-    Base.metadata.create_all(bind=engine)
-    print("Tables created successfully.")
+    for m in genai.list_models():
+        if 'generateContent' in m.supported_generation_methods:
+            print(m.name)
 except Exception as e:
-    print("Error creating tables:")
-    print(e)
+    print("ERROR:", e)

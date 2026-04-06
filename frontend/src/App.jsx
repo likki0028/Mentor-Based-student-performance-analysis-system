@@ -12,7 +12,6 @@ import MentorDashboard from './pages/MentorDashboard';
 import LecturerDashboard from './pages/LecturerDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import StudentDetail from './pages/StudentDetail';
-import DetailedStudentReport from './pages/DetailedStudentReport';
 import SubjectClassroom from './pages/SubjectClassroom';
 import MaterialDetail from './pages/MaterialDetail';
 import AssignmentDetail from './pages/AssignmentDetail';
@@ -44,7 +43,6 @@ function App() {
                         <Route path="/change-password" element={<ChangePassword />} />
                         <Route path="/admin" element={<RoleGuard allowedRoles={['admin']}><AdminDashboard /></RoleGuard>} />
                         <Route path="/mentor" element={<RoleGuard allowedRoles={['mentor', 'both']}><MentorDashboard /></RoleGuard>} />
-                        <Route path="/mentor/detailed-reports" element={<RoleGuard allowedRoles={['mentor', 'both']}><DetailedStudentReport /></RoleGuard>} />
                         <Route path="/lecturer" element={<RoleGuard allowedRoles={['lecturer', 'both']}><LecturerDashboard /></RoleGuard>} />
                         <Route path="/student" element={<RoleGuard allowedRoles={['student']}><StudentDashboard /></RoleGuard>} />
                         <Route path="/student/detail" element={<RoleGuard allowedRoles={['student', 'mentor', 'both', 'admin', 'lecturer']}><StudentDetail /></RoleGuard>} />

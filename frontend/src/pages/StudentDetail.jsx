@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import studentService from '../services/student.service';
 import facultyService from '../services/faculty.service';
 import analyticsService from '../services/analytics.service';
+import extracurricularService from '../services/extracurricular.service';
+import api from '../services/api';
 import Navbar from '../components/Navbar';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import toast, { Toaster } from 'react-hot-toast';
@@ -23,6 +25,7 @@ const StudentDetail = () => {
     const [submitting, setSubmitting] = useState(false);
     const [expandedSubject, setExpandedSubject] = useState(null);
     const [gpaPrediction, setGpaPrediction] = useState(null);
+    const [certificates, setCertificates] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -54,6 +57,12 @@ const StudentDetail = () => {
                 } catch (e) {
                     console.log('GPA prediction not available');
                 }
+
+                // Fetch certificates
+                try {
+                    const certRes = await extracurricularService.getStudentCertificates(sid);
+                    setCertificates(certRes.data || []);
+                } catch { setCertificates([]); }
             } catch (err) {
                 console.error('Failed to fetch student data:', err);
                 toast.error('Failed to load student details');
@@ -550,6 +559,51 @@ const StudentDetail = () => {
 
                 {/* Duplicate section removed — toggle view above handles this */}
 
+
+                {/* Extracurricular Certificates Section */}
+                <div style={{ marginTop: '3rem', marginBottom: '3rem' }}>
+                    <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ fontSize: '1.5rem' }}>🏅</span> Extracurricular Activities
+                    </h2>
+                    
+                    {certificates.length > 0 ? (
+                        <div className="grid grid-3" style={{ gap: '1.25rem' }}>
+                            {certificates.map(cert => (
+                                <div key={cert.id} className="card" style={{ 
+                                    padding: '1.25rem', border: '1px solid var(--border)', borderRadius: '12px',
+                                    display: 'flex', flexDirection: 'column', gap: '0.75rem', background: '#fff'
+                                }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        <div style={{ width: 40, height: 40, borderRadius: '8px', background: '#eef2ff', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
+                                            📜
+                                        </div>
+                                        <a 
+                                            href={`${api.defaults.baseURL}${cert.file_url}`} 
+                                            target="_blank" 
+                                            rel="noreferrer"
+                                            className="btn-secondary"
+                                            style={{ padding: '0.3rem 0.75rem', fontSize: '0.75rem', borderRadius: '6px' }}
+                                        >View Document</a>
+                                    </div>
+                                    <div>
+                                        <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem', fontWeight: 700 }}>{cert.title}</h3>
+                                        <p className="text-xs text-muted" style={{ margin: 0 }}>Issued: {new Date(cert.issue_date).toLocaleDateString()}</p>
+                                    </div>
+                                    {cert.description && (
+                                        <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4 }}>
+                                            {cert.description}
+                                        </p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
+                            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🍃</div>
+                            <p className="text-muted">No extracurricular certificates found for this student.</p>
+                        </div>
+                    )}
+                </div>
 
                 {/* Charts and Tables removed as requested */}
             </div>
