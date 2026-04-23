@@ -3,8 +3,8 @@ Lightweight Seed Data Script
 =============================
 Creates a minimal dataset for UI testing.
 - 1 Admin
-- 1 Mentor (mentor_a)
-- 1 Lecturer
+- 1 Mentor (faculty1)
+- 1 Lecturer (faculty4)
 - 3 Students
 - 1 Subject, 1 Section
 """
@@ -52,10 +52,10 @@ def seed_lite():
         admin = user.User(username="admin", hashed_password=get_password_hash("admin123"), role=user.UserRole.ADMIN)
         
         # Mentor A
-        mentor_a = user.User(username="mentor_a", hashed_password=get_password_hash("mentor123"), role=user.UserRole.MENTOR)
+        mentor_a = user.User(username="faculty1", hashed_password=get_password_hash("staff123"), role=user.UserRole.MENTOR)
         
         # Lecturer
-        lect = user.User(username="lecturer", hashed_password=get_password_hash("lecturer123"), role=user.UserRole.LECTURER)
+        lect = user.User(username="faculty4", hashed_password=get_password_hash("staff123"), role=user.UserRole.LECTURER)
         
         db.add_all([admin, mentor_a, lect])
         db.commit()

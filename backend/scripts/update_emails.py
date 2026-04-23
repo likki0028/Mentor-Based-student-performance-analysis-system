@@ -6,8 +6,8 @@ from sqlalchemy import text
 db = SessionLocal()
 
 # Update emails for test users
-db.execute(text("UPDATE users SET email='likhithbalaji90@gmail.com' WHERE username='niharika'"))
-db.execute(text("UPDATE users SET email='hyperbeast2006m@gmail.com' WHERE username='sasibhanu'"))
+db.execute(text("UPDATE users SET email='likhithbalaji90@gmail.com' WHERE username='faculty18'"))
+db.execute(text("UPDATE users SET email='hyperbeast2006m@gmail.com' WHERE username='faculty6'"))
 db.execute(text("UPDATE users SET email='likhithbalaji2006m@gmail.com' WHERE username='23241a6701'"))
 db.commit()
 

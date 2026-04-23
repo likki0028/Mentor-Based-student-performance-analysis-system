@@ -42,8 +42,7 @@ const StudentCard = ({ student }) => {
                 alignItems: 'center',
                 gap: '1.5rem',
                 transition: 'all 0.2s ease',
-                cursor: 'pointer',
-                marginBottom: '0.75rem'
+                cursor: 'pointer'
             }}
             onClick={() => navigate(`/student/detail?id=${student.id}`)}
             onMouseEnter={e => {
@@ -69,14 +68,6 @@ const StudentCard = ({ student }) => {
                 <p style={{ margin: 0, fontSize: '0.65rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.025em' }}>Attendance</p>
                 <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: student.attendance_percentage < 75 ? '#ef4444' : textColor }}>
                     {student.attendance_percentage?.toFixed(1)}%
-                </p>
-            </div>
-
-            {/* Avg Marks */}
-            <div style={{ flex: 1, textAlign: 'center' }}>
-                <p style={{ margin: 0, fontSize: '0.65rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.025em' }}>Avg Marks</p>
-                <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: textColor }}>
-                    {student.average_marks?.toFixed(1)}%
                 </p>
             </div>
 
@@ -253,7 +244,10 @@ const MentorDashboard = () => {
                         paddingRight: '0.5rem',
                         paddingBottom: '0.5rem',
                         scrollbarWidth: 'thin',
-                        scrollbarColor: '#cbd5e1 #f8fafc'
+                        scrollbarColor: '#cbd5e1 #f8fafc',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gap: '0.75rem'
                     }}>
                         <style>{`
                             div::-webkit-scrollbar { width: 6px; }

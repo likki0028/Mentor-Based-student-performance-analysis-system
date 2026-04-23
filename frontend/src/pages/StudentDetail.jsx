@@ -283,10 +283,10 @@ const StudentDetail = () => {
                                 </div>
                             </div>
 
-                            {/* AI Insights Card */}
+                            {/* Insights Card */}
                             {insights.length > 0 && (
                                 <div className="card" style={{ marginBottom: '2rem', padding: '1.5rem' }}>
-                                    <h3 style={{ border: 'none', padding: 0, margin: '0 0 0.5rem 0' }}>🧠 AI Insights</h3>
+                                    <h3 style={{ border: 'none', padding: 0, margin: '0 0 0.5rem 0' }}>🧠 Insights</h3>
                                     <p className="text-muted" style={{ fontSize: '0.8rem', marginBottom: '1rem' }}>Auto-generated observations from the competency map</p>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                                         {insights.map((ins, i) => (

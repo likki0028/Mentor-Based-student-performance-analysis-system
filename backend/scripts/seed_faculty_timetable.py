@@ -55,24 +55,24 @@ def seed_timetable():
 
         # Faculty Data (Name, Employee ID, Username)
         faculty_raw = [
-            ("Dr. M. V. Rama Sundari", "1741", "ramasundari"),
-            ("Ms. D. Priyanka", "1848", "priyanka"),
-            ("Dr. M. Kiran Kumar", "1610", "kirankumar"),
-            ("Dr. R. P. Ram Kumar", "1695", "ramkumar"),
-            ("Ms. P. Lakshmi Sruthi", "1739", "lakshmisruthi"),
-            ("Dr. J. Sasi Bhanu", "1875", "sasibhanu"),
-            ("Ms. V. Sreevani", "1724", "sreevani"),
-            ("Ms. Manu Hajari", "1772", "manuhajari"),
-            ("Ms. B. Saritha", "1862", "saritha_b"),
-            ("Ms. K. Tejasvi", "1836", "tejasvi"),
-            ("Ms. S. H. Swaroopa", "1878", "swaroopa"),
-            ("Ms. Y.P.S.S.V. MOHANA", "1822", "mohana"),
-            ("Ms. K. Kalpana", "1769", "kalpana"),
-            ("Ms. S. Srilatha", "1837", "srilatha"),
-            ("Mr. VSRK Raju", "1806", "vsrkraju"),
-            ("Mr. K. Mallikarjuna Raju", "1726", "mallikarjuna"),
-            ("Ms. Rashi Saxena", "1770", "rashisaxena"),
-            ("Ms. D. S. Niharika", "1838", "niharika"),
+            ("Faculty 1", "1741", "faculty1"),
+            ("Faculty 2", "1848", "faculty2"),
+            ("Faculty 3", "1610", "faculty3"),
+            ("Faculty 4", "1695", "faculty4"),
+            ("Faculty 5", "1739", "faculty5"),
+            ("Faculty 6", "1875", "faculty6"),
+            ("Faculty 7", "1724", "faculty7"),
+            ("Faculty 8", "1772", "faculty8"),
+            ("Faculty 9", "1862", "faculty9"),
+            ("Faculty 10", "1836", "faculty10"),
+            ("Faculty 11", "1878", "faculty11"),
+            ("Faculty 12", "1822", "faculty12"),
+            ("Faculty 13", "1769", "faculty13"),
+            ("Faculty 14", "1837", "faculty14"),
+            ("Faculty 15", "1806", "faculty15"),
+            ("Faculty 16", "1726", "faculty16"),
+            ("Faculty 17", "1770", "faculty17"),
+            ("Faculty 18", "1838", "faculty18"),
         ]
         
         faculty_map = {}
@@ -90,7 +90,7 @@ def seed_timetable():
                 db.flush()
             faculty_map[emp_id] = f
 
-        # Also map the demo 'lecturer' account to Dr. M. V. Rama Sundari's work for testing
+        # Also map the demo 'lecturer' account to Faculty 1's work for testing
         demo_lecturer = db.query(faculty.Faculty).filter(faculty.Faculty.employee_id == "FAC002").first()
         if demo_lecturer:
              # We'll use the 'lecturer' account as a stand-in for Section A ML

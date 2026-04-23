@@ -27,9 +27,9 @@ def seed_students():
         db.commit()
 
         # 2. Get Mentors (Faculty IDs)
-        # Section A: Ms. Rashi Saxena (1770)
-        # Section B: Ms. D. S. Niharika (1838)
-        # Section C: Ms. S. Srilatha (1837)
+        # Section A: Faculty 17 (1770)
+        # Section B: Faculty 18 (1838)
+        # Section C: Faculty 14 (1837)
         
         mentors_map = {}
         for sec_name, emp_id in [("Section A", "1770"), ("Section B", "1838"), ("Section C", "1837")]:

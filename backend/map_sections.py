@@ -9,9 +9,9 @@ try:
     sec_C = conn.execute("SELECT id FROM sections WHERE name='Section C'").fetchone()[0]
     
     # Get mentors
-    men_A = conn.execute("SELECT f.id FROM faculty f JOIN users u ON f.user_id = u.id WHERE u.username='mentor_a'").fetchone()[0]
-    men_B = conn.execute("SELECT f.id FROM faculty f JOIN users u ON f.user_id = u.id WHERE u.username='mentor_b'").fetchone()[0]
-    men_C = conn.execute("SELECT f.id FROM faculty f JOIN users u ON f.user_id = u.id WHERE u.username='mentor_c'").fetchone()[0]
+    men_A = conn.execute("SELECT f.id FROM faculty f JOIN users u ON f.user_id = u.id WHERE u.username='faculty1'").fetchone()[0]
+    men_B = conn.execute("SELECT f.id FROM faculty f JOIN users u ON f.user_id = u.id WHERE u.username='faculty2'").fetchone()[0]
+    men_C = conn.execute("SELECT f.id FROM faculty f JOIN users u ON f.user_id = u.id WHERE u.username='faculty3'").fetchone()[0]
 
     # Update students
     conn.execute('UPDATE students SET section_id = ? WHERE mentor_id = ?', (sec_A, men_A))

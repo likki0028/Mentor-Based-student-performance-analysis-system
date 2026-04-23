@@ -37,10 +37,10 @@ from scripts.generate_synthetic_data import CURRICULUM
 # Faculty assignments for Semester 6 (Home Teacher model)
 # Map lecturer username -> (Subject Code, Section Name)
 FACULTY_SUBJECT_ASSIGNMENTS = {
-    "mentor_a": [("GR22A3140", "Section A"), ("GR22A3115", "Section B")], # ML (A), ACD (B)
-    "mentor_b": [("GR22A3143", "Section B"), ("GR22A3140", "Section C")], # BDA (B), ML (C)
-    "mentor_c": [("GR22A3115", "Section C"), ("GR22A3143", "Section A")], # ACD (C), BDA (A)
-    "lecturer": [("GR22A3115", "Section A"), ("GR22A3140", "Section B"), ("GR22A3143", "Section C")] # Remaining
+    "faculty1": [("GR22A3140", "Section A"), ("GR22A3115", "Section B")], # ML (A), ACD (B)
+    "faculty2": [("GR22A3143", "Section B"), ("GR22A3140", "Section C")], # BDA (B), ML (C)
+    "faculty3": [("GR22A3115", "Section C"), ("GR22A3143", "Section A")], # ACD (C), BDA (A)
+    "faculty4": [("GR22A3115", "Section A"), ("GR22A3140", "Section B"), ("GR22A3143", "Section C")] # Remaining
 }
 
 def seed_data():
@@ -91,9 +91,9 @@ def seed_data():
 
         # Home Teachers (Mentors who also teach)
         mentors_info = [
-            ("mentor_a", "mentor_a@vibe.com", "mentor123", "A"),
-            ("mentor_b", "mentor_b@vibe.com", "mentor123", "B"),
-            ("mentor_c", "mentor_c@vibe.com", "mentor123", "C"),
+            ("faculty1", "faculty1@vibe.com", "staff123", "A"),
+            ("faculty2", "faculty2@vibe.com", "staff123", "B"),
+            ("faculty3", "faculty3@vibe.com", "staff123", "C"),
         ]
 
         for i, (uname, email, pwd, sec_letter) in enumerate(mentors_info):
@@ -115,15 +115,15 @@ def seed_data():
 
         # General lecturer
         lecturer_user = user.User(
-            username="lecturer", email="lecturer@vibe.com",
-            hashed_password=get_password_hash("lecturer123"), role=user.UserRole.LECTURER, is_active=True
+            username="faculty4", email="faculty4@vibe.com",
+            hashed_password=get_password_hash("staff123"), role=user.UserRole.LECTURER, is_active=True
         )
         db.add(lecturer_user)
         db.flush()
         lecturer_fac = faculty.Faculty(user_id=lecturer_user.id, employee_id="FAC1004")
         db.add(lecturer_fac)
         faculties.append(lecturer_fac)
-        print("  Created general lecturer (lecturer / lecturer123)")
+        print("  Created general lecturer (faculty4 / staff123)")
 
         db.commit()
 
@@ -462,8 +462,7 @@ def seed_data():
         print("✅ DATABASE SEEDED SUCCESSFULLY!")
         print(f"{'=' * 60}")
         print(f"  Admin:      admin / admin123")
-        print(f"  Mentor:     mentor / mentor123")
-        print(f"  Lecturer:   lecturer / lecturer123")
+        print(f"  Faculty:    faculty1 - faculty4 (password: staff123)")
         print(f"  Students:   195 students (student / student123 for demo login)")
         print(f"              Usernames: 23241a6701 .. 23241a67{len(db_students):02d}")
         print(f"  Faculty:    {len(faculties)} total")

@@ -138,18 +138,17 @@ HISTORICAL_SUBJECTS = {
 }
 
 
-# ---- FACULTY SEC B ----
 FACULTY_B = [
-    ("Dr. J. Sasi Bhanu", "1875", "sasibhanu", [("GR22A3140", "ML"), ("GR22A3142", "ML LAB")]),
-    ("Ms. D. Priyanka", "1848", "priyanka", [("GR22A3115", "ACD")]),
-    ("Ms. V. Sreevani", "1724", "sreevani", [("GR22A3143", "BDA"), ("GR22A3148", "BDA LAB")]),
-    ("Ms. Manu Hajari", "1772", "manuhajari", [("GR22A4048", "CNS")]),
-    ("Ms. B. Saritha", "1862", "saritha_b", [("NPTEL", "JCP")]),
-    ("Ms. K. Kalpana", "1769", "kalpana", [("GR22A3142", "ML LAB")]),
-    ("Mr. K. Mallikarjuna Raju", "1726", "mallikarjuna", [("GR22A3148", "BDA LAB")]),
-    ("Mr. VSRK Raju", "1806", "vsrkraju", [("GR22A3089", "MP")]),
-    ("Ms. D. S. Niharika", "1838", "niharika", [("GR22A3089", "MP")]),  # Also class coordinator
-    ("Ms. K. Tejasvi", "1836", "tejasvi", [("GR22A2003", "COI")]),
+    ("Faculty 6", "1875", "faculty6", [("GR22A3140", "ML"), ("GR22A3142", "ML LAB")]),
+    ("Faculty 2", "1848", "faculty2", [("GR22A3115", "ACD")]),
+    ("Faculty 7", "1724", "faculty7", [("GR22A3143", "BDA"), ("GR22A3148", "BDA LAB")]),
+    ("Faculty 8", "1772", "faculty8", [("GR22A4048", "CNS")]),
+    ("Faculty 9", "1862", "faculty9", [("NPTEL", "JCP")]),
+    ("Faculty 13", "1769", "faculty13", [("GR22A3142", "ML LAB")]),
+    ("Faculty 16", "1726", "faculty16", [("GR22A3148", "BDA LAB")]),
+    ("Faculty 15", "1806", "faculty15", [("GR22A3089", "MP")]),
+    ("Faculty 18", "1838", "faculty18", [("GR22A3089", "MP")]),  # Also class coordinator
+    ("Faculty 10", "1836", "faculty10", [("GR22A2003", "COI")]),
 ]
 
 # Indian names
@@ -207,7 +206,7 @@ def seed():
         fac_map = {}  # emp_id -> Faculty
         mentor_id = None
         for fname, emp_id, uname, subj_list in FACULTY_B:
-            is_coordinator = (emp_id == "1838")  # Niharika is class coordinator
+            is_coordinator = (emp_id == "1838")  # Faculty 18 is class coordinator
             role = UserRole.BOTH if is_coordinator else UserRole.LECTURER
             u = User(username=uname, email=f"{uname}@griet.ac.in", hashed_password=get_password_hash("staff123"), role=role, is_active=True)
             db.add(u)
@@ -224,7 +223,7 @@ def seed():
                     db.add(FacultyAssignment(faculty_id=f.id, subject_id=sub_map[sub_code].id, section_id=sec_b.id))
 
         # Demo accounts
-        mentor_u = User(username="mentor", email="mentor@vibe.com", hashed_password=get_password_hash("mentor123"), role=UserRole.MENTOR, is_active=True)
+        mentor_u = User(username="faculty19", email="faculty19@vibe.com", hashed_password=get_password_hash("staff123"), role=UserRole.MENTOR, is_active=True)
         db.add(mentor_u)
         db.flush()
         mentor_fac = Faculty(user_id=mentor_u.id, employee_id="FAC001")
@@ -233,7 +232,7 @@ def seed():
         if not mentor_id:
             mentor_id = mentor_fac.id
 
-        lect_u = User(username="lecturer", email="lecturer@vibe.com", hashed_password=get_password_hash("lecturer123"), role=UserRole.LECTURER, is_active=True)
+        lect_u = User(username="faculty4", email="faculty4@vibe.com", hashed_password=get_password_hash("staff123"), role=UserRole.LECTURER, is_active=True)
         db.add(lect_u)
         db.flush()
         lect_fac = Faculty(user_id=lect_u.id, employee_id="FAC002")
@@ -587,8 +586,7 @@ def seed():
         print("[OK] DATABASE SEEDED - SECTION B")
         print("=" * 50)
         print("  admin    / admin123")
-        print("  mentor   / mentor123")
-        print("  lecturer / lecturer123")
+        print("  faculty19/ faculty4 / staff123")
         print("  student  / student123")
         print(f"  Faculty: {len(fac_map)} real + 2 demo")
         print(f"  Students: {len(students)}")
